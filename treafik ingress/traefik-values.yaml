@@ -1,0 +1,58 @@
+additionalArguments:
+# letsencrypt
+  - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=letsencrypt
+  - --certificatesresolvers.letsencrypt.acme.email=andreyindreies@gmail.com
+  - --certificatesresolvers.letsencrypt.acme.storage=/ssl-certs/acme-letsencrypt.json
+
+logs:
+  general:
+    level: ERROR
+
+ports:
+  web:
+    redirectTo:
+      port: websecure
+  websecure:
+    tls:
+      enabled: true
+      # (optional) Set a Default CertResolver
+      certResolver: letsencrypt
+
+env:
+  - name: CF_API_EMAIL
+    valueFrom:
+      secretKeyRef:
+        key: email
+        name: credentials
+  - name: CF_API_KEY
+    valueFrom:
+      secretKeyRef:
+        key: apiKey
+        name: credentials
+
+# Disable Dashboard
+ingressRoute:
+  dashboard:
+    enabled: true
+
+# Persistent Storage
+persistence:
+  storageClass: local-path
+  enabled: true
+  name: ssl-certs
+  size: 1Gi
+  path: /ssl-certs
+
+deployment:
+  initContainers:
+    - name: volume-permissions
+      image: busybox:1.36.1
+      command: ["sh", "-c", "chmod -Rv 600 /ssl-certs/*"]
+      volumeMounts:
+        - name: ssl-certs
+          mountPath: /ssl-certs
+
+# Set Traefik as your default Ingress Controller, according to Kubernetes 1.19+ changes.
+ingressClass:
+  enabled: true
+  isDefaultClass: true
