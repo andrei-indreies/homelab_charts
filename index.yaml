@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  postgres:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-05-06T08:47:25.309569611Z"
+    description: A Helm chart for Kubernetes
+    digest: ba4bee7abb4d5de0c7f569f3eb0b6c63dcfa480c5f67654091cc3548eb5182dd
+    name: postgres
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/gatekeeper-keycloak/releases/download/postgres-0.1.0/postgres-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-05-06T08:47:25.309577285Z"
