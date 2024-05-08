@@ -1,5 +1,16 @@
 apiVersion: v1
 entries:
+  mysql:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-05-08T12:57:05.28297216Z"
+    description: A Helm chart for Kubernetes
+    digest: 950f85f1720a369ef723bf978ccb5e36411002943ed3932bb75ebec0da2365d7
+    name: mysql
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/mysql-0.1.0/mysql-0.1.0.tgz
+    version: 0.1.0
   postgres:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -11,4 +22,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/gatekeeper-keycloak/releases/download/postgres-0.1.0/postgres-0.1.0.tgz
     version: 0.1.0
-generated: "2024-05-06T08:47:25.309577285Z"
+generated: "2024-05-08T12:57:05.282983301Z"
