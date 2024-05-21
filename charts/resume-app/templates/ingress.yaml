@@ -7,11 +7,11 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`keycloak.drewspace.ro`)
+    - match: Host(`aboutme.drewspace.ro`)
       kind: Rule
       services:                       # [8]
       - kind: Service
-        name: resume-app
+        name: keycloak-http
         namespace: main
         port: 80
         passHostHeader: true
