@@ -33,4 +33,15 @@ entries:
     urls:
     - https://github.com/andrei-indreies/gatekeeper-keycloak/releases/download/postgres-0.1.0/postgres-0.1.0.tgz
     version: 0.1.0
-generated: "2024-05-10T19:54:27.074674553Z"
+  resume-app:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-05-21T10:11:03.182862153Z"
+    description: A Helm chart for Kubernetes
+    digest: 5890c1ba7e2727301b5c5463140e6afb32b82ba1fe8f599b5af22e956dbaca24
+    name: resume-app
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/resume-app-0.1.0/resume-app-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-05-21T10:11:03.182870168Z"
