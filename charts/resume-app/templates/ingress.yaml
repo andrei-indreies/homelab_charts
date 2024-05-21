@@ -1,17 +1,17 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: keycloak
+  name: {{ include "resume-app.fullname" . }}
   namespace: main
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`keycloak.drewspace.ro`)
+    - match: Host(`aboutme.drewspace.ro`)
       kind: Rule
       services:                       # [8]
       - kind: Service
-        name: keycloak-http
+        name: {{ include "resume-app.fullname" . }}
         namespace: main
         port: 80
         passHostHeader: true
