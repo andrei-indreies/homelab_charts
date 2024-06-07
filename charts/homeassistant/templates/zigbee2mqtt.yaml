@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.z2m.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.z2m.name }}
+spec:
+  {{- if not .Values.z2m.autoscaling.enabled }}
+  replicas: {{ .Values.z2m.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.z2m.name }}
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      {{- with .Values.z2m.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "homeassistant.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "homeassistant.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.z2m.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Values.z2m.name }}
+          securityContext:
+            {{- toYaml .Values.z2m.securityContext | nindent 12 }}
+          image: "{{ .Values.z2m.image.repository }}:{{ .Values.z2m..image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.z2m.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.z2m.env | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.z2m.service.targetPort }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.z2m.resources | nindent 12 }}
+          volumeMounts:
+            {{- toYaml .Values.z2m.volumeMounts | nindent 12 }}
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.z2m.service.targetPort }}
+            initialDelaySeconds: 0
+            failureThreshold: 3
+            timeoutSeconds: 1
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.z2m.service.targetPort }}
+            initialDelaySeconds: 0
+            failureThreshold: 3
+            timeoutSeconds: 1
+            periodSeconds: 10
+          startupProbe:
+            tcpSocket:
+              port: {{ .Values.z2m.service.targetPort }}
+            initialDelaySeconds: 0
+            failureThreshold: 30
+            timeoutSeconds: 1
+            periodSeconds: 5
+      {{- with .Values.z2m.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.z2m.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ha.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        {{- toYaml .Values.z2m.volumes | nindent 8 }}
+      hostNetwork: {{ .Values.z2m.hostNetwork }}

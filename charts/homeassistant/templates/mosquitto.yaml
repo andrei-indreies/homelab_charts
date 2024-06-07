@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.mosquitto.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.mosquitto.name }}
+spec:
+  {{- if not .Values.mosquitto.autoscaling.enabled }}
+  replicas: {{ .Values.mosquitto.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.mosquitto.name }}
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      {{- with .Values.mosquitto.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "homeassistant.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "homeassistant.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.mosquitto.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Values.mosquitto.name }}
+          securityContext:
+            {{- toYaml .Values.mosquitto.securityContext | nindent 12 }}
+          image: "{{ .Values.mosquitto.image.repository }}:{{ .Values.mosquitto.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.mosquitto.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.mosquitto.service.targetPort }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.mosquitto.resources | nindent 12 }}
+          volumeMounts:
+            {{- toYaml .Values.mosquitto.volumeMounts | nindent 12 }}
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.mosquitto.service.targetPort }}
+            initialDelaySeconds: 0
+            failureThreshold: 3
+            timeoutSeconds: 1
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.mosquitto.service.targetPort }}
+            initialDelaySeconds: 0
+            failureThreshold: 3
+            timeoutSeconds: 1
+            periodSeconds: 10
+          startupProbe:
+            tcpSocket:
+              port: {{ .Values.mosquitto.service.targetPort }}
+            initialDelaySeconds: 0
+            failureThreshold: 30
+            timeoutSeconds: 1
+            periodSeconds: 5
+      {{- with .Values.mosquitto.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.mosquitto.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ha.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        {{- toYaml .Values.mosquitto.volumes | nindent 8 }}
+      hostNetwork: {{ .Values.mosquitto.hostNetwork }}

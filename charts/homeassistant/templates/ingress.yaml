@@ -1,0 +1,43 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ .Values.ha.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: {{ .Values.ha.ingress.match }}
+      kind: Rule
+      middlewares:
+      {{- toYaml .Values.ha.ingress.middlewares | nindent 8 }}
+      services:                      
+      - kind: Service
+        name: {{ .Values.ha.name }}
+        namespace: {{ .Values.namespace }}
+        port: {{ .Values.ha.service.port }}
+        passHostHeader: true
+  tls:
+    certResolver: letsencrypt
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ .Values.z2m.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: {{ .Values.z2m.ingress.match }}
+      kind: Rule
+      middlewares:
+      {{- toYaml .Values.z2m.ingress.middlewares | nindent 8 }}
+      services:                      
+      - kind: Service
+        name: {{ .Values.z2m.name }}
+        namespace: {{ .Values.namespace }}
+        port: {{ .Values.z2m.service.port }}
+        passHostHeader: true
+  tls:
+    certResolver: letsencrypt

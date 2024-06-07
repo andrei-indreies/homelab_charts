@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.ha.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  type: {{ .Values.ha.service.type }}
+  selector:
+    app: {{ .Values.ha.name }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.ha.service.port }}
+      targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.z2m.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  type: {{ .Values.z2m.service.type }}
+  selector:
+    app: {{ .Values.z2m.name }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.z2m.service.port }}
+      targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.mosquitto.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  type: {{ .Values.mosquitto.service.type }}
+  selector:
+    app: {{ .Values.mosquitto.name }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.mosquitto.service.port }}
+      targetPort: http
+

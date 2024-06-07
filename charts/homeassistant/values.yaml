@@ -1,0 +1,212 @@
+ha: 
+  replicaCount: 1
+
+  name: home-assistant
+
+  image:
+    repository: homeassistant/home-assistant
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  
+  podAnnotations:
+    deploy-date: "deploy-date-value"
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+  
+  hostNetwork: true
+
+  volume:
+    name: home-assistant-content
+    claimName: home-assistant-claim
+    size: 3Gi
+
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 8123
+
+  ingress:
+    match: Host(`ha.drewspace.ro`)
+    middlewares:
+    - name: keycloak-oidc
+      namespace: main 
+
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "1024Mi"
+      cpu: "2"
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+z2m: 
+  replicaCount: 1
+
+  name: zigbee2mqtt
+
+  image:
+    repository: koenkk/zigbee2mqtt
+    pullPolicy: IfNotPresent
+    tag: "latest-dev"
+  
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: 
+    privileged: true
+
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 8080
+
+  ingress:
+    match: Host(`z2m.drewspace.ro`)
+    middlewares:
+    - name: keycloak-oidc
+      namespace: main 
+
+  resources: {}
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  hostNetwork: false
+
+  env: 
+    - name: TZ
+      value: Europe/Berlin
+    - name: ZIGBEE2MQTT_DATA
+      value: "/data"
+    - name: ZIGBEE2MQTT_CONFIG_MQTT_SERVER
+      value: "mqtt://mosquitto:1883"
+
+  volumeMounts:
+    - name: zigbee2mqtt-data
+      mountPath: /data
+    - name: zigbee2mqtt-config
+      mountPath: /app/configuration.yaml
+      subPath: configuration.yaml
+    - name: zigbee2mqtt-udev
+      mountPath: /run/udev
+    - name: ttyacm
+      mountPath: /dev/ttyACM0
+
+  volumes:
+    - name: zigbee2mqtt-data
+      persistentVolumeClaim:
+        claimName: zigbee2mqtt-data
+    - name: zigbee2mqtt-udev
+      hostPath:
+        path: /run/udev
+    - name: ttyacm
+      hostPath:
+        path: /dev/ttyACM0
+    - name: zigbee2mqtt-config
+      configMap:
+        name: zigbee2mqtt-config
+
+mosquitto: 
+  replicaCount: 1
+
+  name: mosquitto
+
+  image:
+    repository: eclipse-mosquitto
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  
+  podAnnotations: {}
+
+  podSecurityContext: {}
+
+  securityContext: {}
+
+  service:
+    type: ClusterIP
+    port: 1883
+    targetPort: 1883
+
+  resources: {}
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  hostNetwork: false
+
+  volumeMounts: 
+    - name: mosquitto-persistent-storage
+      mountPath: /mosquitto/data
+    - name: mosquitto-config
+      mountPath: /mosquitto/config/mosquitto.conf
+      subPath: mosquitto.conf
+    - name: mosquitto-password
+      mountPath: /mosquitto/config/password.txt
+      subPath: password.txt
+
+  volumes:
+    - name: mosquitto-persistent-storage
+      persistentVolumeClaim:
+        claimName: mq-pv-claim
+    - name: mosquitto-config
+      configMap:
+        name: mosquitto-config
+    - name: mosquitto-password
+      configMap:
+        name: mosquitto-password
+
+
+#global
+namespace: main
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""

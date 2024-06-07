@@ -1,0 +1,73 @@
+{{- if .Values.ha.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Values.ha.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.ha.name }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Values.ha.name }}
+  minReplicas: {{ .Values.ha.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.ha.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.ha.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.ha.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+{{- end }}
+---
+{{- if .Values.z2m.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Values.z2m.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.z2m.name }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Values.z2m.name }}
+  minReplicas: {{ .Values.z2m.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.z2m.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.z2m.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.z2m.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+{{- end }}
+---
+{{- if .Values.mosquitto.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Values.mosquitto.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.z2mmosquitto.name }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Values.mosquitto.name }}
+  minReplicas: {{ .Values.mosquitto.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.mosquitto.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.mosquitto.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.mosquitto.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+{{- end }}
+
+

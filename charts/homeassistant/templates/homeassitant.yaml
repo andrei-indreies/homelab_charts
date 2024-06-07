@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.ha.name }}
+  namespace: {{ .Values.namespace }}
+  annotations:
+    reloader.stakater.com/auto: "true"
+  labels:
+    app: {{ .Values.ha.name }}
+spec:
+  {{- if not .Values.ha.autoscaling.enabled }}
+  replicas: {{ .Values.ha.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.ha.name }}
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      {{- with .Values.ha.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: {{ .Values.ha.name }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "homeassistant.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.ha.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Values.ha.name }}
+          securityContext:
+            {{- toYaml .Values.ha.securityContext | nindent 12 }}
+          image: "{{ .Values.ha.image.repository }}:{{ .Values.ha.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.ha.image.pullPolicy }}
+          env:
+            - name: TZ
+              value: "${TIMEZONE}"
+          ports:
+            - name: http
+              containerPort: {{ .Values.ha.service.targetPort }}
+          resources:
+            {{- toYaml .Values.ha.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /config
+              name: {{ .Values.ha.volume.name }}
+      {{- with .Values.ha.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ha.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ha.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: {{ .Values.ha.volume.name }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.ha.volume.claimName }}
+      hostNetwork: {{ .Values.ha.hostNetwork }}
