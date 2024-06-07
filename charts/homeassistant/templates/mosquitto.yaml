@@ -23,7 +23,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "homeassistant.selectorLabels" . | nindent 8 }}
+        app: {{ .Values.mosquitto.name }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
