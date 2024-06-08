@@ -37,9 +37,9 @@ ha:
 
   ingress:
     match: Host(`ha.drewspace.ro`)
-    middlewares:
-    - name: keycloak-oidc
-      namespace: main 
+    middlewares: {}
+    # - name: keycloak-oidc
+    #   namespace: main 
 
   resources:
     requests:
@@ -157,6 +157,7 @@ mosquitto:
     type: ClusterIP
     port: 1883
     targetPort: 1883
+    ClusterIP: 10.43.55.167
 
   resources: {}
 

@@ -33,6 +33,7 @@ metadata:
   namespace: {{ .Values.namespace }}
 spec:
   type: {{ .Values.mosquitto.service.type }}
+  clusterIP: {{ .Values.mosquitto.service.ClusterIP }}
   selector:
     app: {{ .Values.mosquitto.name }}
   ports:
