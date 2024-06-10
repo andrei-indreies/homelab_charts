@@ -9,8 +9,6 @@ spec:
   routes:
     - match: {{ .Values.ha.ingress.match }}
       kind: Rule
-      middlewares:
-      {{- toYaml .Values.ha.ingress.middlewares | nindent 8 }}
       services:                      
       - kind: Service
         name: {{ .Values.ha.name }}
