@@ -37,10 +37,24 @@ logs:
     level: DEBUG
 
 ports:
-  smtp-tls:
-    port: 587
+  smtp:
+    port: 25
     tls:
-      enabled: false
+      enabled: true
+    expose:
+      default: true
+    protocol: TCP
+  smtp-tls:
+    port: 465
+    tls:
+      enabled: true
+    expose:
+      default: true
+    protocol: TCP
+  imap:
+    port: 993
+    tls:
+      enabled: true
     expose:
       default: true
     protocol: TCP

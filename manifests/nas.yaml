@@ -1,0 +1,46 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nas
+  namespace: main
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`nas.drewspace.ro`) 
+      kind: Rule
+      services:
+      - kind: Service
+        name: nas
+        namespace: main
+        port: 80
+        passHostHeader: true
+  tls:
+    certResolver: letsencrypt
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nas
+  namespace: main
+spec:
+  ports:
+  - name: app
+    port: 80
+    protocol: TCP
+    targetPort: 5001
+  clusterIP: None
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: nas
+  namespace: main
+subsets:
+- addresses:
+  - ip: 192.168.1.144
+  ports:
+  - name: app
+    port: 5000
+    protocol: TCP

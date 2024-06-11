@@ -68,3 +68,4 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Values.ha.volume.claimName }}
       hostNetwork: {{ .Values.ha.hostNetwork }}
+      dnsPolicy: ClusterFirstWithHostNet

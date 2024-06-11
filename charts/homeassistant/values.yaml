@@ -154,7 +154,6 @@ mosquitto:
     type: ClusterIP
     port: 1883
     targetPort: 1883
-    CusterIP: 10.43.55.167
 
   resources: {}
 
