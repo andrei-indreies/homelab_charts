@@ -84,22 +84,14 @@ spec:
             httpGet:
               path: /health/started
               port: http
-            initialDelaySeconds: 300
+            initialDelaySeconds: 150
             timeoutSeconds: 5
           readinessProbe:
             httpGet:
               path: /health/ready
               port: http
-            initialDelaySeconds: 350
+            initialDelaySeconds: 60
             timeoutSeconds: 1
-          startupProbe:
-            httpGet:
-              path: /health/live
-              port: http
-            initialDelaySeconds: 350
-            timeoutSeconds: 1
-            failureThreshold: 180
-            periodSeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
