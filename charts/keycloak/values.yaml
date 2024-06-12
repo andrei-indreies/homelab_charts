@@ -6,9 +6,9 @@ replicaCount: 1
 
 image:
   repository: quay.io/keycloak/keycloak
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: "25.0"
   volume:
     path: /opt/keycloak/data/import/realm.json
 

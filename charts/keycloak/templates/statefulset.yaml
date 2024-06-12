@@ -80,18 +80,29 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+            - name: hidden
+              containerPort: 9000
+              protocol: TCP
           livenessProbe:
             httpGet:
               path: /health/started
-              port: http
-            initialDelaySeconds: 150
+              port: hidden
+            initialDelaySeconds: 300
             timeoutSeconds: 5
           readinessProbe:
             httpGet:
               path: /health/ready
-              port: http
-            initialDelaySeconds: 60
+              port: hidden
+            initialDelaySeconds: 350
             timeoutSeconds: 1
+          startupProbe:
+            httpGet:
+              path: /health/live
+              port: hidden
+            initialDelaySeconds: 350
+            timeoutSeconds: 1
+            failureThreshold: 180
+            periodSeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
