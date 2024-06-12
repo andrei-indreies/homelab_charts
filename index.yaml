@@ -75,6 +75,16 @@ entries:
   keycloak:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-06-12T16:03:44.94268776Z"
+    description: A Helm chart for Kubernetes
+    digest: 139b8ca9e7cd72c66c739d935751861ced7f3395b5f39d29eaecd1128895a57d
+    name: keycloak
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/keycloak-0.1.3/keycloak-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-06-12T15:49:44.423381041Z"
     description: A Helm chart for Kubernetes
     digest: 46bb5b0f1879d16b30c2824b06d4003d8943cbff9949e7e8b755b038a96c37a4
@@ -136,4 +146,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/resume-app-0.1.0/resume-app-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-12T15:49:44.423431014Z"
+generated: "2024-06-12T16:03:44.942721964Z"
