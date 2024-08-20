@@ -3,6 +3,16 @@ entries:
   ha-z2m-mosquitto:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-08-20T08:41:27.553993659Z"
+    description: A Helm chart for Kubernetes
+    digest: 7ec977ce4335c835f79031ff314525897a58b0950c854364dc11fab247886ef3
+    name: ha-z2m-mosquitto
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/ha-z2m-mosquitto-0.1.8/ha-z2m-mosquitto-0.1.8.tgz
+    version: 0.1.8
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-08-20T08:32:10.908332197Z"
     description: A Helm chart for Kubernetes
     digest: 2cbe98580119ffbb81f3b087609d19db5fcbde9016660706b959eb3f18c689de
@@ -166,4 +176,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/resume-app-0.1.0/resume-app-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-20T08:32:10.908375458Z"
+generated: "2024-08-20T08:41:27.554034244Z"
