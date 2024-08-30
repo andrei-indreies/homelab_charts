@@ -3,6 +3,16 @@ entries:
   ha-z2m-mosquitto:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-08-30T13:25:59.305622616Z"
+    description: A Helm chart for Kubernetes
+    digest: 7ef28f0e9682d8fe75ff8106799d996942391efadf0a40af22f2400024a2901c
+    name: ha-z2m-mosquitto
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/ha-z2m-mosquitto-0.1.9/ha-z2m-mosquitto-0.1.9.tgz
+    version: 0.1.9
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-08-20T08:41:27.553993659Z"
     description: A Helm chart for Kubernetes
     digest: 7ec977ce4335c835f79031ff314525897a58b0950c854364dc11fab247886ef3
@@ -165,6 +175,17 @@ entries:
     urls:
     - https://github.com/andrei-indreies/gatekeeper-keycloak/releases/download/postgres-0.1.0/postgres-0.1.0.tgz
     version: 0.1.0
+  purghel-app:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-08-30T13:25:59.424261051Z"
+    description: A Helm chart for Kubernetes
+    digest: d1d2de549b5053831740d001588ca5d7e10bc651d263586464ce86b53cf80a00
+    name: purghel-app
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/purghel-app-0.1.0/purghel-app-0.1.0.tgz
+    version: 0.1.0
   resume-app:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -176,4 +197,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/resume-app-0.1.0/resume-app-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-20T08:41:27.554034244Z"
+generated: "2024-08-30T13:25:59.424315503Z"
