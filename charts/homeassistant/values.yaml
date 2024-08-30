@@ -135,7 +135,7 @@ z2m:
         name: zigbee2mqtt-config
 
 mosquitto: 
-  replicaCount: 1
+  replicaCount: 1  
 
   name: mosquitto
 
