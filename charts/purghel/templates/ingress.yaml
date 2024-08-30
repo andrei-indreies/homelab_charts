@@ -9,7 +9,7 @@ spec:
   routes:
     - match: Host(`purghel.drewspace.ro`)
       kind: Rule
-      services:                       # [8]
+      services:
       - kind: Service
         name: {{ include "purghel-app.fullname" . }}
         namespace: purghel
