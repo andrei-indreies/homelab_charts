@@ -178,6 +178,16 @@ entries:
   purghel-app:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-09-02T09:14:44.256105228Z"
+    description: A Helm chart for Kubernetes
+    digest: c4e8ad0f0486af2b59be39ede14791af6b8244d65f58c5e6b1259a3a36bc2d00
+    name: purghel-app
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/purghel-app-0.1.2/purghel-app-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-08-30T13:50:12.0229602Z"
     description: A Helm chart for Kubernetes
     digest: 836216d3a4caeda42f1e9927be0f9ab91de692b9271f62e4c098953c106dbf12
@@ -207,4 +217,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/resume-app-0.1.0/resume-app-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-30T13:50:12.022996477Z"
+generated: "2024-09-02T09:14:44.256144312Z"
