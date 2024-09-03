@@ -67,7 +67,7 @@ z2m:
   image:
     repository: koenkk/zigbee2mqtt
     pullPolicy: IfNotPresent
-    tag: "latest-dev"
+    tag: "1.40.0"
   
   podAnnotations: {}
   podSecurityContext: {}
