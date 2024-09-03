@@ -15,6 +15,7 @@ data:
       user: admin
       server: mqtt://mosquitto:1883
     serial:
+      adapter: ember
       port: /dev/ttyACM0
     frontend:
       port: 8080
