@@ -7,7 +7,8 @@ metadata:
     app: {{ .Values.z2m.name }}
 data:
   configuration.yaml: |-
-
+    base_topic: zigbee2mqtt	
+    password: password
     permit_join: true
     homeassistant: true
     mqtt:
