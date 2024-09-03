@@ -7,13 +7,11 @@ metadata:
     app: {{ .Values.z2m.name }}
 data:
   configuration.yaml: |-
-    base_topic: zigbee2mqtt	
-    password: password
     permit_join: true
     homeassistant: true
     mqtt:
-      base_topic: aragorn
-      password: 1rApLb?JUp&WR!s2o5r=
+      base_topic: zigbee2mqtt	
+      password: password
       user: admin
       server: mqtt://mosquitto:1883
     serial:
