@@ -218,6 +218,16 @@ entries:
   purghel-app:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-10-18T14:10:50.123542681Z"
+    description: A Helm chart for Kubernetes
+    digest: b490be8336977cb0804edf05c3733f4dc394e3982e078873796d9f34306ba262
+    name: purghel-app
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/purghel-app-0.1.3/purghel-app-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-09-02T09:14:44.256105228Z"
     description: A Helm chart for Kubernetes
     digest: c4e8ad0f0486af2b59be39ede14791af6b8244d65f58c5e6b1259a3a36bc2d00
@@ -246,6 +256,17 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/purghel-app-0.1.0/purghel-app-0.1.0.tgz
     version: 0.1.0
+  recumed-app:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-10-18T14:10:50.268972607Z"
+    description: A Helm chart for Kubernetes
+    digest: f9b5e6940432f3387fc0bc93c1a7f4de7a92cfcee83769e66b606780730fbd7e
+    name: recumed-app
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/recumed-app-0.1.0/recumed-app-0.1.0.tgz
+    version: 0.1.0
   resume-app:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -257,4 +278,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/resume-app-0.1.0/resume-app-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-03T13:37:57.678055183Z"
+generated: "2024-10-18T14:10:50.269026969Z"
