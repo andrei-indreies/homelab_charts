@@ -1,11 +1,11 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/andrei-indreies/homelab_charts/mysql-homelab
+  repository: ghcr.io/andrei-indreies/homelab_charts/mariadb-homelab
   pullPolicy: IfNotPresent
   tag: "latest"
   volume:
-    path: /var/lib/mysql
+    path: /var/lib/mariadb
 
 imagePullSecrets: []
 nameOverride: ""

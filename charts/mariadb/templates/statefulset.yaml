@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "mysql.fullname" . }}
+  name: {{ include "mariadb.fullname" . }}
   labels:
-    {{- include "mysql.labels" . | nindent 4 }}
+    {{- include "mariadb.labels" . | nindent 4 }}
 spec:
-  serviceName: {{ include "mysql.fullname" . }}-headless
+  serviceName: {{ include "mariadb.fullname" . }}-headless
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "mysql.selectorLabels" . | nindent 6 }}
+      {{- include "mariadb.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "mysql.selectorLabels" . | nindent 8 }}
+        {{- include "mariadb.selectorLabels" . | nindent 8 }}
     spec:
-      serviceAccountName: {{ include "mysql.serviceAccountName" . }}
+      serviceAccountName: {{ include "mariadb.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:

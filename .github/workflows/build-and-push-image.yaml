@@ -21,6 +21,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       # Log in to GitHub Container Registry
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
@@ -29,13 +33,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Build the Docker image
-      - name: Build Docker image
+       # Build and push multi-arch Docker images
+      - name: Build and push Docker images for multi-arch
         run: |
-          # Build the Docker image using the Dockerfile in the specified directory
-          docker build -t ghcr.io/${{ github.repository }}/mysql-homelab:latest -f ./docker/mysql/Dockerfile ./docker/mysql
+          docker buildx create --use
+          docker buildx inspect --bootstrap
+          
+          # Build and push mysql-app for multi-arch
+          docker buildx build --platform linux/amd64,linux/arm64 -f ./docker/mariadb/Dockerfile \
+            -t ghcr.io/${{ github.repository }}/mysql-homelab:latest --push .
 
-      # Push the Docker image to GitHub Container Registry
-      - name: Push Docker image
-        run: |
-          docker push ghcr.io/${{ github.repository }}/mysql-homelab:latest
+          # Build and push mariadb for multi-arch
+          docker buildx build --platform linux/amd64,linux/arm64 -f ./docker/mariadb/Dockerfile \
+            -t ghcr.io/${{ github.repository }}/mariadb-homelab:latest --push .
+
+

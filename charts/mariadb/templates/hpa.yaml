@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "mysql.fullname" . }}
+  name: {{ include "mariadb.fullname" . }}
   labels:
-    {{- include "mysql.labels" . | nindent 4 }}
+    {{- include "mariadb.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "mysql.fullname" . }}
+    name: {{ include "mariadb.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
