@@ -204,6 +204,17 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/mariadb-0.1.0/mariadb-0.1.0.tgz
     version: 0.1.0
+  mariadb-db:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-10-21T13:00:49.219717749Z"
+    description: A Helm chart for Kubernetes
+    digest: 5d69ff0867747f4c817774de634202069d40410b7800eb5d1e57d3381767af4d
+    name: mariadb-db
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/mariadb-db-0.1.0/mariadb-db-0.1.0.tgz
+    version: 0.1.0
   mysql:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -299,4 +310,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/resume-app-0.1.0/resume-app-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-21T11:48:10.449878822Z"
+generated: "2024-10-21T13:00:49.219795234Z"
