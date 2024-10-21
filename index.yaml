@@ -281,6 +281,16 @@ entries:
   recumed-app:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-10-21T13:07:24.107770978Z"
+    description: A Helm chart for Kubernetes
+    digest: 58bd33f4bcb174110c5c9dd25b658ab5168eb4c2a6bd7050d01deded536e16d4
+    name: recumed-app
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/recumed-app-0.1.3/recumed-app-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-10-21T07:59:42.918882097Z"
     description: A Helm chart for Kubernetes
     digest: 62dbe938d6bc7e77e6fce04ebfd76eb8b3ddf1bab2138aee99c561f1274d5adb
@@ -310,4 +320,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/resume-app-0.1.0/resume-app-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-21T13:00:49.219795234Z"
+generated: "2024-10-21T13:07:24.108051455Z"
