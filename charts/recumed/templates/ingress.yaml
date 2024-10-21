@@ -1,3 +1,13 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: insecure-requests
+  namespace: main
+spec:
+  headers:
+    contentSecurityPolicy: "upgrade-insecure-requests"
+---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
@@ -15,5 +25,8 @@ spec:
         namespace: main
         port: 80
         passHostHeader: true
+      middlewares:
+      - name: insecure-requests
+        namespace: main
   tls:
     certResolver: letsencrypt
