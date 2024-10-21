@@ -193,6 +193,17 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/keycloak-0.1.0/keycloak-0.1.0.tgz
     version: 0.1.0
+  mariadb:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-10-21T11:48:10.449818119Z"
+    description: A Helm chart for Kubernetes
+    digest: ee9ba6a3cd9f9d3a946a399b4a12605da81d051d1681eee51303bac4c18efe6f
+    name: mariadb
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/mariadb-0.1.0/mariadb-0.1.0.tgz
+    version: 0.1.0
   mysql:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -288,4 +299,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/resume-app-0.1.0/resume-app-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-21T07:59:42.918939485Z"
+generated: "2024-10-21T11:48:10.449878822Z"
