@@ -3,7 +3,7 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: insecure-requests
-  namespace: main
+  namespace: websites
 spec:
   headers:
     contentSecurityPolicy: "upgrade-insecure-requests"
@@ -12,7 +12,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: {{ include "recumed-app.fullname" . }}
-  namespace: main
+  namespace: websites
 spec:
   entryPoints:
     - websecure

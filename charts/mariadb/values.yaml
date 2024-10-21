@@ -1,0 +1,54 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/andrei-indreies/homelab_charts/mariadb-homelab
+  pullPolicy: IfNotPresent
+  tag: "latest"
+  volume:
+    path: /var/lib/mariadb
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 3306
+  portname: http
+
+resources:
+  limits:
+    cpu: "1"
+    memory: 768Mi
+  requests:
+    cpu: 50m
+    memory: 768Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+pvc:
+  name: "pg-pvc"
+  storageClassName: "local-path"
+  storageSize: "1Gi"
