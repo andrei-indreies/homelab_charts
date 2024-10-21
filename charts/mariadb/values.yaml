@@ -5,7 +5,7 @@ image:
   pullPolicy: IfNotPresent
   tag: "latest"
   volume:
-    path: /var/lib/mariadb
+    path: /var/lib/mysql
 
 imagePullSecrets: []
 nameOverride: ""
