@@ -341,4 +341,15 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/resume-app-0.1.0/resume-app-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-22T06:26:46.28713547Z"
+  wedding-app:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-10-27T16:21:14.57668388Z"
+    description: A Helm chart for Kubernetes
+    digest: 8ffbf3603bb75d17516dace1d85b5ec425bb89b495c84006ab68b667c64422ec
+    name: wedding-app
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-10-27T16:21:14.576743491Z"
