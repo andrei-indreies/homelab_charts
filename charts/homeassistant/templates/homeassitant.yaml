@@ -54,7 +54,7 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: {{ .Values.ha.volume.name }}
-            - mountPath: "/var/run/dbus"
+            - mountPath: /var/run/dbus
               name: dbus
       {{- with .Values.ha.nodeSelector }}
       nodeSelector:
