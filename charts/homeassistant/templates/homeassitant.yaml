@@ -72,5 +72,8 @@ spec:
         - name: {{ .Values.ha.volume.name }}
           persistentVolumeClaim:
             claimName: {{ .Values.ha.volume.claimName }}
+        - name: dbus
+          hostPath:
+            path: /var/run/dbus
       hostNetwork: {{ .Values.ha.hostNetwork }}
       dnsPolicy: ClusterFirstWithHostNet
