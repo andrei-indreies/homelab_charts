@@ -15,14 +15,14 @@ ha:
   podSecurityContext: {}
     # fsGroup: 2000
 
-  securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
-  
+  securityContext:
+    privileged: true
+    capabilities:
+      add:
+        - NET_ADMIN
+        - NET_RAW
+        - SYS_ADMIN
+
   hostNetwork: true
 
   volume:
