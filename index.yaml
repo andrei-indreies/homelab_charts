@@ -384,6 +384,16 @@ entries:
   wedding-app:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-11-10T16:10:44.239159781Z"
+    description: A Helm chart for Kubernetes
+    digest: c6aa0d065a69eb7a922179de9cb93ca0bfb5b90e456e83215e3a6d1033bef622
+    name: wedding-app
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.3/wedding-app-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-10-27T17:07:43.728724638Z"
     description: A Helm chart for Kubernetes
     digest: 5a0ac737c4c944095fe2b40cfa5961cc50488965429e4b73cc266d1fedba0a72
@@ -402,4 +412,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-09T18:31:31.365316133Z"
+generated: "2024-11-10T16:10:44.239228899Z"
