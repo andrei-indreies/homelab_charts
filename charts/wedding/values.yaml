@@ -10,10 +10,17 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
+namespace: main
+
 imagePullSecrets: 
   - name: regcred
 nameOverride: ""
 fullnameOverride: ""
+
+volume:
+  claimName: weding-storage
+  name: website
+  size: 0.5Gi
 
 serviceAccount:
   # Specifies whether a service account should be created
