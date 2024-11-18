@@ -37,6 +37,10 @@ ha:
 
   ingress:
     match: Host(`ha.drewspace.ro`)
+    matchdexcluded: Host(`ha.drewspace.ro`) && (PathPrefix(`/api/webhook/`) || Path(`/api/websocket`))
+    middlewares:
+    - name: keycloak-auth-admin
+      namespace: main 
 
   resources:
     requests:
@@ -82,7 +86,7 @@ z2m:
   ingress:
     match: Host(`z2m.drewspace.ro`)
     middlewares:
-    - name: keycloak-oidc
+    - name: keycloak-auth-admin
       namespace: main 
 
   resources: {}
