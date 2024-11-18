@@ -7,13 +7,14 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: {{ .Values.ha.ingress.matchexcluded }}      
+    - match: {{ .Values.ha.ingress.matchexcluded }}   
+      kind: Rule   
       services:
-        - kind: Service
-          name: {{ .Values.ha.name }}
-          namespace: {{ .Values.namespace }}
-          passHostHeader: true
-          port: {{ .Values.ha.service.port }}
+      - kind: Service
+        name: {{ .Values.ha.name }}
+        namespace: {{ .Values.namespace }}
+        passHostHeader: true
+        port: {{ .Values.ha.service.port }}
     - match: {{ .Values.ha.ingress.match }}
       kind: Rule
       services:                      
