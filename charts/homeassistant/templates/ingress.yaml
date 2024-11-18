@@ -17,13 +17,14 @@ spec:
         port: {{ .Values.ha.service.port }}
     - match: {{ .Values.ha.ingress.match }}
       kind: Rule
+      middlewares:
+      {{- toYaml .Values.ha.ingress.middlewares | nindent 8 }}
       services:                      
       - kind: Service
-        middlewares:
-        {{- toYaml .Values.ha.ingress.middlewares | nindent 8 }}
+        name: {{ .Values.ha.name }}
         namespace: {{ .Values.namespace }}
-        port: {{ .Values.ha.service.port }}
         passHostHeader: true
+        port: {{ .Values.ha.service.port }}
   tls:
     certResolver: letsencrypt
 ---
