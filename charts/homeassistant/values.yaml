@@ -187,15 +187,7 @@ mosquitto:
 
   tolerations: []
 
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: role
-                operator: In
-                values:
-                  - media-role
+  affinity: {}
 
   hostNetwork: false
 
