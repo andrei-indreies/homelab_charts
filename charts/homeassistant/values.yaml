@@ -195,7 +195,7 @@ mosquitto:
                 - key: role
                   operator: In
                   values:
-                    - media-node
+                    - master
 
   hostNetwork: false
 
