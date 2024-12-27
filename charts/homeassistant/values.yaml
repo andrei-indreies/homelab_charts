@@ -188,7 +188,7 @@ mosquitto:
   tolerations: []
 
   affinity:
-      nodeAffinity:
+    nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
           - matchExpressions:
