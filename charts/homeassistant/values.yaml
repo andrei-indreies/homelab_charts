@@ -1,20 +1,13 @@
 ha: 
   replicaCount: 1
-
   name: home-assistant
-
   image:
     repository: homeassistant/home-assistant
     pullPolicy: IfNotPresent
-    # Overrides the image tag whose default is the chart appVersion.
     tag: "2024.8"
-  
   podAnnotations:
     deploy-date: "deploy-date-value"
-
   podSecurityContext: {}
-    # fsGroup: 2000
-
   securityContext:
     privileged: true
     capabilities:
@@ -22,26 +15,21 @@ ha:
         - NET_ADMIN
         - NET_RAW
         - SYS_ADMIN
-
   hostNetwork: true
-
   volume:
     name: home-assistant-content
     claimName: home-assistant-claim
     size: 3Gi
-
   service:
     type: ClusterIP
     port: 80
     targetPort: 8123
-
   ingress:
     match: Host(`ha.drewspace.ro`)
     matchexcluded: Host(`ha.drewspace.ro`) && (PathPrefix(`/api/webhook/`) || Path(`/api/websocket`))
     middlewares:
-    - name: keycloak-auth-admin
-      namespace: main 
-
+      - name: keycloak-auth-admin
+        namespace: main 
   resources:
     requests:
       memory: "128Mi"
@@ -49,62 +37,61 @@ ha:
     limits:
       memory: "1024Mi"
       cpu: "2"
-
   autoscaling:
     enabled: false
     minReplicas: 1
     maxReplicas: 100
     targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
-
   nodeSelector: {}
-
   tolerations: []
-
-  affinity: {}
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                  - master
 
 z2m: 
   replicaCount: 1
-
   name: zigbee2mqtt
-
   image:
     repository: koenkk/zigbee2mqtt
     pullPolicy: IfNotPresent
     tag: "1.40.0"
-  
   podAnnotations: {}
   podSecurityContext: {}
   securityContext: 
     privileged: true
-
   service:
     type: ClusterIP
     port: 80
     targetPort: 8080
-
   ingress:
     match: Host(`z2m.drewspace.ro`)
     middlewares:
-    - name: keycloak-auth-admin
-      namespace: main 
-
+      - name: keycloak-auth-admin
+        namespace: main 
   resources: {}
-
   autoscaling:
     enabled: false
     minReplicas: 1
     maxReplicas: 3
     targetCPUUtilizationPercentage: 80
-
   nodeSelector: {}
-
   tolerations: []
-
-  affinity: {}
-
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                  - master
   hostNetwork: false
-
   env: 
     - name: TZ
       value: Europe/Berlin
@@ -112,7 +99,6 @@ z2m:
       value: "/data"
     - name: ZIGBEE2MQTT_CONFIG_MQTT_SERVER
       value: "mqtt://mosquitto:1883"
-
   volumeMounts:
     - name: zigbee2mqtt-data
       mountPath: /data
@@ -123,7 +109,6 @@ z2m:
       mountPath: /run/udev
     - name: ttyacm
       mountPath: /dev/ttyACM0
-
   volumes:
     - name: zigbee2mqtt-data
       persistentVolumeClaim:
@@ -140,41 +125,36 @@ z2m:
 
 mosquitto: 
   replicaCount: 1  
-
   name: mosquitto
-
   image:
     repository: eclipse-mosquitto
     pullPolicy: IfNotPresent
     tag: "latest"
-  
   podAnnotations: {}
-
   podSecurityContext: {}
-
   securityContext: {}
-
   service:
     type: ClusterIP
     port: 1883
     targetPort: 1883
-
   resources: {}
-
   autoscaling:
     enabled: false
     minReplicas: 1
     maxReplicas: 3
     targetCPUUtilizationPercentage: 80
-
   nodeSelector: {}
-
   tolerations: []
-
-  affinity: {}
-
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                  - nfs-node
   hostNetwork: false
-
   volumeMounts: 
     - name: mosquitto-persistent-storage
       mountPath: /mosquitto/data
@@ -184,7 +164,6 @@ mosquitto:
     - name: mosquitto-password
       mountPath: /mosquitto/config/password.txt
       subPath: password.txt
-
   volumes:
     - name: mosquitto-persistent-storage
       persistentVolumeClaim:
@@ -195,19 +174,3 @@ mosquitto:
     - name: mosquitto-password
       configMap:
         name: mosquitto-password
-
-
-#global
-namespace: main
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
-
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
