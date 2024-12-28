@@ -11,7 +11,7 @@ spec:
       kind: Rule
       services:
       - kind: Service
-        name: {{ include "jellyfin-app.fullname" . }}
+        name: {{ include "jellyfin.fullname" . }}
         namespace: main
         port: {{ .Values.service.port }}
         passHostHeader: true
