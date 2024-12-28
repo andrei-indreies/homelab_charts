@@ -144,7 +144,9 @@ jellyfin:
   # -- Additional arguments for the entrypoint command.
   args: []
   # -- Additional environment variables for the container.
-  env: []
+  env: 
+    - name: HIP_VISIBLE_DEVICES
+      value: "-1" # # 0,1,2,...,n for running on GPU and select the GPUs, -1 for running on CPU
 
 persistence:
   config:
