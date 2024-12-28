@@ -37,7 +37,7 @@ metadata:
   name: {{ .Values.ha.volume.claimName }}
   namespace: {{ .Values.namespace }}
 spec:
-  storageClassName: local-storage
+  storageClassName: local-path
   accessModes:
     - ReadWriteOnce
   resources:
