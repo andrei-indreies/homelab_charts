@@ -10,9 +10,6 @@ spec:
     {{- toYaml . | trim | nindent 4 }}
   {{- end }}
   replicas: {{ .Values.sonarr.replicaCount }}
-  selector:
-    matchLabels:
-      {{- include "jellyfin.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.sonarr.podAnnotations }}
