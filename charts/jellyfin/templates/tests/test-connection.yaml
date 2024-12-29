@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "jellyfin.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "jellyfin.fullname" . }}:{{ .Values.jellyfin.service.port }}']
   restartPolicy: Never
