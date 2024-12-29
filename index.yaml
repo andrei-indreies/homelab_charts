@@ -346,6 +346,16 @@ entries:
   jellyfin:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-12-29T16:24:17.176330217Z"
+    description: A Helm chart for Kubernetes
+    digest: 3d0e87629cd1f399c7f405f2e67bdda9885ef031fa8613386e4bf3be4c7df51a
+    name: jellyfin
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/jellyfin-0.2.1/jellyfin-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-12-29T16:22:22.123135687Z"
     description: A Helm chart for Kubernetes
     digest: 5db423e6e853289f9de609f27e9bea77c66d058b3b0efdca5a4655b1fa133a76
@@ -623,4 +633,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-29T16:22:22.123265932Z"
+generated: "2024-12-29T16:24:17.176454943Z"
