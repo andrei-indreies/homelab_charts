@@ -82,7 +82,7 @@ spec:
   resources:
     requests:
       storage: {{ .Values.jellyfin.persistence.config.size | quote }}
-  {{- with .Values.jellyifn.persistence.config.storageClass }}
+  {{- with .Values.jellyfin.persistence.config.storageClass }}
   storageClassName: {{ . | quote }}
   {{- end }}
 {{- end }}
