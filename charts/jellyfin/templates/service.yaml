@@ -4,65 +4,68 @@ metadata:
   name: {{ include "jellyfin.fullname" . }}
   labels:
     {{- include "jellyfin.labels" . | nindent 4 }}
-    {{- with .Values.service.labels }}
+    {{- with .Values.jellyfin.service.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  {{- with .Values.service.annotations }}
+  {{- with .Values.jellyfin.service.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if (or (eq .Values.service.type "ClusterIP") (empty .Values.service.type)) }}
+  {{- if (or (eq .Values.jellyfin..service.type "ClusterIP") (empty .Values.jellfin.service.type)) }}
   type: ClusterIP
-  {{- with .Values.service.clusterIP }}
+  {{- with .Values.jellyfin.service.clusterIP }}
   clusterIP: {{ . }}
   {{- end }}
-  {{- else if eq .Values.service.type "LoadBalancer" }}
+  {{- else if eq .Values.jellyfin.service.type "LoadBalancer" }}
   type: LoadBalancer
-  {{- with .Values.service.loadBalancerIP }}
+  {{- with .Values.jellyfin.service.loadBalancerIP }}
   loadBalancerIP: {{ . }}
   {{- end }}
-  {{- with .Values.service.loadBalancerClass }}
+  {{- with .Values.jellyfin.service.loadBalancerClass }}
   loadBalancerClass: {{ . }}
   {{- end }}
-  {{- with .Values.service.loadBalancerSourceRanges }}
+  {{- with .Values.jellyfin.service.loadBalancerSourceRanges }}
   loadBalancerSourceRanges:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- else }}
-  type: {{ .Values.service.type }}
+  type: {{ .Values.jellyfin.service.type }}
   {{- end }}
-  {{- if .Values.service.ipFamilyPolicy }}
-  ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}
+  {{- if .Values.jellyfin.service.ipFamilyPolicy }}
+  ipFamilyPolicy: {{ .Values.jellyfin.service.ipFamilyPolicy }}
   {{- end }}
-  {{- if .Values.service.ipFamilies }}
+  {{- if .Values.jellyfin.service.ipFamilies }}
   ipFamilies: 
-    {{- toYaml .Values.service.ipFamilies | nindent 4 }}
+    {{- toYaml .Values.jellyfin.service.ipFamilies | nindent 4 }}
   {{- end }}
-  {{- with .Values.service.externalIPs }}
+  {{- with .Values.jellyfin.service.externalIPs }}
   externalIPs:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .Values.service.externalTrafficPolicy }}
+  {{- with .Values.jellyfin.service.externalTrafficPolicy }}
   externalTrafficPolicy: {{ . }}
   {{- end }}
   ports:
-    - name: {{ .Values.service.portName | default "http" }}
-      port: {{ .Values.service.port }}
+    - name: {{ .Values.jellyfin.service.portName | default "http" }}
+      port: {{ .Values.jellyfin.service.port }}
       protocol: TCP
       targetPort: http
-      {{- if (and (eq .Values.service.type "NodePort") (not (empty .Values.service.nodePort))) }}
-      nodePort: {{ .Values.service.nodePort }}
+      {{- if (and (eq .Values.jellyfin.service.type "NodePort") (not (empty .Values.jellyfin.service.nodePort))) }}
+      nodePort: {{ .Values.jellyfin.service.nodePort }}
       {{- end }}
   selector:
-    {{- include "jellyfin.selectorLabels" . | nindent 4 }}
+    {{- include "jellyfin..selectorLabels" . | nindent 4 }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: sonarr
   labels:
-    {{- include "sonarr.labels" . | nindent 4 }}
+    {{- include "jellyfin.labels" . | nindent 4 }}
+    {{- with .Values.sonarr.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   type: {{ .Values.sonarr.service.type }}
   ports:
@@ -70,15 +73,16 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
-  selector:
-    {{- include "sonarr.selectorLabels" . | nindent 4 }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: radarr
   labels:
-    {{- include "radarr.labels" . | nindent 4 }}
+    {{- include "jellyfin.labels" . | nindent 4 }}
+    {{- with .Values.radarr.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   type: {{ .Values.radarr.service.type }}
   ports:
@@ -86,5 +90,3 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
-  selector:
-    {{- include "sonarr.selectorLabels" . | nindent 4 }}

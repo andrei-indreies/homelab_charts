@@ -230,8 +230,9 @@ sonarr:
 
   service:
     type: ClusterIP
-    port: 8096
+    port: 8989
     portName: service
+    labels: {}
 
   resources: {}
 
@@ -298,8 +299,9 @@ radarr:
 
   service:
     type: ClusterIP
-    port: 8096
+    port: 8989
     portName: service
+    labels: {}
 
   resources: {}
 
@@ -336,6 +338,6 @@ persistence:
     media:
       enabled: true
       accessMode: ReadWriteOnce
-      size: 25Gi
+      size: 250Gi
       annotations: {}
       storageClass: nfs
