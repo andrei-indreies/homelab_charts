@@ -1,21 +1,61 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: jellyfin
+  name: {{ include "jellyfin.fullname" . }}
   labels:
     {{- include "jellyfin.labels" . | nindent 4 }}
     {{- with .Values.jellyfin.service.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
+  {{- with .Values.jellyfin.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
+  {{- if (or (eq .Values.jellyfin.service.type "ClusterIP") (empty .Values.jellyfin.service.type)) }}
+  type: ClusterIP
+  {{- with .Values.jellyfin.service.clusterIP }}
+  clusterIP: {{ . }}
+  {{- end }}
+  {{- else if eq .Values.jellyfin.service.type "LoadBalancer" }}
+  type: LoadBalancer
+  {{- with .Values.jellyfin.service.loadBalancerIP }}
+  loadBalancerIP: {{ . }}
+  {{- end }}
+  {{- with .Values.jellyfin.service.loadBalancerClass }}
+  loadBalancerClass: {{ . }}
+  {{- end }}
+  {{- with .Values.jellyfin.service.loadBalancerSourceRanges }}
+  loadBalancerSourceRanges:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- else }}
   type: {{ .Values.jellyfin.service.type }}
+  {{- end }}
+  {{- if .Values.jellyfin.service.ipFamilyPolicy }}
+  ipFamilyPolicy: {{ .Values.jellyfin.service.ipFamilyPolicy }}
+  {{- end }}
+  {{- if .Values.jellyfin.service.ipFamilies }}
+  ipFamilies: 
+    {{- toYaml .Values.jellyfin.service.ipFamilies | nindent 4 }}
+  {{- end }}
+  {{- with .Values.jellyfin.service.externalIPs }}
+  externalIPs:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.jellyfin.service.externalTrafficPolicy }}
+  externalTrafficPolicy: {{ . }}
+  {{- end }}
   ports:
-    - port: 8096
-      targetPort: http
+    - name: {{ .Values.jellyfin.service.portName | default "http" }}
+      port: {{ .Values.jellyfin.service.port }}
       protocol: TCP
-      name: http
+      targetPort: http
+      {{- if (and (eq .Values.jellyfin.service.type "NodePort") (not (empty .Values.jellyfin.service.nodePort))) }}
+      nodePort: {{ .Values.jellyfin.service.nodePort }}
+      {{- end }}
   selector:
-    app: jellyfin
+    {{- include "jellyfin.selectorLabels" . | nindent 4 }}
 ---
 apiVersion: v1
 kind: Service
@@ -33,8 +73,8 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
-  selector:
-    app: sonarr
+    selector:
+      app: sonarr
 ---
 apiVersion: v1
 kind: Service
@@ -73,4 +113,3 @@ spec:
       name: http
   selector:
     app: transmission
-
