@@ -341,7 +341,7 @@ transmission:
 
   service:
     type: ClusterIP
-    port: 8989
+    port: 9091
     portName: service
     labels: {}
 
