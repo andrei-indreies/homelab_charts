@@ -55,7 +55,7 @@ spec:
       nodePort: {{ .Values.jellyfin.service.nodePort }}
       {{- end }}
   selector:
-    {{- include "jellyfin..selectorLabels" . | nindent 4 }}
+    {{- include "jellyfin.selectorLabels" . | nindent 4 }}
 ---
 apiVersion: v1
 kind: Service
