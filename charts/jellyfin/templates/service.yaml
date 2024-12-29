@@ -4,13 +4,13 @@ metadata:
   name: jellyfin
   labels:
     {{- include "jellyfin.labels" . | nindent 4 }}
-    {{- with .Values.jellyfin.service.labels }}
+    {{- with .Values.radarr.service.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
   type: {{ .Values.jellyfin.service.type }}
   ports:
-    - port: 8086
+    - port: 8989
       targetPort: http
       protocol: TCP
       name: http
@@ -33,8 +33,8 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
-    selector:
-      app: sonarr
+  selector:
+    app: sonarr
 ---
 apiVersion: v1
 kind: Service
