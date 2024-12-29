@@ -90,3 +90,21 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: transmission
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+    {{- with .Values.transmission.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  type: {{ .Values.transmission.service.type }}
+  ports:
+    - port: 9091
+      targetPort: http
+      protocol: TCP
+      name: http
+

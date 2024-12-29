@@ -265,20 +265,73 @@ sonarr:
       annotations: {}
       storageClass: nfs
 
-persistence:
-    media:
-      enabled: true
-      accessMode: ReadWriteOnce
-      size: 25Gi
-      annotations: {}
-      storageClass: nfs
-
 radarr:
   replicaCount: 1
   imagePullSecrets: []
 
   image:
     repository: docker.io/linuxserver/radarr
+    tag: "latest"
+    pullPolicy: IfNotPresent
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+  podAnnotations: {}
+  podLabels: {}
+
+  podSecurityContext: {}
+
+  securityContext: {}
+
+  runtimeClassName: ''
+
+  deploymentStrategy:
+    type: RollingUpdate
+
+  service:
+    type: ClusterIP
+    port: 8989
+    portName: service
+    labels: {}
+
+  resources: {}
+
+  livenessProbe:
+    initialDelaySeconds: 10
+    tcpSocket:
+      port: http
+
+  readinessProbe:
+    initialDelaySeconds: 10
+    tcpSocket:
+      port: http
+
+  volumes: []
+  
+  volumeMounts: []
+
+  nodeSelector:
+      media-role: media
+
+  tolerations: []
+
+  affinity: {}
+
+  persistence:
+    config:
+      enabled: true
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      annotations: {}
+      storageClass: nfs
+
+transmission:
+  replicaCount: 1
+  imagePullSecrets: []
+
+  image:
+    repository: docker.io/linuxserver/transmission
     tag: "latest"
     pullPolicy: IfNotPresent
 

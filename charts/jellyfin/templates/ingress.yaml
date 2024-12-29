@@ -13,7 +13,7 @@ spec:
       - kind: Service
         name: {{ include "jellyfin.fullname" . }}
         namespace: main
-        port: {{ .Values.service.port }}
+        port: {{ .Values.jellyfin.service.port }}
         passHostHeader: true
   tls:
     certResolver: letsencrypt
@@ -54,6 +54,26 @@ spec:
         name: sonarr
         namespace: main
         port: {{ .Values.sonarr.service.port }}
+        passHostHeader: true
+  tls:
+    certResolver: letsencrypt
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: transmission
+  namespace: main
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`transmission.drewspace.ro`)
+      kind: Rule
+      services:
+      - kind: Service
+        name: transmission
+        namespace: main
+        port: {{ .Values.transmission.service.port }}
         passHostHeader: true
   tls:
     certResolver: letsencrypt

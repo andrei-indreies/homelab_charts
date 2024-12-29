@@ -3,16 +3,82 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "jellyfin.fullname" . }}-config
+  name: transmission-config
   labels:
     {{- include "jellyfin.labels" . | nindent 4 }}
-  {{- with .Values.persistence.config.annotations }}
+  {{- with .Values.transmission.persistence.config.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
   accessModes:
-    - {{ .Values.jellfin.persistence.config.accessMode | quote }}
+    - {{ .Values.transmission.persistence.config.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.transmission.persistence.config.size | quote }}
+  {{- with .Values.transmission.persistence.config.storageClass }}
+  storageClassName: {{ . | quote }}
+  {{- end }}
+{{- end }}
+{{- if and .Values.transmission.persistence.config.enabled (not .Values.transmission.persistence.config.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: radarr-config
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+  {{- with .Values.radarr.persistence.config.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    - {{ .Values.radarr.persistence.config.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.radarr.persistence.config.size | quote }}
+  {{- with .Values.radarr.persistence.config.storageClass }}
+  storageClassName: {{ . | quote }}
+  {{- end }}
+{{- end }}
+{{- if and .Values.sonarr.persistence.config.enabled (not .Values.sonarr.persistence.config.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sonarr-config
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+  {{- with .Values.sonarr.persistence.config.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    - {{ .Values.sonarr.persistence.config.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.jellyfin.persistence.config.size | quote }}
+  {{- with .Values.sonarr.persistence.config.storageClass }}
+  storageClassName: {{ . | quote }}
+  {{- end }}
+{{- end }}
+{{- if and .Values.jellyfin.persistence.config.enabled (not .Values.jellyfin.persistence.config.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "jellyfin.fullname" . }}-config
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+  {{- with .Values.jellyfin.persistence.config.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    - {{ .Values.jellyfin.persistence.config.accessMode | quote }}
   resources:
     requests:
       storage: {{ .Values.jellyfin.persistence.config.size | quote }}
