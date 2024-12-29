@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: radarr
   labels:
-    {{- include "radarr.labels" . | nindent 4 }}
+    {{- include "jellyfin.labels" . | nindent 4 }}
 spec:
   {{- with .Values.radarr.deploymentStrategy }}
   strategy:
@@ -12,7 +12,7 @@ spec:
   replicas: {{ .Values.radarr.replicaCount }}
   selector:
     matchLabels:
-      {{- include "radarr.selectorLabels" . | nindent 6 }}
+      {{- include "jellyfin.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.radarr.podAnnotations }}
@@ -20,7 +20,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "radarr.labels" . | nindent 8 }}
+        {{- include "jellyfin.labels" . | nindent 8 }}
         {{- with .Values.radarr.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -29,7 +29,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "radarr.serviceAccountName" . }}
+      serviceAccountName: {{ include "jellyfin.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.radarr.podSecurityContext | nindent 8 }}
       containers:

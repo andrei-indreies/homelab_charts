@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: sonarr
   labels:
-    {{- include "sonarr.labels" . | nindent 4 }}
+    {{- include "jellyfin.labels" . | nindent 4 }}
 spec:
   {{- with .Values.sonarr.deploymentStrategy }}
   strategy:
@@ -12,7 +12,7 @@ spec:
   replicas: {{ .Values.sonarr.replicaCount }}
   selector:
     matchLabels:
-      {{- include "sonarr.selectorLabels" . | nindent 6 }}
+      {{- include "jellyfin.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.sonarr.podAnnotations }}
@@ -20,7 +20,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "sonarr.labels" . | nindent 8 }}
+        {{- include "jellyfin.labels" . | nindent 8 }}
         {{- with .Values.sonarr.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -29,7 +29,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "sonarr.serviceAccountName" . }}
+      serviceAccountName: {{ include "jellyfin.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.sonarr.podSecurityContext | nindent 8 }}
       containers:
