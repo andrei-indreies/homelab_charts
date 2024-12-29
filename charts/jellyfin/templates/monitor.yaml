@@ -1,38 +1,38 @@
-{{- if and .Values.metrics.serviceMonitor.enabled .Values.metrics.enabled }}
+{{- if and .Values.jellyfin.metrics.serviceMonitor.enabled .Values.metrics.enabled }}
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ include "jellyfin.fullname" . }}
-  {{- if .Values.metrics.serviceMonitor.namespace }}
-  namespace: {{ tpl .Values.metrics.serviceMonitor.namespace . }}
+  {{- if  .Values.jellyfin.metrics.serviceMonitor.namespace }}
+  namespace: {{ tpl  .Values.jellyfin.metrics.serviceMonitor.namespace . }}
   {{- end }}
   labels:
     {{- include "jellyfin.labels" . | nindent 4 }}
-    {{- with .Values.metrics.serviceMonitor.labels }}
+    {{- with  .Values.jellyfin.metrics.serviceMonitor.labels }}
     {{- tpl (toYaml . | nindent 4) $ }}
     {{- end }}
 spec:
   endpoints:
     - port: {{ .Values.service.name }}
-      {{- with .Values.metrics.serviceMonitor.interval }}
+      {{- with  .Values.jellyfin.metrics.serviceMonitor.interval }}
       interval: {{ . }}
       {{- end }}
-      {{- with .Values.metrics.serviceMonitor.scrapeTimeout }}
+      {{- with  .Values.jellyfin.metrics.serviceMonitor.scrapeTimeout }}
       scrapeTimeout: {{ . }}
       {{- end }}
       honorLabels: true
-      path: {{ .Values.metrics.serviceMonitor.path }}
-      scheme: {{ .Values.metrics.serviceMonitor.scheme }}
-      {{- with .Values.metrics.serviceMonitor.tlsConfig }}
+      path: {{  .Values.jellyfin.metrics.serviceMonitor.path }}
+      scheme: {{  .Values.jellyfin.metrics.serviceMonitor.scheme }}
+      {{- with  .Values.jellyfin.metrics.serviceMonitor.tlsConfig }}
       tlsConfig:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.metrics.serviceMonitor.relabelings }}
+      {{- with  .Values.jellyfin.metrics.serviceMonitor.relabelings }}
       relabelings:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.metrics.serviceMonitor.metricRelabelings }}
+      {{- with  .Values.jellyfin.metrics.serviceMonitor.metricRelabelings }}
       metricRelabelings:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -41,7 +41,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "jellyfin.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-  {{- with .Values.metrics.serviceMonitor.targetLabels }}
+  {{- with  .Values.jellyfin.metrics.serviceMonitor.targetLabels }}
   targetLabels:
     {{- toYaml . | nindent 4 }}
   {{- end }}

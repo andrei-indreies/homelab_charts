@@ -1,4 +1,4 @@
-{{- if and .Values.persistence.config.enabled (not .Values.persistence.config.existingClaim) }}
+{{- if and .Values.jellyfin.persistence.config.enabled (not .Values.jellyfin.persistence.config.existingClaim) }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -12,15 +12,14 @@ metadata:
   {{- end }}
 spec:
   accessModes:
-    - {{ .Values.persistence.config.accessMode | quote }}
+    - {{ .Values.jellfin.persistence.config.accessMode | quote }}
   resources:
     requests:
-      storage: {{ .Values.persistence.config.size | quote }}
-  {{- with .Values.persistence.config.storageClass }}
+      storage: {{ .Values.jellyfin.persistence.config.size | quote }}
+  {{- with .Values.jellyifn.persistence.config.storageClass }}
   storageClassName: {{ . | quote }}
   {{- end }}
 {{- end }}
-
 {{- if and .Values.persistence.media.enabled (not .Values.persistence.media.existingClaim) }}
 ---
 apiVersion: v1

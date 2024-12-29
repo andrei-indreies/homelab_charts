@@ -17,3 +17,43 @@ spec:
         passHostHeader: true
   tls:
     certResolver: letsencrypt
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: radarr
+  namespace: main
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`radarr.drewspace.ro`)
+      kind: Rule
+      services:
+      - kind: Service
+        name: radarr
+        namespace: main
+        port: {{ .Values.radarr.service.port }}
+        passHostHeader: true
+  tls:
+    certResolver: letsencrypt
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: sonarr
+  namespace: main
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`sonarr.drewspace.ro`)
+      kind: Rule
+      services:
+      - kind: Service
+        name: sonarr
+        namespace: main
+        port: {{ .Values.sonarr.service.port }}
+        passHostHeader: true
+  tls:
+    certResolver: letsencrypt

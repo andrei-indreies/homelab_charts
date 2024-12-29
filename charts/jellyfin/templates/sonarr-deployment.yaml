@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr
+  labels:
+    {{- include "sonarr.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.sonarr.deploymentStrategy }}
+  strategy:
+    {{- toYaml . | trim | nindent 4 }}
+  {{- end }}
+  replicas: {{ .Values.sonarr.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "sonarr.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.sonarr.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "sonarr.labels" . | nindent 8 }}
+        {{- with .Values.sonarr.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.sonarr.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "sonarr.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.sonarr.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.sonarr.securityContext | nindent 12 }}
+          image: "{{ .Values.sonarr.image.repository }}:{{ .Values.sonarr.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.sonarr.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8989
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.sonarr.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.sonarr.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.sonarr.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /media
+              name: media
+            {{- with .Values.sonarr.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+        {{- with .Values.sonarr.extraContainers }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.sonarr.initContainers }}
+      initContainers:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+      volumes:
+        - name: config
+          {{- if .Values.sonarr.persistence.config.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.sonarr.persistence.config.existingClaim }}{{ .Values.sonarr.persistence.config.existingClaim }}{{- else }}sonarr-config{{- end }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        - name: media
+          {{- if .Values.sonarr.persistence.media.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.sonarr.persistence.media.existingClaim }}{{ .Values.sonarr.persistence.media.existingClaim }}{{- else }}{{ template "sonarr.fullname" . }}-media{{- end }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        {{- with .Values.sonarr.volumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      nodeSelector:
+        media-role: media
+      {{- with .Values.sonarr.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.sonarr.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.sonarr.runtimeClassName }}
+      runtimeClassName: {{ . | quote }}
+      {{- end }}

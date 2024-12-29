@@ -67,3 +67,12 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Dynamic labels for components like Sonarr, Radarr
+*/}}
+{{- define "jellyfin.componentLabels" -}}
+{{- if .Values.component }}
+app.kubernetes.io/component: {{ .Values.component }}
+{{- end }}
+{{- end }}

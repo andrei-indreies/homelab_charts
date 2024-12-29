@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+  labels:
+    {{- include "radarr.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.radarr.deploymentStrategy }}
+  strategy:
+    {{- toYaml . | trim | nindent 4 }}
+  {{- end }}
+  replicas: {{ .Values.radarr.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "radarr.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.radarr.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "radarr.labels" . | nindent 8 }}
+        {{- with .Values.radarr.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.radarr.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "radarr.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.radarr.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.radarr.securityContext | nindent 12 }}
+          image: "{{ .Values.radarr.image.repository }}:{{ .Values.radarr.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.radarr.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8989
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.radarr.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.radarr.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.radarr.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /media
+              name: media
+            {{- with .Values.radarr.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+        {{- with .Values.radarr.extraContainers }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.radarr.initContainers }}
+      initContainers:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+      volumes:
+        - name: config
+          {{- if .Values.radarr.persistence.config.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.radarr.persistence.config.existingClaim }}{{ .Values.radarr.persistence.config.existingClaim }}{{- else }}radarr-config{{- end }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        - name: media
+          {{- if .Values.persistence.media.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.persistence.media.existingClaim }}{{ .Values.persistence.media.existingClaim }}{{- else }}{{ template "jellyfin.fullname" . }}-media{{- end }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        {{- with .Values.radarr.volumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      nodeSelector:
+        media-role: media
+      {{- with .Values.radarr.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.radarr.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.radarr.runtimeClassName }}
+      runtimeClassName: {{ . | quote }}
+      {{- end }}
