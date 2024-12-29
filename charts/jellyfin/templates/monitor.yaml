@@ -1,4 +1,4 @@
-{{- if and .Values.jellyfin.metrics.serviceMonitor.enabled .Values.metrics.enabled }}
+{{- if and .Values.jellyfin.metrics.serviceMonitor.enabled .Values.jellyfin.metrics.enabled }}
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -14,7 +14,7 @@ metadata:
     {{- end }}
 spec:
   endpoints:
-    - port: {{ .Values.service.name }}
+    - port: {{ .Values.jellyfin.service.name }}
       {{- with  .Values.jellyfin.metrics.serviceMonitor.interval }}
       interval: {{ . }}
       {{- end }}
