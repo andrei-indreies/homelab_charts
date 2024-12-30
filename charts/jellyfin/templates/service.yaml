@@ -113,3 +113,22 @@ spec:
       name: http
   selector:
     app: transmission
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jellyseer
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+    {{- with .Values.jellyseer.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  type: {{ .Values.jellyseer.service.type }}
+  ports:
+    - port: 5055
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: jellyseer

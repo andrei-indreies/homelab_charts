@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyseer
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.jellyseer.deploymentStrategy }}
+  strategy:
+    {{- toYaml . | trim | nindent 4 }}
+  {{- end }}
+  replicas: {{ .Values.jellyseer.replicaCount }}
+  selector:
+    matchLabels:
+      app: jellyseer
+  template:
+    metadata:
+      {{- with .Values.jellyseer.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: jellyseer
+    spec:
+      hostNetwork: true
+      {{- with .Values.jellyseer.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.jellyseer.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.jellyseer.securityContext | nindent 12 }}
+          image: "{{ .Values.jellyseer.image.repository }}:{{ .Values.jellyseer.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.jellyseer.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 5055
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.jellyseer.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.jellyseer.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.jellyseer.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /app/config
+              name: config
+            - mountPath: /media
+              name: media
+            {{- with .Values.jellyseer.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+        {{- with .Values.jellyseer.extraContainers }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.jellyseer.initContainers }}
+      initContainers:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+      volumes:
+        - name: config
+          {{- if .Values.jellyseer.persistence.config.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.jellyseer.persistence.config.existingClaim }}{{ .Values.jellyseer.persistence.config.existingClaim }}{{- else }}jellyseer-config{{- end }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        {{- with .Values.jellyseer.volumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      nodeSelector:
+        media-role: media
+      {{- with .Values.jellyseer.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.jellyseer.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.jellyseer.runtimeClassName }}
+      runtimeClassName: {{ . | quote }}
+      {{- end }}

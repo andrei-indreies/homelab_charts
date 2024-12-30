@@ -1,0 +1,15 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: auth-basic-auth
+spec:
+  basicAuth:
+    secret: authsecret
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: authsecret
+  namespace: default
+data:
+  users: dXNlcjpjYmU5MTM3NWI3YjY0OTkxOGU5NTM4YzRmMzg5ZTNi

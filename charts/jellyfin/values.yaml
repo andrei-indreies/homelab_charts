@@ -376,6 +376,66 @@ transmission:
       annotations: {}
       storageClass: nfs
 
+jellyseer:
+  replicaCount: 1
+  imagePullSecrets: []
+
+  image:
+    repository: docker.io/fallenbagel/jellyseerr
+    tag: "latest"
+    pullPolicy: IfNotPresent
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+  podAnnotations: {}
+  podLabels: {}
+
+  podSecurityContext: {}
+
+  securityContext: {}
+
+  runtimeClassName: ''
+
+  deploymentStrategy:
+    type: RollingUpdate
+
+  service:
+    type: ClusterIP
+    port: 5055
+    portName: service
+    labels: {}
+
+  resources: {}
+
+  livenessProbe:
+    initialDelaySeconds: 10
+    tcpSocket:
+      port: http
+
+  readinessProbe:
+    initialDelaySeconds: 10
+    tcpSocket:
+      port: http
+
+  volumes: []
+  
+  volumeMounts: []
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  persistence:
+    config:
+      enabled: true
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      annotations: {}
+      storageClass: nfs
+
 persistence:
     media:
       enabled: true
