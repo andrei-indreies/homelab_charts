@@ -16,11 +16,6 @@ spec:
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      labels:
-        {{- include "jellyfin.labels" . | nindent 8 }}
-        {{- with .Values.sonarr.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
     spec:
       {{- with .Values.sonarr.imagePullSecrets }}
       imagePullSecrets:
