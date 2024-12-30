@@ -38,8 +38,6 @@ spec:
       middlewares:
       - name: keycloak-auth-admin
         namespace: main
-      - name: auth-basic-auth
-        namespace: main
   tls:
     certResolver: letsencrypt
 ---
@@ -62,8 +60,6 @@ spec:
         passHostHeader: true
       middlewares:
       - name: keycloak-auth-admin
-        namespace: main
-      - name: auth-basic-auth
         namespace: main
   tls:
     certResolver: letsencrypt
@@ -108,8 +104,5 @@ spec:
         namespace: main
         port: {{ .Values.jellyseer.service.port }}
         passHostHeader: true
-      middlewares:
-      - name: keycloak-auth-user
-        namespace: main
   tls:
     certResolver: letsencrypt
