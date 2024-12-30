@@ -12,4 +12,5 @@ metadata:
   name: authsecret
   namespace: default
 data:
-  users: dXNlcjpjYmU5MTM3NWI3YjY0OTkxOGU5NTM4YzRmMzg5ZTNi
+  username: YWRtaW4=
+  password: dm9sZGVtb3J0

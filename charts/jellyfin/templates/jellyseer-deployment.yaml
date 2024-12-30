@@ -48,8 +48,6 @@ spec:
           volumeMounts:
             - mountPath: /app/config
               name: config
-            - mountPath: /media
-              name: media
             {{- with .Values.jellyseer.volumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
