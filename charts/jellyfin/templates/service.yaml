@@ -88,7 +88,7 @@ metadata:
 spec:
   type: {{ .Values.radarr.service.type }}
   ports:
-    - port: 8989
+    - port: 7878
       targetPort: http
       protocol: TCP
       name: http

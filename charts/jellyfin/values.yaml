@@ -280,7 +280,7 @@ radarr:
 
   service:
     type: ClusterIP
-    port: 8989
+    port: 7878
     portName: service
     labels: {}
 
