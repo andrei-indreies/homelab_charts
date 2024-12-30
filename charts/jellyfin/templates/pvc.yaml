@@ -1,4 +1,4 @@
-{{- if and .Values.jellyfin.persistence.config.enabled (not .Values.jellyfin.persistence.config.existingClaim) }}
+{{- if and .Values.transmission.persistence.config.enabled (not .Values.transmission.persistence.config.existingClaim) }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -20,7 +20,29 @@ spec:
   storageClassName: {{ . | quote }}
   {{- end }}
 {{- end }}
-{{- if and .Values.transmission.persistence.config.enabled (not .Values.transmission.persistence.config.existingClaim) }}
+{{- if and .Values.jellyseer.persistence.config.enabled (not .Values.jellyseer.persistence.config.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyseer-config
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+  {{- with .Values.jellyseer.persistence.config.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    - {{ .Values.jellyseer.persistence.config.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.jellyseer.persistence.config.size | quote }}
+  {{- with .Values.jellyseer.persistence.config.storageClass }}
+  storageClassName: {{ . | quote }}
+  {{- end }}
+{{- end }}
+{{- if and .Values.radarr.persistence.config.enabled (not .Values.radarr.persistence.config.existingClaim) }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
