@@ -54,7 +54,7 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: config
-            - mountPath: /media
+            - mountPath: /downloads
               name: media
             {{- with .Values.transmission.volumeMounts }}
             {{- toYaml . | nindent 12 }}
