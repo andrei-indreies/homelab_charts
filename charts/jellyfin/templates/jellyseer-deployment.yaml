@@ -22,7 +22,6 @@ spec:
       labels:
         app: jellyseer
     spec:
-      hostNetwork: true
       {{- with .Values.jellyseer.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
