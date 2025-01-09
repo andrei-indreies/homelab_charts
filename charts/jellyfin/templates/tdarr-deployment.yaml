@@ -66,6 +66,8 @@ spec:
           volumeMounts:
             - mountPath: /app/configs
               name: config
+            - mountPath: /app/server
+              name: server
             - mountPath: /media
               name: media
             {{- with .Values.tdarr.volumeMounts }}
@@ -79,10 +81,19 @@ spec:
         {{- toYaml . | nindent 6 }}
       {{- end }}
       volumes:
+        - name: logs
+          emptyDir: {}
         - name: config
           {{- if .Values.tdarr.persistence.config.enabled }}
           persistentVolumeClaim:
             claimName: {{ if .Values.tdarr.persistence.config.existingClaim }}{{ .Values.tdarr.persistence.config.existingClaim }}{{- else }}tdarr-config{{- end }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        - name: server
+          {{- if .Values.tdarr.persistence.config.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.tdarr.persistence.config.existingClaim }}{{ .Values.tdarr.persistence.config.existingClaim }}{{- else }}tdarr-server{{- end }}
           {{- else }}
           emptyDir: {}
           {{- end }}

@@ -498,7 +498,14 @@ tdarr:
     env: 
       - name: HIP_VISIBLE_DEVICES
         value: "-1"
-
+      - name: PUID
+        value: "1000"
+      - name: PGID
+        value: "1000"
+      - name: internalNode
+        value: "true"
+      - name: nodeID
+        value: "internal"
   persistence:
     config:
       enabled: true
