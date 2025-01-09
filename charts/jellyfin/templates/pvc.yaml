@@ -41,6 +41,7 @@ spec:
   {{- with .Values.tdarr.persistence.config.storageClass }}
   storageClassName: {{ . | quote }}
   {{- end }}
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
