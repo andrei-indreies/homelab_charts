@@ -152,6 +152,6 @@ spec:
     - port: {{ .Values.tdarr.service.serverPort }}
       targetPort: http
       protocol: TCP
-      name: serverPort
+      name: server
   selector:
     app: tdarr
