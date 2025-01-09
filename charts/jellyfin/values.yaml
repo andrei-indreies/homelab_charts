@@ -470,9 +470,7 @@ tdarr:
     annotations: {}
     labels: {} 
 
-  resources:
-    limits:
-      amd.com/gpu: 1 
+  resources: {}
 
   livenessProbe:
     initialDelaySeconds: 10
