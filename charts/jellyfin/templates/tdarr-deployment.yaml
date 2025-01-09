@@ -20,10 +20,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "tdarr.labels" . | nindent 8 }}
-        {{- with .Values.tdarr.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+        app: tdarr
     spec:
       {{- with .Values.tdarr.imagePullSecrets }}
       imagePullSecrets:
