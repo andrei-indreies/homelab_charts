@@ -165,7 +165,7 @@ jellyfin:
     # -- Configuration for the Prometheus ServiceMonitor
     serviceMonitor:
       # -- Enable or disable the creation of a ServiceMonitor resource
-      enabled: false
+      enabled: true
       # -- Namespace where the ServiceMonitor resource should be created. Defaults to Release.Namespace
       namespace: ''
       # -- Labels to add to the ServiceMonitor resource
@@ -436,6 +436,123 @@ jellyseer:
       annotations: {}
       storageClass: nfs
 
+
+tdarr:
+
+  replicaCount: 1
+
+ 
+  imagePullSecrets: []
+
+  image:
+    repository: docker.io/haveagitgat/tdarr
+   
+    tag: "latest"
+    
+    pullPolicy: IfNotPresent
+
+
+  nameOverride: ""
+ 
+  fullnameOverride: ""
+
+  podAnnotations: {}
+
+  podLabels: {}
+
+  podSecurityContext: {}
+
+  securityContext: {}
+
+  runtimeClassName: ''
+
+  deploymentStrategy:
+    type: RollingUpdate
+
+  service:
+    type: ClusterIP
+    ipFamilyPolicy: ""
+
+    ipFamilies: []
+    loadBalancerIP: ""
+
+    loadBalancerClass: ""
+    loadBalancerSourceRanges: []
+  
+    port: 8265
+    serverPort: 8266
+   
+    portName: service
+
+    annotations: {}
+    labels: {} 
+
+  resources:
+    limits:
+      amd.com/gpu: 1 
+
+  livenessProbe:
+    initialDelaySeconds: 10
+    tcpSocket:
+      port: http
+
+  readinessProbe:
+    initialDelaySeconds: 10
+    tcpSocket:
+      port: http
+
+  volumes: []
+
+  volumeMounts: []
+
+
+  nodeSelector:
+      media-role: media
+
+  tolerations: []
+  affinity: {}
+
+  tdarr:
+    command: []
+    args: []
+    env: 
+      - name: HIP_VISIBLE_DEVICES
+        value: "-1"
+
+  persistence:
+    config:
+      enabled: true
+      accessMode: ReadWriteOnce
+      size: 5Gi
+      annotations: {}
+      storageClass: nfs
+      
+  metrics:
+    enabled: false
+    command:
+      - bash
+      - '-c'
+      - >-
+        sed 's,<EnableMetrics>false</EnableMetrics>,<EnableMetrics>true</EnableMetrics>,' -i /config/config/system.xml &&
+        /jellyfin/jellyfin
+    serviceMonitor:
+      enabled: true
+      namespace: ''
+      labels: {}
+      interval: 30s
+      scrapeTimeout: 30s
+      path: /metrics
+      scheme: http
+      tlsConfig: {}
+      relabelings: []
+      metricRelabelings: []
+      targetLabels: []
+
+  extraInitContainers: []
+  extraContainers: []
+
+
+#### COMMON section
 persistence:
     media:
       enabled: true

@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tdarr
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.tdarr.deploymentStrategy }}
+  strategy:
+    {{- toYaml . | trim | nindent 4 }}
+  {{- end }}
+  replicas: {{ .Values.tdarr.replicaCount }}
+  selector:
+    matchLabels:
+      app: tdarr
+  template:
+    metadata:
+      {{- with .Values.tdarr.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "tdarr.labels" . | nindent 8 }}
+        {{- with .Values.tdarr.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.tdarr.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "tdarr.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.tdarr.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.tdarr.securityContext | nindent 12 }}
+          image: "{{ .Values.tdarr.image.repository }}:{{ .Values.tdarr.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.tdarr.image.pullPolicy }}
+          {{- if and .Values.tdarr.tdarr.command (not .Values.tdarr.metrics.enabled) }}
+          command:
+            {{- toYaml .Values.tdarr.tdarr.command | nindent 12 }}
+          {{- end }}
+          {{- if .Values.tdarr.metrics.enabled }}
+          command:
+            {{- toYaml .Values.tdarr.metrics.command | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tdarr.tdarr.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tdarr.tdarr.env }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.tdarr.service.port }}
+              protocol: TCP
+            - name: serverPort
+              containerPort: {{ .Values.tdarr.service.serverPort }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.tdarr.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.tdarr.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.tdarr.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /media
+              name: media
+            {{- with .Values.tdarr.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+        {{- with .Values.tdarr.extraContainers }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.tdarr.initContainers }}
+      initContainers:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+      volumes:
+        - name: config
+          {{- if .Values.tdarr.persistence.config.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.tdarr.persistence.config.existingClaim }}{{ .Values.tdarr.persistence.config.existingClaim }}{{- else }}tdarr-config{{- end }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        - name: media
+          {{- if .Values.persistence.media.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.persistence.media.existingClaim }}{{ .Values.persistence.media.existingClaim }}{{- else }}{{ template "jellyfin.fullname" . }}-media{{- end }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        {{- with .Values.tdarr.volumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      nodeSelector:
+        media-role: media
+      {{- with .Values.tdarr.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tdarr.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tdarr.runtimeClassName }}
+      runtimeClassName: {{ . | quote }}
+      {{- end }}
