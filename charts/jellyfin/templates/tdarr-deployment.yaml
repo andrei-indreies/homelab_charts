@@ -26,7 +26,6 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "tdarr.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.tdarr.podSecurityContext | nindent 8 }}
       containers:
