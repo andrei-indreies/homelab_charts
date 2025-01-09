@@ -438,52 +438,35 @@ jellyseer:
 
 
 tdarr:
-
   replicaCount: 1
 
- 
   imagePullSecrets: []
 
   image:
     repository: docker.io/haveagitgat/tdarr
-   
     tag: "latest"
-    
     pullPolicy: IfNotPresent
 
-
   nameOverride: ""
- 
   fullnameOverride: ""
-
   podAnnotations: {}
-
   podLabels: {}
-
   podSecurityContext: {}
-
   securityContext: {}
-
   runtimeClassName: ''
-
   deploymentStrategy:
     type: RollingUpdate
 
   service:
     type: ClusterIP
     ipFamilyPolicy: ""
-
     ipFamilies: []
     loadBalancerIP: ""
-
     loadBalancerClass: ""
     loadBalancerSourceRanges: []
-  
     port: 8265
     serverPort: 8266
-   
     portName: service
-
     annotations: {}
     labels: {} 
 
@@ -504,7 +487,6 @@ tdarr:
   volumes: []
 
   volumeMounts: []
-
 
   nodeSelector:
       media-role: media

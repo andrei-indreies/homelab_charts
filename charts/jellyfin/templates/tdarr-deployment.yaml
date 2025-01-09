@@ -64,7 +64,7 @@ spec:
           resources:
             {{- toYaml .Values.tdarr.resources | nindent 12 }}
           volumeMounts:
-            - mountPath: /config
+            - mountPath: /app/configs
               name: config
             - mountPath: /media
               name: media

@@ -20,6 +20,28 @@ spec:
   storageClassName: {{ . | quote }}
   {{- end }}
 {{- end }}
+{{- if and .Values.tdarr.persistence.config.enabled (not .Values.tdarr.persistence.config.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tdarr-config
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+  {{- with .Values.tdarr.persistence.config.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    - {{ .Values.tdarr.persistence.config.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.tdarr.persistence.config.size | quote }}
+  {{- with .Values.tdarr.persistence.config.storageClass }}
+  storageClassName: {{ . | quote }}
+  {{- end }}
+{{- end }}
 {{- if and .Values.jellyseer.persistence.config.enabled (not .Values.jellyseer.persistence.config.existingClaim) }}
 ---
 apiVersion: v1
