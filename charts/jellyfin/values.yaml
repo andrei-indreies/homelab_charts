@@ -470,7 +470,9 @@ tdarr:
     annotations: {}
     labels: {} 
 
-  resources: {}
+  resources:
+    limits:
+      cpu: "4"
 
   livenessProbe:
     initialDelaySeconds: 10
