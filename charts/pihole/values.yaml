@@ -1,0 +1,19 @@
+replicaCount: 1
+
+image:
+  repository: pihole/pihole
+  tag: latest
+  pullPolicy: IfNotPresent
+
+timezone: 'Europe/Bucharest'
+
+persistence:
+  storageClass: "nfs"
+  volumes:
+    etcPihole:
+      size: "1Gi"
+    etcDnsmasq:
+      size: "1Gi"
+
+hostNetwork: true
+dnsPolicy: ClusterFirstWithHostNet
