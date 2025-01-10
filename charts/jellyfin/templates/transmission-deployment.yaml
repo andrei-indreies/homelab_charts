@@ -35,6 +35,10 @@ spec:
             {{- toYaml .Values.transmission.securityContext | nindent 12 }}
           image: "{{ .Values.transmission.image.repository }}:{{ .Values.transmission.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.transmission.image.pullPolicy }}
+          {{- with .Values.transmission.transmission.env }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           ports:
             - name: http
               containerPort: 9091

@@ -339,6 +339,13 @@ transmission:
   deploymentStrategy:
     type: RollingUpdate
 
+  transmission:
+    env: 
+      - name: PUID
+        value: "1000"
+      - name: PGID
+        value: "1000"
+
   service:
     type: ClusterIP
     port: 9091
