@@ -6,10 +6,12 @@ spec:
   selector:
     app: pihole
   ports:
-    - protocol: TCP
+    - name: tcp-dns
+      protocol: TCP
       port: 53
       targetPort: 53
-    - protocol: UDP
+    - name: udp-dns
+      protocol: UDP
       port: 53
       targetPort: 53
   type: ClusterIP
