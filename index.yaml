@@ -891,6 +891,16 @@ entries:
   pihole:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-01-17T16:13:11.49811255Z"
+    description: A Helm chart for Kubernetes
+    digest: 13265d2534373849828011d51ddc060b2b923560fe4a38ae316951357c68136e
+    name: pihole
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/pihole-0.2.3/pihole-0.2.3.tgz
+    version: 0.2.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-01-17T14:47:34.931146986Z"
     description: A Helm chart for Kubernetes
     digest: 7f2c808d0664f25802e0269b0b2914aa01d6dda3d38192c6bd176a1dfad332f5
@@ -1064,4 +1074,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-01-17T14:47:34.931317684Z"
+generated: "2025-01-17T16:13:11.498368619Z"
