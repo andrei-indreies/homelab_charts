@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pihole-external
+spec:
+  selector:
+    app: pihole
+  ports:
+    - protocol: UDP
+      port: 53
+      targetPort: 53
+    - protocol: TCP
+      port: 53
+      targetPort: 53
+  type: LoadBalancer
+  externalIPs:
+    - 192.168.1.202
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pihole-web
+spec:
+  selector:
+    app: pihole
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP

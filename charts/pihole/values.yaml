@@ -15,5 +15,5 @@ persistence:
     etcDnsmasq:
       size: "1Gi"
 
-hostNetwork: true
+hostNetwork: false
 dnsPolicy: ClusterFirstWithHostNet
