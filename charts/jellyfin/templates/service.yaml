@@ -111,6 +111,10 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+    - port: 51413
+      protocol: TCP  
+      targetPort: torrent-tcp
+      name: torrent-tcp
   selector:
     app: transmission
 ---
