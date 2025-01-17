@@ -346,6 +346,16 @@ entries:
   jellyfin:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-01-17T14:44:11.334741969Z"
+    description: A Helm chart for Kubernetes
+    digest: 6e7a7148b045b05cbf5f80742d168d421dadab959659d182c3016258af760789
+    name: jellyfin
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/jellyfin-0.5.0/jellyfin-0.5.0.tgz
+    version: 0.5.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-01-10T07:53:56.743801616Z"
     description: A Helm chart for Kubernetes
     digest: a1216766dd5d1d86b276f25c9c4456c0c47ff04ae19566f3cbb919abe4230161
@@ -881,6 +891,16 @@ entries:
   pihole:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-01-17T14:44:11.491508792Z"
+    description: A Helm chart for Kubernetes
+    digest: 6e952d173742c1c53b439a6ab040343abb46ef2cd642b3ded6da8100f248ffb7
+    name: pihole
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/pihole-0.2.1/pihole-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-01-17T13:51:52.478384125Z"
     description: A Helm chart for Kubernetes
     digest: 196d01fd624dbbf3c852ae4419e59a89935ab2d1685cd29f86a45e619394c555
@@ -1034,4 +1054,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-01-17T13:51:52.478631096Z"
+generated: "2025-01-17T14:44:11.49334134Z"
