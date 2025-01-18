@@ -11,3 +11,13 @@ spec:
       services:
         - name: transmission
           port: 51413
+          serversTransport: transmission-transport@kubernetescrd
+---
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransportTCP
+metadata:
+  name: transmission-transport
+  namespace: main
+spec:
+  dialTimeout: 40s
+  dialKeepAlive: 600s
