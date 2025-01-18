@@ -41,7 +41,7 @@ spec:
   entryPoints:
     - dns
   routes:
-    - match: HostSNI(`*`)
-      services:
+      - services:
         - name: pihole-dns
           port: 53
+          nativeLB: true
