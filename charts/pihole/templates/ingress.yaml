@@ -29,7 +29,7 @@ spec:
   routes:
     - match: HostSNI(`*`)
       services:
-        - name: pihole-dns
+        - name: pihole-tcp
           port: 53
 ---
 apiVersion: traefik.io/v1alpha1
@@ -42,6 +42,6 @@ spec:
     - dns-udp
   routes:
       - services:
-        - name: pihole-dns
+        - name: pihole-udp
           port: 53
           nativeLB: true
