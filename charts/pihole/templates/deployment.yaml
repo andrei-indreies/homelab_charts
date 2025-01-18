@@ -25,8 +25,6 @@ spec:
               protocol: TCP
             - containerPort: 53
               protocol: UDP
-            - containerPort: 67
-              protocol: UDP
             - containerPort: 80
               protocol: TCP
           env:
