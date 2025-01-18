@@ -39,7 +39,7 @@ metadata:
   namespace: main
 spec:
   entryPoints:
-    - dns
+    - dns-udp
   routes:
       - services:
         - name: pihole-dns
