@@ -105,6 +105,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
+  clusterIP: None
   type: {{ .Values.transmission.service.type }}
   ports:
     - port: 9091
