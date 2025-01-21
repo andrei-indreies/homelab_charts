@@ -7,7 +7,7 @@ metadata:
     app: {{ .Values.z2m.name }}
   name: zigbee2mqtt-data
 spec:
-  storageClassName: nfs
+  storageClassName: {{ .Values.persistence.storageClass }}
   accessModes:
     - ReadWriteOnce
   resources:
@@ -23,7 +23,7 @@ metadata:
     app: {{ .Values.mosquitto.name }}
   name: mq-pv-claim
 spec:
-  storageClassName: nfs
+  storageClassName: {{ .Values.persistence.storageClass }}
   accessModes:
     - ReadWriteOnce
   resources:
@@ -37,7 +37,7 @@ metadata:
   name: {{ .Values.ha.volume.claimName }}
   namespace: {{ .Values.namespace }}
 spec:
-  storageClassName: nfs
+  storageClassName: {{ .Values.persistence.storageClass }}
   accessModes:
     - ReadWriteOnce
   resources:

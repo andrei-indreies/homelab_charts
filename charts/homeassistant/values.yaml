@@ -37,7 +37,7 @@ ha:
 
   ingress:
     match: Host(`ha.drewspace.ro`)
-    matchexcluded: Host(`ha.drewspace.ro`) && (PathPrefix(`/api/webhook/`) || Path(`/api/websocket`))
+    matchexcluded: Host(`ha.drewspace.ro`) && (PathPrefix(`/api/webhook/`) || Path(`/api/websocket`)) || Host(`ha20cfe.drewspace.ro`)
     middlewares:
     - name: keycloak-auth-admin
       namespace: main 
@@ -105,7 +105,8 @@ z2m:
     maxReplicas: 3
     targetCPUUtilizationPercentage: 80
 
-  nodeSelector: {}
+  nodeSelector:
+    has-zigbee-coordinator: "true"
 
   tolerations: []
 
@@ -215,6 +216,8 @@ mosquitto:
 
 #global
 namespace: main
+persistence:
+  storageClass: nfs
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
