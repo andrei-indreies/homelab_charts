@@ -54,8 +54,6 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: {{ .Values.ha.volume.name }}
-            - mountPath: /var/run/dbus
-              name: dbus
       {{- with .Values.ha.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -72,8 +70,5 @@ spec:
         - name: {{ .Values.ha.volume.name }}
           persistentVolumeClaim:
             claimName: {{ .Values.ha.volume.claimName }}
-        - name: dbus
-          hostPath:
-            path: /var/run/dbus
       hostNetwork: {{ .Values.ha.hostNetwork }}
       dnsPolicy: ClusterFirstWithHostNet
