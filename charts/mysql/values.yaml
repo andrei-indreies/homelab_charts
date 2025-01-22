@@ -50,5 +50,5 @@ affinity: {}
 
 pvc:
   name: "pg-pvc"
-  storageClassName: "local-path"
+  storageClassName: "truenas"
   storageSize: "4Gi"
