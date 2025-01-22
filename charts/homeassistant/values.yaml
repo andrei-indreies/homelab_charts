@@ -61,15 +61,7 @@ ha:
 
   tolerations: []
 
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: role
-                operator: In
-                values:
-                  - master
+  affinity: {}
 
 z2m: 
   replicaCount: 1
@@ -110,15 +102,7 @@ z2m:
 
   tolerations: []
 
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: role
-                operator: In
-                values:
-                  - master
+  affinity: {}
 
   hostNetwork: false
 
