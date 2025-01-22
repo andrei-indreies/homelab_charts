@@ -3,6 +3,16 @@ entries:
   database-mariadb:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-01-22T21:39:20.250846069Z"
+    description: A Helm chart for Kubernetes
+    digest: acb40f3ad51b265a2b7858d04ad81715a2ce11e99678967d0c6dbb9508b67c58
+    name: database-mariadb
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/database-mariadb-1.0.0/database-mariadb-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-10-21T13:52:23.801686675Z"
     description: A Helm chart for Kubernetes
     digest: 053bdba78cc2a87c1fa29718f48ccfdbac2bc8ca876079bc8b950a9ff00313c6
@@ -950,6 +960,16 @@ entries:
   mysql:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-01-22T21:39:20.364792547Z"
+    description: A Helm chart for Kubernetes
+    digest: f787dc8e58129ca1dafae240846c4219b8905853cab704e55edefde2731f5d38
+    name: mysql
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/mysql-1.0.0/mysql-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-11-14T20:02:41.487732852Z"
     description: A Helm chart for Kubernetes
     digest: 67c5bb6bfe00df35cebb9361d2c214a66015419a8e94034dc087120eecc762ac
@@ -1194,4 +1214,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-01-22T19:55:48.470051301Z"
+generated: "2025-01-22T21:39:20.365086336Z"
