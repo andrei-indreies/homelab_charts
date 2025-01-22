@@ -40,7 +40,7 @@ jobs:
           docker buildx inspect --bootstrap
           
           # Build and push mysql-app for multi-arch
-          docker buildx build --platform linux/amd64,linux/arm64 -f ./docker/mariadb/Dockerfile \
+          docker buildx build --platform linux/amd64,linux/arm64 -f ./docker/mysql/Dockerfile \
             -t ghcr.io/${{ github.repository }}/mysql-homelab:latest --push .
 
           # Build and push mariadb for multi-arch
