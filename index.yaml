@@ -1019,6 +1019,17 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/mysql-0.1.0/mysql-0.1.0.tgz
     version: 0.1.0
+  nextcloud-app:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-01-28T17:04:44.944119806Z"
+    description: A Helm chart for Kubernetes
+    digest: b10e377bf61952a2bfccb1bbf7ddd0cdc280047180a4659ab2f73171694f03b5
+    name: nextcloud-app
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/nextcloud-app-0.0.1/nextcloud-app-0.0.1.tgz
+    version: 0.0.1
   pihole:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -1256,4 +1267,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-01-28T16:51:06.545737268Z"
+generated: "2025-01-28T17:04:44.944402796Z"
