@@ -25,7 +25,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: extcloud-custom-apps-pvc
+  name: nextcloud-custom-apps-pvc
 spec:
   accessModes:
     - ReadWriteOnce
