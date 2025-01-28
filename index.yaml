@@ -1203,6 +1203,17 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/recumed-app-0.1.0/recumed-app-0.1.0.tgz
     version: 0.1.0
+  redis:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-01-28T16:51:06.545455251Z"
+    description: A Helm chart for Kubernetes
+    digest: 610b14688dce9aeaf027599e4fabfe57a69c9dc4680a3154e6fdf0fcd89d3c18
+    name: redis
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/redis-0.0.1/redis-0.0.1.tgz
+    version: 0.0.1
   resume-app:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -1245,4 +1256,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-01-28T14:33:44.25091116Z"
+generated: "2025-01-28T16:51:06.545737268Z"
