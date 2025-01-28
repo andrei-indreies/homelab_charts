@@ -40,7 +40,7 @@ spec:
       volumes:
         - name: conf
           persistentVolumeClaim:
-            claimName: adguard-etc-adguard
+            claimName: conf
         - name: work
           persistentVolumeClaim:
-            claimName: adguard-work
+            claimName: work
