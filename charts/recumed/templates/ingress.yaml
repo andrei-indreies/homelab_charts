@@ -22,11 +22,11 @@ spec:
       services:
       - kind: Service
         name: {{ include "recumed-app.fullname" . }}
-        namespace: main
+        namespace: websites
         port: 80
         passHostHeader: true
       middlewares:
       - name: insecure-requests
-        namespace: main
+        namespace: websites
   tls:
     certResolver: letsencrypt
