@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "nextcloud-app.fullname" . }}
+  labels:
+    {{- include "nextcloud-app.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "nextcloud-app.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "nextcloud-app.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "nextcloud-app.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: html-volume
+              mountPath: /var/www/html
+            - name: custom-apps-volume
+              mountPath: /var/www/html/custom_apps
+            - name: config-volume
+              mountPath: /var/www/html/config
+            - name: data-volume
+              mountPath: /var/www/html/data
+          env:
+            - name: PUID
+              value: "{{ .Values.environment.PUID }}"
+            - name: PGID
+              value: "{{ .Values.environment.PGID }}"
+            - name: TZ
+              value: "{{ .Values.environment.TZ }}"
+            - name: MYSQL_DATABASE
+              value: "{{ .Values.environment.MYSQL_DATABASE }}"
+            - name: MYSQL_USER
+              value: "{{ .Values.environment.MYSQL_USER }}"
+            - name: MYSQL_PASSWORD
+              value: "{{ .Values.environment.MYSQL_PASSWORD }}"
+            - name: MYSQL_HOST
+              value: "{{ .Values.environment.MYSQL_HOST }}"
+            - name: REDIS_HOST
+              value: "{{ .Values.environment.REDIS_HOST }}"
+      volumes:
+        - name: html-volume
+          persistentVolumeClaim:
+            claimName: nextcloud-html-pvc
+        - name: custom-apps-volume
+          persistentVolumeClaim:
+            claimName: nextcloud-custom-apps-pvc
+        - name: config-volume
+          persistentVolumeClaim:
+            claimName: nextcloud-config-pvc
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: nextcloud-data-pvc
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
