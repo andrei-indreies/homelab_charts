@@ -1,0 +1,19 @@
+replicaCount: 1
+
+image:
+  repository: adguard/adguard
+  tag: latest
+  pullPolicy: IfNotPresent
+
+timezone: 'Europe/Bucharest'
+
+persistence:
+  storageClass: "nfs"
+  volumes:
+    conf:
+      size: "1Gi"
+    work:
+      size: "1Gi"
+
+hostNetwork: false
+dnsPolicy: ClusterFirstWithHostNet
