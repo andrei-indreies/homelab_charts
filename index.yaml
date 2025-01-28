@@ -1,5 +1,16 @@
 apiVersion: v1
 entries:
+  adguard:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-01-28T14:18:03.459117034Z"
+    description: A Helm chart for Kubernetes
+    digest: a4fb54a9fd775e04196ff295c02baeb50be5dc21b55bf96e0379e3f4bc6968eb
+    name: adguard
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/adguard-0.0.1/adguard-0.0.1.tgz
+    version: 0.0.1
   database-mariadb:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -1214,4 +1225,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-01-22T21:39:20.365086336Z"
+generated: "2025-01-28T14:18:03.459380305Z"
