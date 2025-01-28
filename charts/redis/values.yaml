@@ -1,0 +1,51 @@
+replicaCount: 1
+
+image:
+  repository: docker.io/library/redis
+  pullPolicy: IfNotPresent
+  tag: "8.0-alpine"
+  volume:
+    path: /data
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 6379
+  portname: http
+
+resources:
+  limits:
+    cpu: "1"
+    memory: 256Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+pvc:
+  name: "pg-pvc"
+  storageClassName: "truenas"
+  storageSize: "1Gi"
