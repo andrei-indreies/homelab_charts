@@ -1,73 +1,73 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: radarr
+  name: bazarr
   labels:
     {{- include "jellyfin.labels" . | nindent 4 }}
 spec:
-  {{- with .Values.radarr.deploymentStrategy }}
+  {{- with .Values.bazarr.deploymentStrategy }}
   strategy:
     {{- toYaml . | trim | nindent 4 }}
   {{- end }}
-  replicas: {{ .Values.radarr.replicaCount }}
+  replicas: {{ .Values.bazarr.replicaCount }}
   selector:
     matchLabels:
-      app: radarr
+      app: bazarr
   template:
     metadata:
-      {{- with .Values.radarr.podAnnotations }}
+      {{- with .Values.bazarr.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        app: radarr
+        app: bazarr
     spec:
-      {{- with .Values.radarr.imagePullSecrets }}
+      {{- with .Values.bazarr.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       securityContext:
-        {{- toYaml .Values.radarr.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.bazarr.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.radarr.securityContext | nindent 12 }}
-          image: "{{ .Values.radarr.image.repository }}:{{ .Values.radarr.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.radarr.image.pullPolicy }}
-          {{- with .Values.radarr.radarr.env }}
+            {{- toYaml .Values.bazarr.securityContext | nindent 12 }}
+          image: "{{ .Values.bazarr.image.repository }}:{{ .Values.bazarr.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.bazarr.image.pullPolicy }}
+          {{- with .Values.bazarr.bazarr.env }}
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           ports:
             - name: http
-              containerPort: 7878
+              containerPort: 8989
               protocol: TCP
           livenessProbe:
-            {{- toYaml .Values.radarr.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.bazarr.livenessProbe | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.radarr.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.bazarr.readinessProbe | nindent 12 }}
           resources:
-            {{- toYaml .Values.radarr.resources | nindent 12 }}
+            {{- toYaml .Values.bazarr.resources | nindent 12 }}
           volumeMounts:
             - mountPath: /config
               name: config
             - mountPath: /media
               name: media
-            {{- with .Values.radarr.volumeMounts }}
+            {{- with .Values.bazarr.volumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-        {{- with .Values.radarr.extraContainers }}
+        {{- with .Values.bazarr.extraContainers }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
-      {{- with .Values.radarr.initContainers }}
+      {{- with .Values.bazarr.initContainers }}
       initContainers:
         {{- toYaml . | nindent 6 }}
       {{- end }}
       volumes:
         - name: config
-          {{- if .Values.radarr.persistence.config.enabled }}
+          {{- if .Values.bazarr.persistence.config.enabled }}
           persistentVolumeClaim:
-            claimName: {{ if .Values.radarr.persistence.config.existingClaim }}{{ .Values.radarr.persistence.config.existingClaim }}{{- else }}radarr-config{{- end }}
+            claimName: {{ if .Values.bazarr.persistence.config.existingClaim }}{{ .Values.bazarr.persistence.config.existingClaim }}{{- else }}bazarr-config{{- end }}
           {{- else }}
           emptyDir: {}
           {{- end }}
@@ -78,19 +78,19 @@ spec:
           {{- else }}
           emptyDir: {}
           {{- end }}
-        {{- with .Values.radarr.volumes }}
+        {{- with .Values.bazarr.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
       nodeSelector:
         media-role: media
-      {{- with .Values.radarr.affinity }}
+      {{- with .Values.bazarr.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.radarr.tolerations }}
+      {{- with .Values.bazarr.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.radarr.runtimeClassName }}
+      {{- with .Values.bazarr.runtimeClassName }}
       runtimeClassName: {{ . | quote }}
       {{- end }}

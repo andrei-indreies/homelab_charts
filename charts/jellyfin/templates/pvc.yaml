@@ -106,6 +106,28 @@ spec:
   storageClassName: {{ . | quote }}
   {{- end }}
 {{- end }}
+{{- if and .Values.bazarr.persistence.config.enabled (not .Values.bazarr.persistence.config.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bazarr-config
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+  {{- with .Values.bazarr.persistence.config.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    - {{ .Values.bazarr.persistence.config.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.bazarr.persistence.config.size | quote }}
+  {{- with .Values.bazarr.persistence.config.storageClass }}
+  storageClassName: {{ . | quote }}
+  {{- end }}
+{{- end }}
 {{- if and .Values.sonarr.persistence.config.enabled (not .Values.sonarr.persistence.config.existingClaim) }}
 ---
 apiVersion: v1

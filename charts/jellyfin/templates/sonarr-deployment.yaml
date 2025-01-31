@@ -34,6 +34,10 @@ spec:
             {{- toYaml .Values.sonarr.securityContext | nindent 12 }}
           image: "{{ .Values.sonarr.image.repository }}:{{ .Values.sonarr.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.sonarr.image.pullPolicy }}
+          {{- with .Values.sonarr.sonarr.env }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           ports:
             - name: http
               containerPort: 8989
