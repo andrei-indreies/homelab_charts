@@ -6,6 +6,7 @@ image:
   pullPolicy: IfNotPresent
 
 timezone: 'Europe/Bucharest'
+encryptionkey: "" #please fill
 
 persistence:
   storageClass: "nfs"
