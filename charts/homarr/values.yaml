@@ -1,0 +1,16 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/homarr-labs/homarr
+  tag: latest
+  pullPolicy: IfNotPresent
+
+timezone: 'Europe/Bucharest'
+
+persistence:
+  storageClass: "nfs"
+  volumes:
+    conf:
+      size: "1Gi"
+    work:
+      size: "1Gi"

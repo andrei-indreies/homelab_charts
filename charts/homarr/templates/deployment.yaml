@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.nameOverride | default "homarr" }}
+  labels:
+    app: homarr
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: homarr
+  template:
+    metadata:
+      labels:
+        app: homarr
+    spec:
+      containers:
+        - name: homarr
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 7575
+              protocol: TCP
+          env:
+            - name: TZ
+              value: {{ .Values.timezone }}
+          volumeMounts:
+            - name: appdata
+              mountPath: /appdata
+      volumes:
+        - name: appdata
+          persistentVolumeClaim:
+            claimName: appdata
