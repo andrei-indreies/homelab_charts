@@ -406,6 +406,16 @@ entries:
   homarr:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-02-03T15:54:39.015109938Z"
+    description: A Helm chart for Kubernetes
+    digest: 38cfaa373739fbcea280dc759162280c2919045b01ceba99611a404f4453ee15
+    name: homarr
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/homarr-1.0.2/homarr-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-02-03T15:49:45.750802551Z"
     description: A Helm chart for Kubernetes
     digest: f44679db8a80f064b8c9edf5dd6bcf9de80fa00b4cfaf0995a9995b4f66ea181
@@ -1358,4 +1368,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-02-03T15:49:45.751117707Z"
+generated: "2025-02-03T15:54:39.015415834Z"
