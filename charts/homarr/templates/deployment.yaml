@@ -26,8 +26,8 @@ spec:
               value: {{ .Values.env.timezone }}
             - name: SECRET_ENCRYPTION_KEY
               value: {{ .Values.env.encryptionkey }}
-            - name: AUTH_PROVIDER
-              value: {{ .Values.env.AUTH_PROVIDER }}
+            - name: AUTH_PROVIDERS
+              value: {{ .Values.env.AUTH_PROVIDERS }}
             - name: AUTH_OIDC_URI
               value: {{ .Values.env.AUTH_OIDC_URI }}
             - name: AUTH_OIDC_CLIENT_SECRET

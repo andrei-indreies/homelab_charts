@@ -8,7 +8,7 @@ image:
 env:
   timezone: 'Europe/Bucharest'
   encryptionkey: "" #please fill
-  AUTH_PROVIDER: oidc
+  AUTH_PROVIDERS: oidc
   AUTH_OIDC_URI: https://keycloak.drewspace.ro/realms/master/.well-known/openid-configuration
   AUTH_OIDC_CLIENT_SECRET: ""
   AUTH_OIDC_CLIENT_ID: homarr
