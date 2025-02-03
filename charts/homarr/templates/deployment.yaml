@@ -28,8 +28,8 @@ spec:
               value: {{ .Values.env.encryptionkey }}
             - name: AUTH_PROVIDERS
               value: {{ .Values.env.AUTH_PROVIDERS }}
-            - name: AUTH_OIDC_URI
-              value: {{ .Values.env.AUTH_OIDC_URI }}
+            - name: AUTH_OIDC_ISSUER
+              value: {{ .Values.env.AUTH_OIDC_ISSUER }}
             - name: AUTH_OIDC_CLIENT_SECRET
               value: {{ .Values.env.AUTH_OIDC_CLIENT_SECRET }}
             - name: AUTH_OIDC_CLIENT_ID
