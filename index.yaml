@@ -403,6 +403,17 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/ha-z2m-mosquitto-0.1.0/ha-z2m-mosquitto-0.1.0.tgz
     version: 0.1.0
+  homarr:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-02-03T13:39:44.136676986Z"
+    description: A Helm chart for Kubernetes
+    digest: 463ee80330482d84e24706888549f755f4bbcddb41d53d597c96d1f710108bb3
+    name: homarr
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/homarr-0.0.3/homarr-0.0.3.tgz
+    version: 0.0.3
   homeassistant:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -1317,4 +1328,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-01-31T08:03:15.92973172Z"
+generated: "2025-02-03T13:39:44.1369786Z"
