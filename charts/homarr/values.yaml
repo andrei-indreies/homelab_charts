@@ -5,8 +5,16 @@ image:
   tag: latest
   pullPolicy: IfNotPresent
 
-timezone: 'Europe/Bucharest'
-encryptionkey: "" #please fill
+env:
+  timezone: 'Europe/Bucharest'
+  encryptionkey: "" #please fill
+  AUTH_PROVIDER: oidc
+  AUTH_OIDC_URI: https://keycloak.drewspace.ro/realms/master/.well-known/openid-configuration
+  AUTH_OIDC_CLIENT_SECRET: ""
+  AUTH_OIDC_CLIENT_ID: homarr
+  AUTH_OIDC_CLIENT_NAME: drewspace
+  AUTH_OIDC_AUTO_LOGIN: true
+  NEXTAUTH_URL: https://homarr.drewspace.ro
 
 persistence:
   storageClass: "nfs"
