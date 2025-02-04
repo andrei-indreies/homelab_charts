@@ -4,7 +4,7 @@ metadata:
   name: nextcloud-html-pvc
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Gi
@@ -16,7 +16,7 @@ metadata:
   name: nextcloud-html-pvc
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Gi
@@ -28,7 +28,7 @@ metadata:
   name: nextcloud-custom-apps-pvc
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 2Gi
@@ -40,7 +40,7 @@ metadata:
   name: nextcloud-config-pvc
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Gi
@@ -52,7 +52,7 @@ metadata:
   name: nextcloud-data-pvc
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 3000Gi
