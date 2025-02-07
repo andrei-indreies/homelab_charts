@@ -76,10 +76,8 @@ spec:
           emptyDir: {}
           {{- end }}
         - name: media
-          {{- if .Values.persistence.media.enabled }}
           persistentVolumeClaim:
-            claimName: {{ if .Values.persistence.media.existingClaim }}{{ .Values.persistence.media.existingClaim }}{{- else }}{{ template "jellyfin.fullname" . }}-media{{- end }}
-          {{- else }}
+            claimName: transmission-media
           emptyDir: {}
           {{- end }}
         {{- with .Values.transmission.volumes }}

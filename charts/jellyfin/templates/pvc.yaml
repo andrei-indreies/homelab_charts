@@ -194,3 +194,23 @@ spec:
   storageClassName: {{ . | quote }}
   {{- end }}
 {{- end }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: transmission-download
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+  {{- with .Values.transmission.persistence.download.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    - {{ .Values.transmission.persistence.download.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.transmission.persistence.download.size | quote }}
+  {{- with .Values.transmission.persistence.download.storageClass }}
+  storageClassName: {{ . | quote }}
+  {{- end }}

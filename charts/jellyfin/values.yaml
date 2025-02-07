@@ -145,8 +145,8 @@ jellyfin:
     config:
       # -- set to false to use emptyDir
       enabled: true
-      accessMode: ReadWriteOnce
-      size: 5Gi
+      accessMode: ReadWriteMany
+      size: 8000Gi
       # -- Custom annotations to be added to the PVC
       annotations: {}
       # -- If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner.
@@ -468,6 +468,11 @@ transmission:
       enabled: true
       accessMode: ReadWriteOnce
       size: 1Gi
+      annotations: {}
+      storageClass: nfs
+    download:
+      accessMode: ReadWriteOnce
+      size: 2000Gi
       annotations: {}
       storageClass: nfs
 
