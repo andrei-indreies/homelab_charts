@@ -79,7 +79,6 @@ spec:
           persistentVolumeClaim:
             claimName: transmission-download
           emptyDir: {}
-          {{- end }}
         {{- with .Values.transmission.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
