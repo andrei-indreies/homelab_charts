@@ -79,10 +79,10 @@ spec:
             claimName: {{ if .Values.persistence.media.existingClaim }}{{ .Values.persistence.media.existingClaim }}{{- else }}{{ template "jellyfin.fullname" . }}-media{{- end }}
           {{- else }}
           emptyDir: {}
+           {{- end }}
         - name: download
           persistentVolumeClaim:
             claimName: transmission-download
-          {{- end }}
         {{- with .Values.radarr.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
