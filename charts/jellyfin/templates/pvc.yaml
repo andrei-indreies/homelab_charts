@@ -20,6 +20,7 @@ spec:
   storageClassName: {{ . | quote }}
   {{- end }}
 {{- end }}
+
 {{- if and .Values.tdarr.persistence.config.enabled (not .Values.tdarr.persistence.config.existingClaim) }}
 ---
 apiVersion: v1
@@ -62,6 +63,7 @@ spec:
   storageClassName: {{ . | quote }}
   {{- end }}
 {{- end }}
+
 {{- if and .Values.jellyseer.persistence.config.enabled (not .Values.jellyseer.persistence.config.existingClaim) }}
 ---
 apiVersion: v1
@@ -84,6 +86,7 @@ spec:
   storageClassName: {{ . | quote }}
   {{- end }}
 {{- end }}
+
 {{- if and .Values.radarr.persistence.config.enabled (not .Values.radarr.persistence.config.existingClaim) }}
 ---
 apiVersion: v1
@@ -106,6 +109,7 @@ spec:
   storageClassName: {{ . | quote }}
   {{- end }}
 {{- end }}
+
 {{- if and .Values.bazarr.persistence.config.enabled (not .Values.bazarr.persistence.config.existingClaim) }}
 ---
 apiVersion: v1
@@ -128,6 +132,7 @@ spec:
   storageClassName: {{ . | quote }}
   {{- end }}
 {{- end }}
+
 {{- if and .Values.sonarr.persistence.config.enabled (not .Values.sonarr.persistence.config.existingClaim) }}
 ---
 apiVersion: v1
@@ -145,11 +150,12 @@ spec:
     - {{ .Values.sonarr.persistence.config.accessMode | quote }}
   resources:
     requests:
-      storage: {{ .Values.jellyfin.persistence.config.size | quote }}
+      storage: {{ .Values.sonarr.persistence.config.size | quote }}
   {{- with .Values.sonarr.persistence.config.storageClass }}
   storageClassName: {{ . | quote }}
   {{- end }}
 {{- end }}
+
 {{- if and .Values.jellyfin.persistence.config.enabled (not .Values.jellyfin.persistence.config.existingClaim) }}
 ---
 apiVersion: v1
@@ -172,6 +178,7 @@ spec:
   storageClassName: {{ . | quote }}
   {{- end }}
 {{- end }}
+
 {{- if and .Values.persistence.media.enabled (not .Values.persistence.media.existingClaim) }}
 ---
 apiVersion: v1
@@ -194,6 +201,7 @@ spec:
   storageClassName: {{ . | quote }}
   {{- end }}
 {{- end }}
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
