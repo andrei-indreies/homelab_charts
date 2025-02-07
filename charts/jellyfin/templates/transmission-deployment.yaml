@@ -77,7 +77,7 @@ spec:
           {{- end }}
         - name: media
           persistentVolumeClaim:
-            claimName: transmission-media
+            claimName: transmission-download
           emptyDir: {}
           {{- end }}
         {{- with .Values.transmission.volumes }}
