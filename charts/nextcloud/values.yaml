@@ -24,6 +24,8 @@ environment:
   MYSQL_PASSWORD: "nextcloud"
   MYSQL_HOST: "mysql"
   REDIS_HOST: "redis"
+  PHP_UPLOAD_LIMIT: 512M
+  APACHE_BODY_LIMIT: 1073741824
 
 serviceAccount:
   # Specifies whether a service account should be created
