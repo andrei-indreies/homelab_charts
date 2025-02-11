@@ -179,7 +179,7 @@ spec:
   {{- end }}
 {{- end }}
 
-{- if and .Values.jellyfin.persistence.cache.enabled (not .Values.jellyfin.persistence.cache.existingClaim) }}
+{{- if and .Values.jellyfin.persistence.cache.enabled (not .Values.jellyfin.persistence.cache.existingClaim) }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
