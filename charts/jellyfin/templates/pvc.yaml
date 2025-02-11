@@ -179,6 +179,29 @@ spec:
   {{- end }}
 {{- end }}
 
+{- if and .Values.jellyfin.persistence.cache.enabled (not .Values.jellyfin.persistence.cache.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "jellyfin.fullname" . }}-cache
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+  {{- with .Values.jellyfin.persistence.cache.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    - {{ .Values.jellyfin.persistence.cache.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.jellyfin.persistence.cache.size | quote }}
+  {{- with .Values.jellyfin.persistence.cache.storageClass }}
+  storageClassName: {{ . | quote }}
+  {{- end }}
+{{- end }}
+
 {{- if and .Values.persistence.media.enabled (not .Values.persistence.media.existingClaim) }}
 ---
 apiVersion: v1
