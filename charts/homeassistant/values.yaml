@@ -115,15 +115,15 @@ z2m:
       value: "mqtt://mosquitto:1883"
 
   volumeMounts:
-    - name: zigbee2mqtt-data
-      mountPath: /data
-    - name: zigbee2mqtt-config
-      mountPath: /app/data/configmap-configuration.yaml
+    - mountPath: /data
+      name: zigbee2mqtt-data
+    - mountPath: /app/data/configmap-configuration.yaml
+      name: zigbee2mqtt-config
       subPath: configuration.yaml
-    - name: zigbee2mqtt-udev
-      mountPath: /run/udev
-    - name: ttyacm
-      mountPath: /dev/ttyACM0
+    - mountPath: /run/udev
+      name: zigbee2mqtt-udev
+    - mountPath: /dev/ttyACM0
+      name: ttyacm
 
   volumes:
     - name: zigbee2mqtt-data
