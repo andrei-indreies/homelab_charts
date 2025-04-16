@@ -12,7 +12,8 @@ image:
   volume:
     path: /opt/keycloak/data/import/realm.json
 
-imagePullSecrets: []
+imagePullSecrets: 
+  - name: regcred
 nameOverride: ""
 fullnameOverride: ""
 

@@ -47,4 +47,8 @@ jobs:
           docker buildx build --platform linux/amd64,linux/arm64 -f ./docker/mariadb/Dockerfile \
             -t ghcr.io/${{ github.repository }}/mariadb-homelab:latest --push .
 
+           # Build and push mariadb for multi-arch
+          docker buildx build --platform linux/amd64,linux/arm64 -f ./docker/keycloak/Dockerfile \
+            -t ghcr.io/${{ github.repository }}/keycloak:latest --push ./docker/keycloak/
+
 
