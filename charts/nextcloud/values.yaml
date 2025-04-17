@@ -71,3 +71,8 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+data:
+  storageClass: truenas
+config:
+  storageClass: rook-ceph-block
