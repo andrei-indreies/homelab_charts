@@ -1243,6 +1243,16 @@ entries:
   nextcloud-app:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-04-17T14:19:51.621285985Z"
+    description: A Helm chart for Kubernetes
+    digest: 0c185b94d57057b6205705b120f1236ea4821ee2798ff8c602e744e32f6d64aa
+    name: nextcloud-app
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/nextcloud-app-1.0.3/nextcloud-app-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-02-11T10:51:31.670289872Z"
     description: A Helm chart for Kubernetes
     digest: 3c6edcf7b5f00205bcb6d076c3da61817c9616fe8571fc4784372e52f4b62364
@@ -1548,4 +1558,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-04-16T16:19:19.592026672Z"
+generated: "2025-04-17T14:19:51.621616131Z"
