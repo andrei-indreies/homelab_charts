@@ -11,7 +11,6 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          concurrencyPolicy: Forbid
           containers:
             - name: nextcloud-cron
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -47,6 +46,9 @@ spec:
                   mountPath: /var/www/html/config
                 - name: data-volume
                   mountPath: /var/www/html/data
+              securityContext:
+                runAsUser: 33
+                runAsGroup: 33 
           volumes:
               - name: html-volume
                 persistentVolumeClaim:

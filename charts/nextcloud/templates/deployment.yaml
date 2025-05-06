@@ -72,7 +72,7 @@ spec:
       volumes:
         - name: html-volume
           persistentVolumeClaim:
-          claimName: nextcloud-html-pvc
+            claimName: nextcloud-html-pvc
         - name: custom-apps-volume
           persistentVolumeClaim:
             claimName: nextcloud-custom-apps-pvc
