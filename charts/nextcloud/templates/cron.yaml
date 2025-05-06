@@ -38,6 +38,8 @@ spec:
                 - name: APACHE_BODY_LIMIT
                   value: "{{ .Values.environment.APACHE_BODY_LIMIT }}"
               volumeMounts:
+                - name: html-volume
+                  mountPath: /var/www/html
                 - name: custom-apps-volume
                   mountPath: /var/www/html/custom_apps
                 - name: config-volume
@@ -45,12 +47,11 @@ spec:
                 - name: data-volume
                   mountPath: /var/www/html/data
           volumes:
+            - name: html-volume
+              mountPath: /var/www/html
             - name: custom-apps-volume
-              persistentVolumeClaim:
-                claimName: nextcloud-custom-apps-pvc
+              mountPath: /var/www/html/custom_apps
             - name: config-volume
-              persistentVolumeClaim:
-                claimName: nextcloud-config-pvc
+              mountPath: /var/www/html/config
             - name: data-volume
-              persistentVolumeClaim:
-                claimName: nextcloud-data-pvc
+              mountPath: /var/www/html/data
