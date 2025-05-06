@@ -1,0 +1,56 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nextcloud-cron
+  labels:
+    app.kubernetes.io/name: nextcloud-cron
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: nextcloud-cron
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              command: ["php", "/var/www/html/cron.php"]
+              env:
+                - name: PUID
+                  value: "{{ .Values.environment.PUID }}"
+                - name: PGID
+                  value: "{{ .Values.environment.PGID }}"
+                - name: TZ
+                  value: "{{ .Values.environment.TZ }}"
+                - name: MYSQL_DATABASE
+                  value: "{{ .Values.environment.MYSQL_DATABASE }}"
+                - name: MYSQL_USER
+                  value: "{{ .Values.environment.MYSQL_USER }}"
+                - name: MYSQL_PASSWORD
+                  value: "{{ .Values.environment.MYSQL_PASSWORD }}"
+                - name: MYSQL_HOST
+                  value: "{{ .Values.environment.MYSQL_HOST }}"
+                - name: REDIS_HOST
+                  value: "{{ .Values.environment.REDIS_HOST }}"
+                - name: PHP_UPLOAD_LIMIT
+                  value: "{{ .Values.environment.PHP_UPLOAD_LIMIT }}"
+                - name: APACHE_BODY_LIMIT
+                  value: "{{ .Values.environment.APACHE_BODY_LIMIT }}"
+              volumeMounts:
+                - name: custom-apps-volume
+                  mountPath: /var/www/html/custom_apps
+                - name: config-volume
+                  mountPath: /var/www/html/config
+                - name: data-volume
+                  mountPath: /var/www/html/data
+          volumes:
+            - name: custom-apps-volume
+              persistentVolumeClaim:
+                claimName: nextcloud-custom-apps-pvc
+            - name: config-volume
+              persistentVolumeClaim:
+                claimName: nextcloud-config-pvc
+            - name: data-volume
+              persistentVolumeClaim:
+                claimName: nextcloud-data-pvc
