@@ -70,9 +70,9 @@ spec:
             - name: APACHE_BODY_LIMIT
               value: "{{ .Values.environment.APACHE_BODY_LIMIT }}"
       volumes:
-         - name: html-volume
-           persistentVolumeClaim:
-            claimName: nextcloud-html-pvc
+        - name: html-volume
+          persistentVolumeClaim:
+          claimName: nextcloud-html-pvc
         - name: custom-apps-volume
           persistentVolumeClaim:
             claimName: nextcloud-custom-apps-pvc
