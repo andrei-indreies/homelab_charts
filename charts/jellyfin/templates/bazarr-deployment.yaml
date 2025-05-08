@@ -83,7 +83,7 @@ spec:
         {{- end }}
       {{- with .Values.bazarr.nodeSelector }}
       nodeSelector:
-        {{- toYaml . | nindent 2 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.bazarr.affinity }}
       affinity:

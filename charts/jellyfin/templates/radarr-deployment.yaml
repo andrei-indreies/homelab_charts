@@ -88,7 +88,7 @@ spec:
         {{- end }}
       {{- with .Values.radarr.nodeSelector }}
       nodeSelector:
-        {{- toYaml . | nindent 2 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.radarr.affinity }}
       affinity:
