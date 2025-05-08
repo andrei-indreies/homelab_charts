@@ -16,6 +16,10 @@ spec:
     spec:
       hostNetwork: {{ .Values.hostNetwork }}
       dnsPolicy: {{ .Values.dnsPolicy }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: adguard
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

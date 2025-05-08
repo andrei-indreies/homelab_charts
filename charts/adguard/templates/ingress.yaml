@@ -7,22 +7,24 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`adguard.drewlocal.ro`)
-      kind: Rule
+    - kind: Rule
+      match: Host(`adguard.drewspace.ro`)
+      middlewares:
+        - name: keycloak-auth-admin
+          namespace: main
       services:
-      - kind: Service
-        name: adguard-web
-        namespace: main
-        port: 80
-        passHostHeader: true
-    - match: Host(`adguard-setup.drewlocal.ro`)
-      kind: Rule
+        - kind: Service
+          name: adguard-web
+          namespace: main
+          passHostHeader: true
+          port: 80
+    - kind: Rule
+      match: Host(`adguard-setup.drewlocal.ro`)
       services:
-      - kind: Service
-        name: adguard-web
-        namespace: main
-        port: 3000
-        passHostHeader: true
+        - kind: Service
+          name: adguard-web
+          namespace: main
+          passHostHeader: true
   tls:
     certResolver: letsencrypt
 ---
