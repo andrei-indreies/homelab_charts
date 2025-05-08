@@ -68,8 +68,10 @@ spec:
         {{- with .Values.jellyseer.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+      {{- with .Values.jellyseer.nodeSelector }}
       nodeSelector:
-        media-role: media
+        {{- toYaml . | nindent 2 }}
+      {{- end }}
       {{- with .Values.jellyseer.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}

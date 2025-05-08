@@ -107,8 +107,10 @@ spec:
         {{- with .Values.tdarr.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+      {{- with .Values.tdarr.nodeSelector }}
       nodeSelector:
-        media-role: media
+        {{- toYaml . | nindent 2 }}
+      {{- end }}
       {{- with .Values.tdarr.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}

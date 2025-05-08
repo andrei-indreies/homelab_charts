@@ -115,8 +115,10 @@ spec:
         {{- with .Values.jellyfin.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+      {{- with .Values.jellyfin.nodeSelector }}
       nodeSelector:
-        media-role: media
+        {{- toYaml . | nindent 2 }}
+      {{- end }}
       {{- with .Values.jellyfin.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}

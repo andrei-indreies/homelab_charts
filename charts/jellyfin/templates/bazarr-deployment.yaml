@@ -81,8 +81,10 @@ spec:
         {{- with .Values.bazarr.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+      {{- with .Values.bazarr.nodeSelector }}
       nodeSelector:
-        media-role: media
+        {{- toYaml . | nindent 2 }}
+      {{- end }}
       {{- with .Values.bazarr.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}

@@ -119,7 +119,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`jellyseer.drewspace.ro`)
+    - match: Host(`jellyseer.drewspace.ro`) || Host(`jellyseerr.drewspace.ro`)
       kind: Rule
       services:
       - kind: Service
