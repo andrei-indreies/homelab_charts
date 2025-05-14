@@ -56,9 +56,9 @@ spec:
             - mountPath: /config
               name: config
             - mountPath: /downloads
+              name: media
+            - mountPath: /default
               name: generic
-            - mountPath: /defaultdownload
-              name: 
             {{- with .Values.transmission.volumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
