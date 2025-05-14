@@ -53,8 +53,6 @@ spec:
               name: config
             - mountPath: /media
               name: media
-            - mountPath: /download
-              name: download
             {{- with .Values.sonarr.volumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -80,9 +78,6 @@ spec:
           {{- else }}
           emptyDir: {}
           {{- end }}
-        - name: download
-          persistentVolumeClaim:
-            claimName: transmission-download
         {{- with .Values.sonarr.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
