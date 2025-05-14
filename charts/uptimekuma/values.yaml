@@ -106,7 +106,8 @@ autoscaling:
 # Additional volumes on the output Deployment definition.
 volumes:
   - name: uptime-kuma
-    persistentVolumeClaim: uptime-kuma
+    persistentVolumeClaim: 
+      claimName: uptime-kuma
 
 # Additional volumeMounts on the output Deployment definition.
 volumeMounts:
