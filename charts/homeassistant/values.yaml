@@ -74,6 +74,7 @@ z2m:
     tag: "1.40.0"
   
   podAnnotations: {}
+  storageClass: truenas
   podSecurityContext: {}
   securityContext: 
     privileged: true

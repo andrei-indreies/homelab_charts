@@ -7,7 +7,7 @@ metadata:
     app: {{ .Values.z2m.name }}
   name: zigbee2mqtt-data
 spec:
-  storageClassName: {{ .Values.persistence.storageClass }}
+  storageClassName: {{ .Values.persistence.z2m.storageClass }}
   accessModes:
     - ReadWriteOnce
   resources:

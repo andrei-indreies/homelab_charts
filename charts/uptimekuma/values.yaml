@@ -122,4 +122,4 @@ affinity: {}
 
 persistence:
   storageClass: "rook-ceph"
-  size: 1GB
+  size: 1Gi
