@@ -74,7 +74,6 @@ z2m:
     tag: "1.40.0"
   
   podAnnotations: {}
-  storageClass: truenas
   podSecurityContext: {}
   securityContext: 
     privileged: true
@@ -202,7 +201,9 @@ mosquitto:
 #global
 namespace: main
 persistence:
-  storageClass: nfs
+  storageClass: rook-ceph-block
+  z2m:
+    storageClass: truenas
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
