@@ -1292,6 +1292,16 @@ entries:
   mysql:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-06-03T09:07:49.292344803Z"
+    description: A Helm chart for Kubernetes
+    digest: 44716c227c0d97a44c75122495838ab816ff9fb8c9926151b668cd1411d1c282
+    name: mysql
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/mysql-1.0.1/mysql-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-01-22T21:39:20.364792547Z"
     description: A Helm chart for Kubernetes
     digest: f787dc8e58129ca1dafae240846c4219b8905853cab704e55edefde2731f5d38
@@ -1739,4 +1749,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-05-17T14:07:06.350647752Z"
+generated: "2025-06-03T09:07:49.292648068Z"
