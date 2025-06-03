@@ -35,7 +35,7 @@ data:
 
     pid-file=/var/run/mysqld/mysqld.pid
 
-    transaction_isolation = READ-COMMITTED
+    transaction_isolation = TRANSACTION_READ_COMMITTED
     binlog_format = ROW
 
     innodb_buffer_pool_size = 1228M
