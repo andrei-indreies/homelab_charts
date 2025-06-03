@@ -32,6 +32,9 @@ spec:
             - name: {{ .Values.pvc.name }}
               mountPath: {{ .Values.image.volume.path }}
               subPath: {{ .Chart.Name }}
+            - name: config-volume
+              mountPath: /etc/my.cnf
+              subPath: my.cnf
           livenessProbe:
             initialDelaySeconds: 60
             tcpSocket:
@@ -42,6 +45,13 @@ spec:
               port: {{ .Values.service.port }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ include "mysql.fullname" . }}-config
+            items:
+              - key: my.cnf
+                path: my.cnf
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
