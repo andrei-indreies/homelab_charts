@@ -38,7 +38,7 @@ data:
     transaction_isolation = READ-COMMITTED
     binlog_format = ROW
 
-    innodb_buffer_pool_size = 1.2G
+    innodb_buffer_pool_size = 1228M
     innodb_buffer_pool_instances = 1
 
     innodb_log_file_size = 128M
