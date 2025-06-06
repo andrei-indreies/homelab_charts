@@ -69,6 +69,17 @@ spec:
               value: "{{ .Values.environment.PHP_UPLOAD_LIMIT }}"
             - name: APACHE_BODY_LIMIT
               value: "{{ .Values.environment.APACHE_BODY_LIMIT }}"
+          command:
+            - /bin/sh
+            - -c
+            - |
+              apt update && \
+              apt -y install libsmbclient-dev libmagickwand-dev gcc make autoconf libc-dev pkg-config && \
+              pecl install smbclient && \
+              echo "extension=smbclient.so" > /usr/local/etc/php/conf.d/docker-php-ext-smbclient.ini && \
+              pecl install inotify && \
+              echo "extension=inotify.so" > /usr/local/etc/php/conf.d/docker-php-ext-inotify.ini && \
+              exec apache2-foreground
       volumes:
         - name: html-volume
           persistentVolumeClaim:
