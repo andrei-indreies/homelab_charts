@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lidarr
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.lidarr.deploymentStrategy }}
+  strategy:
+    {{- toYaml . | trim | nindent 4 }}
+  {{- end }}
+  replicas: {{ .Values.lidarr.replicaCount }}
+  selector:
+    matchLabels:
+      app: lidarr
+  template:
+    metadata:
+      {{- with .Values.lidarr.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: lidarr
+    spec:
+      {{- with .Values.lidarr.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.lidarr.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.lidarr.securityContext | nindent 12 }}
+          image: "{{ .Values.lidarr.image.repository }}:{{ .Values.lidarr.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.lidarr.image.pullPolicy }}
+          {{- with .Values.lidarr.lidarr.env }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: 8989
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.lidarr.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.lidarr.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.lidarr.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /media
+              name: media
+            {{- with .Values.lidarr.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+        {{- with .Values.lidarr.extraContainers }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.lidarr.initContainers }}
+      initContainers:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+      volumes:
+        - name: config
+          {{- if .Values.lidarr.persistence.config.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.lidarr.persistence.config.existingClaim }}{{ .Values.lidarr.persistence.config.existingClaim }}{{- else }}lidarr-config{{- end }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        - name: media
+          {{- if .Values.persistence.media.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.persistence.media.existingClaim }}{{ .Values.persistence.media.existingClaim }}{{- else }}{{ template "jellyfin.fullname" . }}-media{{- end }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        {{- with .Values.lidarr.volumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.lidarr.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.lidarr.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.lidarr.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.lidarr.runtimeClassName }}
+      runtimeClassName: {{ . | quote }}
+      {{- end }}

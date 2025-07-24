@@ -98,6 +98,25 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: lidarr
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+    {{- with .Values.lidarr.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  type: {{ .Values.lidarr.service.type }}
+  ports:
+    - port: 8686
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: lidarr
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: bazarr
   labels:
     {{- include "jellyfin.labels" . | nindent 4 }}
