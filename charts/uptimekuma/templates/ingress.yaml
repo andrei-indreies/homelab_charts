@@ -18,5 +18,16 @@ spec:
           namespace: main
           passHostHeader: true
           port: {{ .Values.service.port }}
+    - kind: Rule
+      match: Host(`status.drewspace.ro`)
+      middlewares:
+        - name: replace-media-middleware
+          namespace: main
+      services:
+        - kind: Service
+          name: {{ include "uptimekuma.fullname" . }}
+          namespace: main
+          passHostHeader: true
+          port: {{ .Values.service.port }}
   tls:
     certResolver: letsencrypt
