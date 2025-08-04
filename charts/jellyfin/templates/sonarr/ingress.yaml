@@ -1,0 +1,23 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: sonarr
+  namespace: main
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`sonarr.{{ .Values.domain }}`)
+      kind: Rule
+      services:
+      - kind: Service
+        name: sonarr
+        namespace: main
+        port: {{ .Values.sonarr.service.port }}
+        passHostHeader: true
+      middlewares:
+      - name: keycloak-auth-admin
+        namespace: main
+  tls:
+    certResolver: letsencrypt

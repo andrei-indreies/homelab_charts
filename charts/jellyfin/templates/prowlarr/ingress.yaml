@@ -1,0 +1,23 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: prowlarr
+  namespace: main
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`prowlarr.{{ .Values.domain }}`)
+      kind: Rule
+      services:
+      - kind: Service
+        name: prowlarr
+        namespace: main
+        port: {{ .Values.prowlarr.service.port }}
+        passHostHeader: true
+      middlewares:
+      - name: keycloak-auth-admin
+        namespace: main
+  tls:
+    certResolver: letsencrypt

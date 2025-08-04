@@ -1,0 +1,21 @@
+{{- if and .Values.jellyseer.persistence.config.enabled (not .Values.jellyseer.persistence.config.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyseer-config
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+  {{- with .Values.jellyseer.persistence.config.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    - {{ .Values.jellyseer.persistence.config.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.jellyseer.persistence.config.size | quote }}
+  {{- with .Values.jellyseer.persistence.config.storageClass }}
+  storageClassName: {{ . | quote }}
+  {{- end }}
+{{- end }}

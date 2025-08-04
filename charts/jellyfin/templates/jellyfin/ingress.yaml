@@ -1,0 +1,22 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ include "jellyfin.fullname" . }}
+  namespace: main
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`jellyfin.{{ .Values.domain }}`)
+      kind: Rule
+      middlewares:
+      - name: block-metrics
+        namespace: main
+      services:
+      - kind: Service
+        name: {{ include "jellyfin.fullname" . }}
+        namespace: main
+        port: {{ .Values.jellyfin.service.port }}
+        passHostHeader: true
+  tls:
+    certResolver: letsencrypt

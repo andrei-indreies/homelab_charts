@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prowlarr
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+    {{- with .Values.prowlarr.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  type: {{ .Values.prowlarr.service.type }}
+  ports:
+    - port: {{ .Values.prowlarr.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: prowlarr

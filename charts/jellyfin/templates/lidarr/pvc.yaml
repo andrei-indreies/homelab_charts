@@ -1,0 +1,21 @@
+{{- if and .Values.lidarr.persistence.config.enabled (not .Values.lidarr.persistence.config.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: lidarr-config
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+  {{- with .Values.lidarr.persistence.config.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    - {{ .Values.lidarr.persistence.config.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.lidarr.persistence.config.size | quote }}
+  {{- with .Values.lidarr.persistence.config.storageClass }}
+  storageClassName: {{ . | quote }}
+  {{- end }}
+{{- end }}

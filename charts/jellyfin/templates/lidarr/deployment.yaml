@@ -40,7 +40,7 @@ spec:
           {{- end }}
           ports:
             - name: http
-              containerPort: 8686
+              containerPort: {{ .Values.lidarr.service.port }}
               protocol: TCP
           livenessProbe:
             {{- toYaml .Values.lidarr.livenessProbe | nindent 12 }}

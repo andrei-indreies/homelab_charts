@@ -1,0 +1,41 @@
+{{- if and .Values.transmission.persistence.config.enabled (not .Values.transmission.persistence.config.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: transmission-config
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+  {{- with .Values.transmission.persistence.config.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    - {{ .Values.transmission.persistence.config.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.transmission.persistence.config.size | quote }}
+  {{- with .Values.transmission.persistence.config.storageClass }}
+  storageClassName: {{ . | quote }}
+  {{- end }}
+{{- end }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: transmission-download
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+  {{- with .Values.transmission.persistence.download.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    - {{ .Values.transmission.persistence.download.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.transmission.persistence.download.size | quote }}
+  {{- with .Values.transmission.persistence.download.storageClass }}
+  storageClassName: {{ . | quote }}
+  {{- end }}

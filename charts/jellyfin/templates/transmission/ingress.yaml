@@ -1,0 +1,23 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: transmission
+  namespace: main
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`transmission.{{ .Values.domain }}`)
+      kind: Rule
+      services:
+      - kind: Service
+        name: transmission
+        namespace: main
+        port: {{ .Values.transmission.service.port }}
+        passHostHeader: true
+      middlewares:
+      - name: keycloak-auth-admin
+        namespace: main
+  tls:
+    certResolver: letsencrypt

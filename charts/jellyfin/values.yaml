@@ -272,6 +272,75 @@ sonarr:
       annotations: {}
       storageClass: nfs
 
+prowlarr:
+  replicaCount: 1
+  imagePullSecrets: []
+
+  image:
+    repository: docker.io/linuxserver/prowlarr
+    tag: "latest"
+    pullPolicy: IfNotPresent
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+  podAnnotations: {}
+  podLabels: {}
+
+  podSecurityContext: {}
+
+  securityContext: {}
+
+  runtimeClassName: ''
+
+  deploymentStrategy:
+    type: RollingUpdate
+
+  prowlarr:
+    env: 
+      - name: PUID
+        value: "1000"
+      - name: PGID
+        value: "1000"
+      - name: TZ
+        value: "Europe/Bucharest"
+
+  service:
+    type: ClusterIP
+    port: 9696
+    portName: service
+    labels: {}
+
+  resources: {}
+
+  livenessProbe:
+    initialDelaySeconds: 10
+    tcpSocket:
+      port: http
+
+  readinessProbe:
+    initialDelaySeconds: 10
+    tcpSocket:
+      port: http
+
+  volumes: []
+  
+  volumeMounts: []
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  persistence:
+    config:
+      enabled: true
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      annotations: {}
+      storageClass: nfs
+
 radarr:
   replicaCount: 1
   imagePullSecrets: []
@@ -514,6 +583,7 @@ transmission:
   service:
     type: ClusterIP
     port: 9091
+    portTcp: 51413
     portName: service
     labels: {}
 
@@ -727,6 +797,8 @@ persistence:
       size: 8000Gi
       annotations: {}
       storageClass: nfs
+
+domain: drewspace.ro
 
 serviceAccount:
   # -- Specifies whether to create a service account.

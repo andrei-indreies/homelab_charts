@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bazarr
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+    {{- with .Values.bazarr.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  type: {{ .Values.bazarr.service.type }}
+  ports:
+    - port: {{ .Values.bazarr.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: bazarr

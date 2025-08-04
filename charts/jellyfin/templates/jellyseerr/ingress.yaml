@@ -1,0 +1,19 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: jellyseer
+  namespace: main
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`jellyseer.{{ .Values.domain }}`) || Host(`jellyseerr.{{ .Values.domain }}`)
+      kind: Rule
+      services:
+      - kind: Service
+        name: jellyseer
+        namespace: main
+        port: {{ .Values.jellyseer.service.port }}
+        passHostHeader: true
+  tls:
+    certResolver: letsencrypt

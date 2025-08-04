@@ -36,7 +36,7 @@ spec:
           imagePullPolicy: {{ .Values.jellyseer.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 5055
+              containerPort: {{ .Values.jellyseer.service.port }}
               protocol: TCP
           livenessProbe:
             {{- toYaml .Values.jellyseer.livenessProbe | nindent 12 }}

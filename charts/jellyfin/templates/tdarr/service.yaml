@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tdarr
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+    {{- with .Values.tdarr.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  type: {{ .Values.tdarr.service.type }}
+  ports:
+    - port: {{ .Values.tdarr.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: {{ .Values.tdarr.service.serverPort }}
+      targetPort: http
+      protocol: TCP
+      name: server
+  selector:
+    app: tdarr

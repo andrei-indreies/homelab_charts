@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: transmission
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+    {{- with .Values.transmission.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  clusterIP: None
+  type: {{ .Values.transmission.service.type }}
+  ports:
+    - port: {{ .Values.transmission.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: {{ .Values.transmission.service.portTcp }}
+      protocol: TCP  
+      targetPort: torrent-tcp
+      name: torrent-tcp
+  selector:
+    app: transmission

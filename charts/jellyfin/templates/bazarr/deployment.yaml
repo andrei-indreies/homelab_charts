@@ -40,7 +40,7 @@ spec:
           {{- end }}
           ports:
             - name: http
-              containerPort: 6767
+              containerPort: {{ .Values.bazarr.service.port }}
               protocol: TCP
           livenessProbe:
             {{- toYaml .Values.bazarr.livenessProbe | nindent 12 }}

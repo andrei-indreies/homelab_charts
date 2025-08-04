@@ -1,0 +1,22 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: tdarr
+  namespace: main
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`tdarr.{{ .Values.domain }}`)
+      kind: Rule
+      services:
+      - kind: Service
+        name: tdarr
+        namespace: main
+        port: {{ .Values.tdarr.service.port }}
+        passHostHeader: true
+      middlewares:
+      - name: keycloak-auth-admin
+        namespace: main
+  tls:
+    certResolver: letsencrypt
