@@ -1,0 +1,21 @@
+{{- if and .Values.radarr.persistence.config.enabled (not .Values.radarr.persistence.config.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: radarr-config
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+  {{- with .Values.radarr.persistence.config.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    - {{ .Values.radarr.persistence.config.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.radarr.persistence.config.size | quote }}
+  {{- with .Values.radarr.persistence.config.storageClass }}
+  storageClassName: {{ . | quote }}
+  {{- end }}
+{{- end }}

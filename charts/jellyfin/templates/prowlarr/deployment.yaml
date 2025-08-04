@@ -1,73 +1,73 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: radarr
+  name: prowlarr
   labels:
     {{- include "jellyfin.labels" . | nindent 4 }}
 spec:
-  {{- with .Values.radarr.deploymentStrategy }}
+  {{- with .Values.prowlarr.deploymentStrategy }}
   strategy:
     {{- toYaml . | trim | nindent 4 }}
   {{- end }}
-  replicas: {{ .Values.radarr.replicaCount }}
+  replicas: {{ .Values.prowlarr.replicaCount }}
   selector:
     matchLabels:
-      app: radarr
+      app: prowlarr
   template:
     metadata:
-      {{- with .Values.radarr.podAnnotations }}
+      {{- with .Values.prowlarr.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        app: radarr
+        app: prowlarr
     spec:
-      {{- with .Values.radarr.imagePullSecrets }}
+      {{- with .Values.prowlarr.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       securityContext:
-        {{- toYaml .Values.radarr.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.prowlarr.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.radarr.securityContext | nindent 12 }}
-          image: "{{ .Values.radarr.image.repository }}:{{ .Values.radarr.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.radarr.image.pullPolicy }}
-          {{- with .Values.radarr.radarr.env }}
+            {{- toYaml .Values.prowlarr.securityContext | nindent 12 }}
+          image: "{{ .Values.prowlarr.image.repository }}:{{ .Values.prowlarr.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.prowlarr.image.pullPolicy }}
+          {{- with .Values.prowlarr.prowlarr.env }}
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           ports:
             - name: http
-              containerPort: 7878
+              containerPort: {{ .Values.prowlarr.service.port }}
               protocol: TCP
           livenessProbe:
-            {{- toYaml .Values.radarr.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.prowlarr.livenessProbe | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.radarr.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.prowlarr.readinessProbe | nindent 12 }}
           resources:
-            {{- toYaml .Values.radarr.resources | nindent 12 }}
+            {{- toYaml .Values.prowlarr.resources | nindent 12 }}
           volumeMounts:
             - mountPath: /config
               name: config
             - mountPath: /media
               name: media
-            {{- with .Values.radarr.volumeMounts }}
+            {{- with .Values.prowlarr.volumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-        {{- with .Values.radarr.extraContainers }}
+        {{- with .Values.prowlarr.extraContainers }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
-      {{- with .Values.radarr.initContainers }}
+      {{- with .Values.prowlarr.initContainers }}
       initContainers:
         {{- toYaml . | nindent 6 }}
       {{- end }}
       volumes:
         - name: config
-          {{- if .Values.radarr.persistence.config.enabled }}
+          {{- if .Values.prowlarr.persistence.config.enabled }}
           persistentVolumeClaim:
-            claimName: {{ if .Values.radarr.persistence.config.existingClaim }}{{ .Values.radarr.persistence.config.existingClaim }}{{- else }}radarr-config{{- end }}
+            claimName: {{ if .Values.prowlarr.persistence.config.existingClaim }}{{ .Values.prowlarr.persistence.config.existingClaim }}{{- else }}prowlarr-config{{- end }}
           {{- else }}
           emptyDir: {}
           {{- end }}
@@ -77,22 +77,22 @@ spec:
             claimName: {{ if .Values.persistence.media.existingClaim }}{{ .Values.persistence.media.existingClaim }}{{- else }}{{ template "jellyfin.fullname" . }}-media{{- end }}
           {{- else }}
           emptyDir: {}
-           {{- end }}
-        {{- with .Values.radarr.volumes }}
+          {{- end }}
+        {{- with .Values.prowlarr.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
-      {{- with .Values.radarr.nodeSelector }}
+      {{- with .Values.prowlarr.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.radarr.affinity }}
+      {{- with .Values.prowlarr.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.radarr.tolerations }}
+      {{- with .Values.prowlarr.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.radarr.runtimeClassName }}
+      {{- with .Values.prowlarr.runtimeClassName }}
       runtimeClassName: {{ . | quote }}
       {{- end }}

@@ -10,4 +10,4 @@ spec:
     - match: HostSNI(`*`)
       services:
         - name: transmission
-          port: 51413
+          port: {{ .Values.transmission.service.portTcp }}
