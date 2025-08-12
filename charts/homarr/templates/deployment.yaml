@@ -23,23 +23,23 @@ spec:
               protocol: TCP
           env:
             - name: TZ
-              value: {{ .Values.env.timezone }}
+              value: "{{ .Values.env.timezone }}"
             - name: SECRET_ENCRYPTION_KEY
-              value: {{ .Values.env.encryptionkey }}
+              value: "{{ .Values.env.encryptionkey }}"
             - name: AUTH_PROVIDERS
-              value: {{ .Values.env.AUTH_PROVIDERS }}
+              value: "{{ .Values.env.AUTH_PROVIDERS }}"
             - name: AUTH_OIDC_ISSUER
-              value: {{ .Values.env.AUTH_OIDC_ISSUER }}
+              value: "{{ .Values.env.AUTH_OIDC_ISSUER }}"
             - name: AUTH_OIDC_CLIENT_SECRET
-              value: {{ .Values.env.AUTH_OIDC_CLIENT_SECRET }}
+              value: "{{ .Values.env.AUTH_OIDC_CLIENT_SECRET }}"
             - name: AUTH_OIDC_CLIENT_ID
-              value: {{ .Values.env.AUTH_OIDC_CLIENT_ID }}
+              value: "{{ .Values.env.AUTH_OIDC_CLIENT_ID }}"
             - name: AUTH_OIDC_CLIENT_NAME
-              value: {{ .Values.env.AUTH_OIDC_CLIENT_NAME }}
+              value: "{{ .Values.env.AUTH_OIDC_CLIENT_NAME }}"
             - name: AUTH_OIDC_AUTO_LOGIN
-              value: {{ .Values.env.AUTH_OIDC_AUTO_LOGIN }}
+              value: "{{ .Values.env.AUTH_OIDC_AUTO_LOGIN }}"
             - name: NEXTAUTH_URL
-              value: {{ .Values.env.NEXTAUTH_URL }}
+              value: "https://{{ .Values.domain }}"
           volumeMounts:
             - name: appdata
               mountPath: /appdata

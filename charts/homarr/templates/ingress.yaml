@@ -7,13 +7,28 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`homarr.drewspace.ro`) || Host(`www.drewspace.ro`) || Host(`drewspace.ro`)
+    - match: Host(`{{ .Values.domain }}`)
       kind: Rule
       services:
-      - kind: Service
-        name: homarr-web
-        namespace: main
-        port: 7575
-        passHostHeader: true
+        - kind: Service
+          name: homarr-web
+          namespace: main
+          port: 7575
+          passHostHeader: true
+    - match: Host(`www.{{ .Values.domain }}`)
+      kind: Rule
+      middlewares:
+        - name: redirect-to-non-www
   tls:
     certResolver: letsencrypt
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-to-non-www
+  namespace: main
+spec:
+  redirectRegex:
+    regex: ^https://www\.{{ .Values.domain | quote | trimAll "`" }}(.*)
+    replacement: https://{{ .Values.domain }}$1
+    permanent: true

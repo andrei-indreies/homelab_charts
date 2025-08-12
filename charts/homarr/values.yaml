@@ -5,6 +5,8 @@ image:
   tag: latest
   pullPolicy: IfNotPresent
 
+domain: drewspace.ro
+
 env:
   timezone: 'Europe/Bucharest'
   encryptionkey: "" #please fill
@@ -14,7 +16,7 @@ env:
   AUTH_OIDC_CLIENT_ID: homarr
   AUTH_OIDC_CLIENT_NAME: drewspace
   AUTH_OIDC_AUTO_LOGIN: true
-  NEXTAUTH_URL: https://homarr.drewspace.ro
+  NEXTAUTH_URL: https://drewspace.ro
 
 persistence:
   storageClass: "nfs"
