@@ -81,11 +81,6 @@ env:
     value: "https://vault.example.com" # <-- change this to your public URL
   - name: SSO_ONLY
     value: "true"
-  - name: ADMIN_TOKEN
-    valueFrom:
-      secretKeyRef:
-        name: vaultwarden-secrets
-        key: admin-token
   - name: SSO_ENABLED
     value: "true"
   - name: SSO_AUTHORITY
@@ -95,11 +90,16 @@ env:
   - name: SSO_SCOPES
     value: "openid email"
   - name: SSO_PKCE
-    value: true
+    value: "true"
   - name: SSO_ROLES_ENABLED
-    value: true
+    value: "true"
   - name: SSO_ROLES_DEFAULT_TO_USER
-    value: true
+    value: "true"
+  - name: ADMIN_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: vaultwarden-secrets
+        key: admin-token
   - name: SSO_CLIENT_SECRET
     valueFrom:
       secretKeyRef:
