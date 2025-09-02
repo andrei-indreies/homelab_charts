@@ -1,0 +1,137 @@
+replicaCount: 1
+
+image:
+  repository: vaultwarden/server
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  runAsNonRoot: true
+  readOnlyRootFilesystem: false
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  limits:
+    cpu: 250m
+    memory: 256Mi
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 20
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  failureThreshold: 3
+
+  ingressRoute:
+    enabled: true
+    entryPoints:
+      - websecure
+    hosts:
+      - host: vaultwarden.drewspace.ro
+        namespace: main
+        serviceName: vaultwarden
+        servicePort: 80
+    tls:
+      certResolver: letsencrypt
+
+
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# ----------------------------
+# Vaultwarden Configuration
+# ----------------------------
+
+env:
+  - name: DOMAIN
+    value: "https://vault.example.com" # <-- change this to your public URL
+  - name: SSO_ONLY
+    value: "true"
+  - name: ADMIN_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: vaultwarden-secrets
+        key: admin-token
+  - name: SSO_ENABLED
+    value: "true"
+  - name: SSO_AUTHORITY
+    value: "https://your-idp.com/realms/myrealm"
+  - name: SSO_CLIENT_ID
+    value: "your-client-id"
+  - name: SSO_SCOPES
+    value: true
+  - name: SSO_PKCE
+    value: true
+  - name: SSO_PKCE
+    value: true
+  - name: SSO_ROLES_ENABLED
+    value: true
+  - name: SSO_ROLES_DEFAULT_TO_USER
+    value: true
+  - name: SSO_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: vaultwarden-secrets
+        key: openid-client-secret
+
+secrets:
+  adminToken: "your-super-secret-admin-token"
+  openidClientSecret: "your-client-secret"
+
+
+# ----------------------------
+# Volumes and Persistent Data
+# ----------------------------
+
+volumeMounts:
+  - name: data
+    mountPath: /data
+
+volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: vaultwarden-data
+
+
+persistence:
+  enabled: true
+  existingClaim: ""
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  size: 1Gi
+

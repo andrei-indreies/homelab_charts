@@ -1,0 +1,27 @@
+{{- if .Values.ingressRoute.enabled }}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ include "vaultwarden.fullname" . }}
+  namespace: {{ (index .Values.ingressRoute.hosts 0).namespace | default .Release.Namespace }}
+  labels:
+    {{- include "vaultwarden.labels" . | nindent 4 }}
+spec:
+  entryPoints:
+    {{- range .Values.ingressRoute.entryPoints }}
+    - {{ . }}
+    {{- end }}
+  routes:
+    {{- range .Values.ingressRoute.hosts }}
+    - match: Host(`{{ .host }}`)
+      kind: Rule
+      services:
+        - kind: Service
+          name: {{ include "vaultwarden.fullname" . }}
+          namespace: {{ .namespace | default $.Release.Namespace }}
+          port: {{ .servicePort }}
+          passHostHeader: true
+    {{- end }}
+  tls:
+    certResolver: {{ .Values.ingressRoute.tls.certResolver | quote }}
+{{- end }}
