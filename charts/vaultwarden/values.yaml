@@ -52,17 +52,17 @@ readinessProbe:
   periodSeconds: 10
   failureThreshold: 3
 
-  ingressRoute:
-    enabled: true
-    entryPoints:
-      - websecure
-    hosts:
-      - host: vaultwarden.drewspace.ro
-        namespace: main
-        serviceName: vaultwarden
-        servicePort: 80
-    tls:
-      certResolver: letsencrypt
+ingressRoute:
+  enabled: true
+  entryPoints:
+    - websecure
+  hosts:
+    - host: vaultwarden.drewspace.ro
+      namespace: main
+      serviceName: vaultwarden
+      servicePort: 80
+  tls:
+    certResolver: letsencrypt
 
 
 

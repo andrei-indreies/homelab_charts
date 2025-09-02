@@ -17,7 +17,7 @@ spec:
       kind: Rule
       services:
         - kind: Service
-          name: {{ include "vaultwarden.fullname" . }}
+          name: vaultwarden
           namespace: {{ .namespace | default $.Release.Namespace }}
           port: {{ .servicePort }}
           passHostHeader: true
