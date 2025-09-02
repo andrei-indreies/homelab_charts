@@ -93,9 +93,7 @@ env:
   - name: SSO_CLIENT_ID
     value: "your-client-id"
   - name: SSO_SCOPES
-    value: true
-  - name: SSO_PKCE
-    value: true
+    value: "openid email"
   - name: SSO_PKCE
     value: true
   - name: SSO_ROLES_ENABLED
