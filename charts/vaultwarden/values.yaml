@@ -77,34 +77,17 @@ affinity: {}
 # ----------------------------
 
 env:
-  - name: DOMAIN
-    value: "https://vault.example.com" # <-- change this to your public URL
-  - name: SSO_ONLY
-    value: "true"
-  - name: SSO_ENABLED
-    value: "true"
-  - name: SSO_AUTHORITY
-    value: "https://your-idp.com/realms/myrealm"
-  - name: SSO_CLIENT_ID
-    value: "your-client-id"
-  - name: SSO_SCOPES
-    value: "openid email"
-  - name: SSO_PKCE
-    value: "true"
-  - name: SSO_ROLES_ENABLED
-    value: "true"
-  - name: SSO_ROLES_DEFAULT_TO_USER
-    value: "true"
-  - name: ADMIN_TOKEN
-    valueFrom:
-      secretKeyRef:
-        name: vaultwarden-secrets
-        key: admin-token
-  - name: SSO_CLIENT_SECRET
-    valueFrom:
-      secretKeyRef:
-        name: vaultwarden-secrets
-        key: openid-client-secret
+  DOMAIN: "https://vault.example.com"         # <-- change this to your public URL
+  SSO_ONLY: "true"
+  SSO_ENABLED: "true"
+  SSO_AUTHORITY: "https://your-idp.com/realms/myrealm"
+  SSO_CLIENT_ID: "your-client-id"
+  SSO_SCOPES: "openid email"
+  SSO_PKCE: "true"
+  SSO_ROLES_ENABLED: "true"
+  SSO_ROLES_DEFAULT_TO_USER: "true"
+
+
 
 secrets:
   adminToken: "your-super-secret-admin-token"
