@@ -1832,6 +1832,16 @@ entries:
   vaultwarden:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-09-03T08:05:56.250108905Z"
+    description: A Helm chart for Kubernetes
+    digest: ce90014ad73b0312bcc9328f1a5c4699495483024f2bb9508704f1f589acec6e
+    name: vaultwarden
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/vaultwarden-1.0.6/vaultwarden-1.0.6.tgz
+    version: 1.0.6
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-09-03T07:44:16.30352987Z"
     description: A Helm chart for Kubernetes
     digest: d23780697a7fd6e59c6cb71655d95be56362d548599ee9d1ffd9131bed8f85d9
@@ -1931,4 +1941,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-09-03T07:44:16.303881716Z"
+generated: "2025-09-03T08:05:56.250447952Z"
