@@ -132,9 +132,11 @@ z2m:
     - name: zigbee2mqtt-udev
       hostPath:
         path: /run/udev
+        type: Directory
     - name: ttyacm
       hostPath:
         path: /dev/ttyACM0
+        type: CharDevice
     - name: zigbee2mqtt-config
       configMap:
         name: zigbee2mqtt-config
