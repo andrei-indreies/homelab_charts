@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "tvheadend.fullname" . }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    {{- include "tvheadend.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
+    - name: htsp
+      port: {{ .Values.service.htspPort }}
+      targetPort: {{ .Values.service.htspPort }}

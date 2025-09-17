@@ -1,0 +1,80 @@
+replicaCount: 1
+namespace: main
+
+image:
+  repository: lscr.io/linuxserver/tvheadend
+  tag: latest
+  pullPolicy: IfNotPresent
+
+container:
+  name: tvheadend
+
+env:
+  PUID: "1000"
+  PGID: "1000"
+  TZ: "Etc/UTC"
+  RUN_OPTS: ""  # Optional run options
+
+service:
+  type: NodePort
+  port: 9981
+  htspPort: 9982
+
+ingressRoute:
+  enabled: true
+  host: tvheadend.drewspace.ro
+  entryPoints:
+    - websecure
+  serviceName: tvheadend
+  servicePort: 9981
+  tls:
+    enabled: true
+    certResolver: letsencrypt
+  middleware:
+    enabled: false                # Whether to attach middleware(s)
+    names: []                     # List of middleware resource names to attach, e.g. ["tvheadend-auth"]
+
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+  automount: true
+
+persistence:
+  config:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 2Gi
+    mountPath: /config
+    storageClass: ""  # use default
+  recordings:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 200Gi
+    mountPath: /recordings
+    storageClass: ""
+
+devices:
+  # - name: dri
+  #   hostPath: /dev/dri
+  #   mountPath: /dev/dri
+  - name: dvb
+    hostPath: /dev/dvb
+    mountPath: /dev/dvb
+
+securityContext:
+  privileged: true
+
+resources: {}
+
+podAnnotations: {}
+
+podLabels: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+restartPolicy: Always

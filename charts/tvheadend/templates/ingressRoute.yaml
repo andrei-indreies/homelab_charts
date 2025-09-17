@@ -1,0 +1,32 @@
+{{- if .Values.ingressRoute.enabled }}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ include "tvheadend.fullname" . }}
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
+spec:
+  entryPoints:
+{{- range .Values.ingressRoute.entryPoints }}
+    - {{ . }}
+{{- end }}
+  routes:
+    - match: Host(`{{ .Values.ingressRoute.host }}`)
+      kind: Rule
+      services:
+        - kind: Service
+          name: {{ .Values.ingressRoute.serviceName }}
+          namespace: {{ .Values.namespace  | default .Release.Namespace }}
+          port: {{ .Values.ingressRoute.servicePort }}
+          passHostHeader: true
+      {{- if and .Values.ingressRoute.middleware.enabled (gt (len .Values.ingressRoute.middleware.names) 0) }}
+      middlewares:
+        {{- range .Values.ingressRoute.middleware.names }}
+        - name: {{ . }}
+          namespace: {{ $.Values.namespace  | default $.Release.Namespace }}
+        {{- end }}
+      {{- end }}
+  {{- if and .Values.ingressRoute.tls.enabled .Values.ingressRoute.tls.certResolver }}
+  tls:
+    certResolver: {{ .Values.ingressRoute.tls.certResolver }}
+  {{- end }}
+{{- end }}
