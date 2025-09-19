@@ -1585,6 +1585,16 @@ entries:
   nut-upsd:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-09-19T18:43:23.071838891Z"
+    description: A Helm chart for Kubernetes
+    digest: 5a795cc3572019f9eff6a7cfe46d8faf588d0a8eb6c3c1f8a6d6b01ddec5cc7b
+    name: nut-upsd
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/nut-upsd-0.1.1/nut-upsd-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-09-19T15:16:43.939756414Z"
     description: A Helm chart for Kubernetes
     digest: 7503376150c1278b50835f08b16888bd617982632e7837db6a236ac11d42f630
@@ -1973,4 +1983,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-09-19T15:16:43.94016052Z"
+generated: "2025-09-19T18:43:23.072325731Z"
