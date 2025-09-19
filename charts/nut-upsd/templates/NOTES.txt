@@ -1,0 +1,34 @@
+# templates/notes.txt
+
+{{- if .Values.secret.enabled }}
+**Secret Information**
+A secret named `{{ include "nut-upsd.secretName" . }}` has been created in the cluster with the API password. You can access this secret using:
+
+    kubectl get secret {{ include "nut-upsd.secretName" . }} -o yaml
+
+**API_PASSWORD Key:**
+You can access the API password by referencing the `{{ include "nut-upsd.apiPasswordKey" . }}` key in the secret.
+
+{{- end }}
+
+**Nut-UPS Service**
+Your Nut-UPS service is running and can be accessed via the following endpoint:
+
+    Service Name: {{ include "nut-upsd.serviceName" . }}
+    Port: {{ .Values.service.port }}
+
+You can test the service with the following command:
+
+    kubectl port-forward svc/{{ include "nut-upsd.serviceName" . }} 3493:3493
+
+**Helm Release**
+To check the status of the Helm release, you can run:
+
+    helm status {{ .Release.Name }}
+
+---
+
+**Important Notes:**
+
+- If you're using the UPS via USB, ensure that the device path `/dev/bus/usb` is properly mounted, as configured in the Helm chart.
+- The application’s health and readiness probes are configured. You can adjust these values in the `values.yaml` file if needed.

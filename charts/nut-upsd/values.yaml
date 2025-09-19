@@ -1,0 +1,49 @@
+# values.yaml
+
+# Nut-UPS Service Configuration
+timezone: "Europe/Bucharest"
+apiPassword: "YourPasswordForAPIaccess"
+driver: "usbhid-ups"
+replicas: 1
+upsname: "ups"
+
+image:
+  repository: "instantlinux/nut-upsd"
+  tag: "latest"
+
+service:
+  enabled: true
+  name: "nut-upsd"
+  type: "ClusterIP"
+  port: 3493
+  targetPort: 3493
+  annotations: {}
+
+nodeSelector:
+  disktype: ssd
+
+# Secret Configuration
+secret:
+  enabled: true
+  name: "nut-upsd-secret"  # The name of the secret to be created
+  apiPasswordKey: "apiPassword"  # Key for the password in the secret
+
+# Liveness Probe Configuration
+livenessProbe:
+  enabled: true
+  path: "/status"  # Adjust to your application's health check path
+  port: 3493
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  failureThreshold: 3
+  successThreshold: 1
+
+# Readiness Probe Configuration
+readinessProbe:
+  enabled: true
+  path: "/status"  # Adjust to your application's readiness check path
+  port: 3493
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  failureThreshold: 3
+  successThreshold: 1
