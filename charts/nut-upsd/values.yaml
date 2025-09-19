@@ -47,3 +47,17 @@ readinessProbe:
   periodSeconds: 10
   failureThreshold: 3
   successThreshold: 1
+
+volumes:
+  - name: hiddev-device
+    hostPath:
+      path: /dev/hiddev0
+      type: CharDevice
+
+volumeMounts:
+  - name: hiddev-device
+    mountPath: /dev/hiddev0
+    readOnly: true
+
+securityContext:
+  privileged: true
