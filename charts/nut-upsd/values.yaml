@@ -20,7 +20,7 @@ service:
   annotations: {}
 
 nodeSelector:
-  disktype: ssd
+  has-ups-connect: true
 
 # Secret Configuration
 secret:
