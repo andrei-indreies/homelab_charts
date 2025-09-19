@@ -1582,6 +1582,17 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/nextcloud-app-0.0.1/nextcloud-app-0.0.1.tgz
     version: 0.0.1
+  nut-upsd:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-09-19T15:16:43.939756414Z"
+    description: A Helm chart for Kubernetes
+    digest: 7503376150c1278b50835f08b16888bd617982632e7837db6a236ac11d42f630
+    name: nut-upsd
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/nut-upsd-0.1.0/nut-upsd-0.1.0.tgz
+    version: 0.1.0
   pihole:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -1962,4 +1973,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-09-17T17:47:51.677733291Z"
+generated: "2025-09-19T15:16:43.94016052Z"
