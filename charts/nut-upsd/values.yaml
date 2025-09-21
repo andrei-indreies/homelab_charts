@@ -19,8 +19,7 @@ service:
   targetPort: 3493
   annotations: {}
 
-nodeSelector:
-  has-ups-connect: true
+nodeSelector: {}
 
 # Secret Configuration
 secret:

@@ -14,8 +14,10 @@ spec:
       labels:
         app: nut-upsd
     spec:
+      {{- with .Values.nodeSelector }}
       nodeSelector:
-        {{- toYaml .Values.nodeSelector | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: nut-upsd
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
