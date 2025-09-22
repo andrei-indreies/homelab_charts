@@ -143,6 +143,11 @@ z2m:
 
 mosquitto: 
   replicaCount: 1  
+  credentials: admin:$7$100$feD9t1MHg+j9jFjI$BUDP5+E+/xHGEEoHX4Wd+5pvGIs3n3emQS0DJzQgASsI5cmTTrzhjo1EuSPEhcTJq3dAmBg8VaicSr3BGhA3Fw== #admin:password
+  
+  ingress:
+    externalConnection: false
+    match: HostSNI(`*`)
 
   name: mosquitto
 
