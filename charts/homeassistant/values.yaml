@@ -151,6 +151,7 @@ mosquitto:
     tag: 2.0.22
     pullPolicy: IfNotPresent
   service:
+    port: 1883
     targetPort: 1883
   podAnnotations: {}
   podSecurityContext: {}
