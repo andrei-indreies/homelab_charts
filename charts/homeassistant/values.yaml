@@ -156,18 +156,35 @@ mosquitto:
     port: 1883
     targetPort: 1883
 
+  hostNetwork: false
+
+  users:
+    - username: admin
+      password: MyStrongPassword123
+    - username: zigbee2mqtt
+      password: ZigbeeSecretPass!
+    - username: homeassistant
+      password: HAPass_4567
+
   podAnnotations: {}
   podSecurityContext: {}
   securityContext: {}
-  hostNetwork: false
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: []
 
-  initContainer:
-    volumes:
-      - name: mosquitto-password-data
-        mountPath: /mosquitto/config
-      - name: mosquitto-credentials
-        mountPath: /secrets
-        readOnly: true
+  volumeMounts:
+    - name: mosquitto-persistent-storage
+      mountPath: /mosquitto/data
+    - name: mosquitto-config
+      mountPath: /mosquitto/config/mosquitto.conf
+      subPath: mosquitto.conf
+    - name: mosquitto-password-data
+      mountPath: /mosquitto/config
+    - name: mosquitto-credentials
+      mountPath: /secrets
+      readOnly: true
 
   volumes:
     - name: mosquitto-persistent-storage
@@ -182,31 +199,6 @@ mosquitto:
       secret:
         secretName: mosquitto-passwords
 
-  volumeMounts:
-    - name: mosquitto-persistent-storage
-      mountPath: /mosquitto/data
-    - name: mosquitto-config
-      mountPath: /mosquitto/config/mosquitto.conf
-      subPath: mosquitto.conf
-    - name: mosquitto-password-data
-      mountPath: /mosquitto/config
-    - name: mosquitto-credentials
-      mountPath: /secrets
-      readOnly: true
-
-  users:
-    - username: admin
-      password: password
-
-  ingress:
-    externalConnection: false
-    match: HostSNI(`*`)
-
-  resources: {}
-
-  nodeSelector: {}
-  tolerations: []
-  affinity: {}
 
 #global
 namespace: main

@@ -36,8 +36,13 @@ spec:
             - |
               cp /secrets/passwordfile /mosquitto/config/password.txt
               mosquitto_passwd -U /mosquitto/config/password.txt
+              echo "Password file upgraded:"
           volumeMounts:
-            {{- toYaml .Values.mosquitto.initContainer.volumes | nindent 8 }}
+            - name: mosquitto-password-data
+              mountPath: /mosquitto/config
+            - name: mosquitto-credentials
+              mountPath: /secrets
+              readOnly: true
       containers:
         - name: {{ .Values.mosquitto.name }}
           image: "{{ .Values.mosquitto.image.repository }}:{{ .Values.mosquitto.image.tag }}"
