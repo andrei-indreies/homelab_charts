@@ -161,10 +161,6 @@ mosquitto:
   users:
     - username: admin
       password: MyStrongPassword123
-    - username: zigbee2mqtt
-      password: ZigbeeSecretPass!
-    - username: homeassistant
-      password: HAPass_4567
 
   podAnnotations: {}
   podSecurityContext: {}

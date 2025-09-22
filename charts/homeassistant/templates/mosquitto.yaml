@@ -36,6 +36,7 @@ spec:
             - |
               cp /secrets/passwordfile /mosquitto/config/password.txt
               mosquitto_passwd -U /mosquitto/config/password.txt
+              chmod 0700 /mosquitto/config/password.txt
               echo "Password file upgraded:"
           volumeMounts:
             - name: mosquitto-password-data
