@@ -146,17 +146,29 @@ mosquitto:
   replicaCount: 1
   autoscaling:
     enabled: false
+
   image:
     repository: eclipse-mosquitto
     tag: 2.0.22
     pullPolicy: IfNotPresent
+
   service:
     port: 1883
     targetPort: 1883
+
   podAnnotations: {}
   podSecurityContext: {}
   securityContext: {}
   hostNetwork: false
+
+  initContainer:
+    volumes:
+      - name: mosquitto-password-data
+        mountPath: /mosquitto/config
+      - name: mosquitto-credentials
+        mountPath: /secrets
+        readOnly: true
+
   volumes:
     - name: mosquitto-persistent-storage
       persistentVolumeClaim:
@@ -166,6 +178,10 @@ mosquitto:
         name: mosquitto-config
     - name: mosquitto-password-data
       emptyDir: {}
+    - name: mosquitto-credentials
+      secret:
+        secretName: mosquitto-passwords
+
   volumeMounts:
     - name: mosquitto-persistent-storage
       mountPath: /mosquitto/data
@@ -173,12 +189,15 @@ mosquitto:
       mountPath: /mosquitto/config/mosquitto.conf
       subPath: mosquitto.conf
     - name: mosquitto-password-data
-      mountPath: /mosquitto/config  
-  
-  credentials:
-    user: admin
-    password: password
-  
+      mountPath: /mosquitto/config
+    - name: mosquitto-credentials
+      mountPath: /secrets
+      readOnly: true
+
+  users:
+    - username: admin
+      password: password
+
   ingress:
     externalConnection: false
     match: HostSNI(`*`)
@@ -186,9 +205,7 @@ mosquitto:
   resources: {}
 
   nodeSelector: {}
-
   tolerations: []
-
   affinity: {}
 
 #global

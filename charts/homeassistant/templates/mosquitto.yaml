@@ -34,23 +34,10 @@ spec:
             - sh
             - -c
             - |
-              mosquitto_passwd -b -c /mosquitto/config/password.txt $MQTT_USER $MQTT_PASS
-              chown mosquitto:mosquitto /mosquitto/config/password.txt
-              chmod 600 /mosquitto/config/password.txt
-          env:
-            - name: MQTT_USER
-              valueFrom:
-                secretKeyRef:
-                  name: mosquitto-credentials
-                  key: user
-            - name: MQTT_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: mosquitto-credentials
-                  key: password
+              cp /secrets/passwordfile /mosquitto/config/password.txt
+              mosquitto_passwd -U /mosquitto/config/password.txt
           volumeMounts:
-            - name: mosquitto-password-data
-              mountPath: /mosquitto/config
+            {{- toYaml .Values.mosquitto.initContainer.volumes | nindent 8 }}
       containers:
         - name: {{ .Values.mosquitto.name }}
           image: "{{ .Values.mosquitto.image.repository }}:{{ .Values.mosquitto.image.tag }}"
