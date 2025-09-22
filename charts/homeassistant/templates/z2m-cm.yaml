@@ -11,8 +11,8 @@ data:
     homeassistant: true
     mqtt:
       base_topic: zigbee2mqtt	
-      password: password
-      user: admin
+      password: {{ .Values.mosquitto.credentials.password }}
+      user: {{ .Values.mosquitto.credentials.user }}
       server: mqtt://mosquitto:1883
     serial:
       adapter: ember

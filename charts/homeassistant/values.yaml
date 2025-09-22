@@ -143,7 +143,11 @@ z2m:
 
 mosquitto: 
   replicaCount: 1  
-  credentials: admin:$7$100$feD9t1MHg+j9jFjI$BUDP5+E+/xHGEEoHX4Wd+5pvGIs3n3emQS0DJzQgASsI5cmTTrzhjo1EuSPEhcTJq3dAmBg8VaicSr3BGhA3Fw== #admin:password
+  
+  credentials:
+    hash: admin:$7$100$feD9t1MHg+j9jFjI$BUDP5+E+/xHGEEoHX4Wd+5pvGIs3n3emQS0DJzQgASsI5cmTTrzhjo1EuSPEhcTJq3dAmBg8VaicSr3BGhA3Fw== #admin:password
+    user: admin
+    password: password
   
   ingress:
     externalConnection: false
@@ -192,6 +196,7 @@ mosquitto:
     - name: mosquitto-password
       mountPath: /mosquitto/config/password.txt
       subPath: password.txt
+      readOnly: true
 
   volumes:
     - name: mosquitto-persistent-storage
@@ -201,9 +206,8 @@ mosquitto:
       configMap:
         name: mosquitto-config
     - name: mosquitto-password
-      configMap:
-        name: mosquitto-password
-
+      secret:
+        secretName: mosquitto-password
 
 #global
 namespace: main
