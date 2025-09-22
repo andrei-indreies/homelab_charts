@@ -1,5 +1,5 @@
 {{- if .Values.mosquitto.ingress.externalConnection }}
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: mosquitto-tcp
@@ -10,7 +10,7 @@ spec:
   routes:
     - match: {{ .Values.mosquitto.ingress.match }}
       services:
-        - name: mosquitto
+        - name: {{ .Values.mosquitto.name }}
           namespace: {{ .Release.Namespace }}
           port: {{ .Values.mosquitto.service.port }}
 {{- end }}
