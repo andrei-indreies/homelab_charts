@@ -199,7 +199,6 @@ mosquitto:
       secret:
         secretName: mosquitto-passwords
 
-
 #global
 namespace: main
 persistence:
