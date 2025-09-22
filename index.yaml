@@ -85,6 +85,16 @@ entries:
   ha-z2m-mosquitto:
   - apiVersion: v2
     appVersion: 1.17.0
+    created: "2025-09-22T14:17:52.343115323Z"
+    description: A Helm chart for Kubernetes
+    digest: e6ab2eb161f354ee9e8fad0e7d89cd0ea8747f279481249ae20561cf543f4f64
+    name: ha-z2m-mosquitto
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/ha-z2m-mosquitto-1.1.7/ha-z2m-mosquitto-1.1.7.tgz
+    version: 1.1.7
+  - apiVersion: v2
+    appVersion: 1.17.0
     created: "2025-09-22T14:15:00.786397732Z"
     description: A Helm chart for Kubernetes
     digest: be64684e2df02b47efbbf7ef88624ff8a1d7c96dd1cd81491bc52640f254e3b0
@@ -2083,4 +2093,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-09-22T14:15:00.787900552Z"
+generated: "2025-09-22T14:17:52.343532767Z"
