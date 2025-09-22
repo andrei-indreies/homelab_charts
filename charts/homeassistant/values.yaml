@@ -141,63 +141,21 @@ z2m:
       configMap:
         name: zigbee2mqtt-config
 
-mosquitto: 
-  replicaCount: 1  
-  
-  credentials:
-    hash: admin:$7$100$feD9t1MHg+j9jFjI$BUDP5+E+/xHGEEoHX4Wd+5pvGIs3n3emQS0DJzQgASsI5cmTTrzhjo1EuSPEhcTJq3dAmBg8VaicSr3BGhA3Fw== #admin:password
-    user: admin
-    password: password
-  
-  ingress:
-    externalConnection: false
-    match: HostSNI(`*`)
-
+mosquitto:
   name: mosquitto
-
-  image:
-    repository: eclipse-mosquitto
-    pullPolicy: IfNotPresent
-    tag: "latest"
-  
-  podAnnotations: {}
-
-  podSecurityContext: {}
-
-  securityContext: {}
-
-  service:
-    type: ClusterIP
-    port: 1883
-    targetPort: 1883
-
-  resources: {}
-
+  replicaCount: 1
   autoscaling:
     enabled: false
-    minReplicas: 1
-    maxReplicas: 3
-    targetCPUUtilizationPercentage: 80
-
-  nodeSelector: {}
-
-  tolerations: []
-
-  affinity: {}
-
+  image:
+    repository: eclipse-mosquitto
+    tag: 2.0.22
+    pullPolicy: IfNotPresent
+  service:
+    targetPort: 1883
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
   hostNetwork: false
-
-  volumeMounts: 
-    - name: mosquitto-persistent-storage
-      mountPath: /mosquitto/data
-    - name: mosquitto-config
-      mountPath: /mosquitto/config/mosquitto.conf
-      subPath: mosquitto.conf
-    - name: mosquitto-password
-      mountPath: /mosquitto/config/password.txt
-      subPath: password.txt
-      readOnly: true
-
   volumes:
     - name: mosquitto-persistent-storage
       persistentVolumeClaim:
@@ -205,9 +163,32 @@ mosquitto:
     - name: mosquitto-config
       configMap:
         name: mosquitto-config
-    - name: mosquitto-password
-      secret:
-        secretName: mosquitto-password
+    - name: mosquitto-password-data
+      emptyDir: {}
+  volumeMounts:
+    - name: mosquitto-persistent-storage
+      mountPath: /mosquitto/data
+    - name: mosquitto-config
+      mountPath: /mosquitto/config/mosquitto.conf
+      subPath: mosquitto.conf
+    - name: mosquitto-password-data
+      mountPath: /mosquitto/config  
+  
+  credentials:
+    user: admin
+    password: password
+  
+  ingress:
+    externalConnection: false
+    match: HostSNI(`*`)
+
+  resources: {}
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
 
 #global
 namespace: main

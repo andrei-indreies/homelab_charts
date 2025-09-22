@@ -12,34 +12,53 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.mosquitto.name }}
-  progressDeadlineSeconds: 600
-  revisionHistoryLimit: 2
   strategy:
     type: Recreate
   template:
     metadata:
+      labels:
+        app: {{ .Values.mosquitto.name }}
       {{- with .Values.mosquitto.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      labels:
-        app: {{ .Values.mosquitto.name }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       serviceAccountName: {{ include "homeassistant.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.mosquitto.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: generate-password
+          image: "{{ .Values.mosquitto.image.repository }}:{{ .Values.mosquitto.image.tag }}"
+          imagePullPolicy: {{ .Values.mosquitto.image.pullPolicy }}
+          command:
+            - sh
+            - -c
+            - |
+              mosquitto_passwd -b -c /mosquitto/config/password.txt $MQTT_USER $MQTT_PASS
+              chown mosquitto:mosquitto /mosquitto/config/password.txt
+              chmod 600 /mosquitto/config/password.txt
+          env:
+            - name: MQTT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mosquitto-credentials
+                  key: user
+            - name: MQTT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mosquitto-credentials
+                  key: password
+          volumeMounts:
+            - name: mosquitto-password-data
+              mountPath: /mosquitto/config
       containers:
         - name: {{ .Values.mosquitto.name }}
+          image: "{{ .Values.mosquitto.image.repository }}:{{ .Values.mosquitto.image.tag }}"
+          imagePullPolicy: {{ .Values.mosquitto.image.pullPolicy }}
           securityContext:
             {{- toYaml .Values.mosquitto.securityContext | nindent 12 }}
-          image: "{{ .Values.mosquitto.image.repository }}:{{ .Values.mosquitto.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.mosquitto.image.pullPolicy }}
           ports:
-            - name: http
+            - name: mqtt
               containerPort: {{ .Values.mosquitto.service.targetPort }}
               protocol: TCP
           resources:
@@ -49,24 +68,21 @@ spec:
           livenessProbe:
             tcpSocket:
               port: {{ .Values.mosquitto.service.targetPort }}
-            initialDelaySeconds: 0
-            failureThreshold: 3
-            timeoutSeconds: 1
+            initialDelaySeconds: 5
             periodSeconds: 10
           readinessProbe:
             tcpSocket:
               port: {{ .Values.mosquitto.service.targetPort }}
-            initialDelaySeconds: 0
-            failureThreshold: 3
-            timeoutSeconds: 1
+            initialDelaySeconds: 5
             periodSeconds: 10
           startupProbe:
             tcpSocket:
               port: {{ .Values.mosquitto.service.targetPort }}
-            initialDelaySeconds: 0
-            failureThreshold: 30
-            timeoutSeconds: 1
+            initialDelaySeconds: 5
             periodSeconds: 5
+      volumes:
+        {{- toYaml .Values.mosquitto.volumes | nindent 8 }}
+      hostNetwork: {{ .Values.mosquitto.hostNetwork }}
       {{- with .Values.mosquitto.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -75,6 +91,3 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      volumes:
-        {{- toYaml .Values.mosquitto.volumes | nindent 8 }}
-      hostNetwork: {{ .Values.mosquitto.hostNetwork }}

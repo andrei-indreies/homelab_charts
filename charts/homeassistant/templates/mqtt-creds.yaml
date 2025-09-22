@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mosquitto-credentials
+  namespace: {{ .Values.namespace }}
+type: Opaque
+stringData:
+  user: {{ .Values.mosquitto.credentials.user | quote }}
+  password: {{ .Values.mosquitto.credentials.password | quote }}
