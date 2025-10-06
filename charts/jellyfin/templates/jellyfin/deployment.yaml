@@ -83,6 +83,13 @@ spec:
             {{- with .Values.jellyfin.volumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
+            {{- if .Values.jellyfin.recordings.existingClaim }}
+            - name: recordings
+              mountPath: /recordings
+              {{- if .Values.persistence.jellyfin.recordings.readOnly }}
+              readOnly: true
+              {{- end }}
+            {{- end }}
         {{- with .Values.jellyfin.extraContainers }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -114,6 +121,11 @@ spec:
           {{- end }}
         {{- with .Values.jellyfin.volumes }}
         {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- if .Values.jellyfin.persistence.recordings.existingClaim }}
+        - name: recordings
+          persistentVolumeClaim:
+            claimName: {{ .Values.jellyfin.recordings.existingClaim }}
         {{- end }}
       {{- with .Values.jellyfin.nodeSelector }}
       nodeSelector:

@@ -161,6 +161,10 @@ jellyfin:
       annotations: {}
       storageClass: nfs
 
+    recordings:
+      existingClaim:
+      readOnly: true  # or false if Jellyfin should write to it
+
   # -- Configuration for metrics collection and monitoring
   metrics:
     # -- Enable or disable metrics collection
