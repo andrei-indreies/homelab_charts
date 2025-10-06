@@ -162,7 +162,7 @@ jellyfin:
       storageClass: nfs
 
     recordings:
-      existingClaim:
+      existingClaim: false
       readOnly: true  # or false if Jellyfin should write to it
 
   # -- Configuration for metrics collection and monitoring
