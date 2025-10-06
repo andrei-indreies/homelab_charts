@@ -9,26 +9,44 @@ on:
 
 jobs:
   helm-release:
-    # depending on default permission settings for your org (contents being read-only or read-write for workloads), you will have to add permissions
-    # see: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token
     permissions:
-      pages: write
       contents: write
+      pages: write
     runs-on: ubuntu-latest
-    steps:  
-      - name: Checkout
-        uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Configure Git
+      - name: Setup Git
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
       - name: Install Helm
         uses: azure/setup-helm@v3
 
-      - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.6.0
+      - name: Install chart-releaser CLI
+        run: |
+          curl -sSL https://github.com/helm/chart-releaser/releases/download/v1.5.0/chart-releaser_1.5.0_linux_amd64.tar.gz | tar -xz
+          sudo mv linux_amd64/cr /usr/local/bin/cr
+
+      - name: Package Helm charts
+        run: |
+          cr package --charts charts
+
+      - name: Upload Helm charts and update index.yaml
         env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cr upload --owner ${{ github.repository_owner }} --git-repo ${{ github.event.repository.name }}
+          cr index --owner ${{ github.repository_owner }} --git-repo ${{ github.event.repository.name }}
+
+      - name: Publish GitHub Pages
+        uses: actions/configure-pages@v3
+      - uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./charts
+      - uses: actions/deploy-pages@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
