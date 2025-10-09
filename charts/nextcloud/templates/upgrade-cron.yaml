@@ -1,21 +1,24 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: nextcloud-cron
+  name: nextcloud-occ-upgrade
   labels:
-    app.kubernetes.io/name: nextcloud-cron
+    app.kubernetes.io/name: nextcloud-occ-upgrade
 spec:
-  schedule: "*/5 * * * *"
+  schedule: "0 03 * * 4"
   jobTemplate:
     spec:
       template:
         spec:
           restartPolicy: OnFailure
           containers:
-            - name: nextcloud-cron
+            - name: nextcloud-occ-upgrade
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
-              command: ["php", "/var/www/html/cron.php"]
+              command:
+                - /bin/sh
+                - -c
+                - su -s /bin/sh www-data -c "./occ upgrade"
               env:
                 - name: PUID
                   value: "{{ .Values.environment.PUID }}"
@@ -47,8 +50,8 @@ spec:
                 - name: data-volume
                   mountPath: /var/www/html/data
               securityContext:
-                runAsUser: 33
-                runAsGroup: 33
+                runAsUser: 0      # root is needed to switch user with su
+                runAsGroup: 0
           volumes:
             - name: html-volume
               persistentVolumeClaim:
