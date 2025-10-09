@@ -64,5 +64,5 @@ spec:
                 claimName: nextcloud-data-pvc
           {{- with .Values.nodeSelector }}
           nodeSelector:
-            {{- toYaml . | nindent 8 }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
