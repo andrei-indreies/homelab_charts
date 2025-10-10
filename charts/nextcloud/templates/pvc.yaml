@@ -25,18 +25,6 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nextcloud-html-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: {{ .Values.config.storageClass }}
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: nextcloud-data-pvc
 spec:
   accessModes:

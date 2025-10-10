@@ -40,8 +40,6 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            - name: html-volume
-              mountPath: /var/www/html
             - name: custom-apps-volume
               mountPath: /var/www/html/custom_apps
             - name: config-volume
@@ -81,9 +79,6 @@ spec:
               echo "extension=inotify.so" > /usr/local/etc/php/conf.d/docker-php-ext-inotify.ini && \
               exec apache2-foreground
       volumes:
-        - name: html-volume
-          persistentVolumeClaim:
-            claimName: nextcloud-html-pvc
         - name: custom-apps-volume
           persistentVolumeClaim:
             claimName: nextcloud-custom-apps-pvc
