@@ -65,7 +65,14 @@ devices:
 securityContext:
   privileged: true
 
-resources: {}
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
 
 podAnnotations: {}
 
