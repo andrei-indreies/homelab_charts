@@ -2004,6 +2004,16 @@ entries:
   tvheadend:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-10-20T08:21:47.488251286Z"
+    description: A Helm chart for Kubernetes
+    digest: ad27645d2fd07aa8b9efef02fd07048cd6ae59626f3c44f053bc15594f5705b9
+    name: tvheadend
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/tvheadend-0.1.1/tvheadend-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-09-17T09:47:23.236863128Z"
     description: A Helm chart for Kubernetes
     digest: eadd8443b49519ace77c0ec33cb854fa2f2c4262f7e19796cfe523381d6028ce
@@ -2165,4 +2175,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-10T10:20:31.852736615Z"
+generated: "2025-10-20T08:21:47.488664786Z"
