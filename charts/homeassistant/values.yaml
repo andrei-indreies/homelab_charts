@@ -78,6 +78,11 @@ z2m:
   securityContext: 
     privileged: true
 
+  volume:
+    name: zigbee2mqtt-data
+    claimName: zigbee2mqtt-data
+    size: 1Gi
+
   service:
     type: ClusterIP
     port: 80
@@ -151,6 +156,11 @@ mosquitto:
     repository: eclipse-mosquitto
     tag: 2.0.22
     pullPolicy: IfNotPresent
+
+  volume:
+    name: mosquitto-persistent-storage
+    claimName: mq-pv-claim
+    size: 800Mi
 
   service:
     port: 1883
