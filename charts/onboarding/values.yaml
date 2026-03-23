@@ -10,6 +10,8 @@ image:
     pullPolicy: IfNotPresent
     tag: "latest"
 
+imagePullSecret: myregistrykey
+
 host: drewspace.ro
 
 service:
