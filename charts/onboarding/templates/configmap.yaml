@@ -23,4 +23,5 @@ data:
   SMTP_FROM: {{ .Values.config.smtp.from | quote }}
   UPTIME_KUMA_URL: {{ .Values.config.uptimeKuma.url | quote }}
   FRONTEND_URL: {{ printf "https://%s" .Values.host | quote }}
+  VITE_DISCORD_URL: {{ .Values.config.discordUrl | quote }}
   PORT: "3000"
