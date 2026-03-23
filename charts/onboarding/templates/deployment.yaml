@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "homelab-onboarding.fullname" . }}
+  labels:
+    {{- include "homelab-onboarding.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "homelab-onboarding.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "homelab-onboarding.selectorLabels" . | nindent 8 }}
+    spec:
+      initContainers:
+        - name: wait-for-ldap
+          image: busybox:1.36
+          command: ['sh', '-c', 'until nc -z -v -w5 {{ tpl .Values.config.ldap.url . | replace "ldap://" "" | replace "ldaps://" "" | splitList ":" | first }} {{ tpl .Values.config.ldap.url . | splitList ":" | last }}; do echo waiting for ldap; sleep 2; done']
+        - name: wait-for-db
+          image: busybox:1.36
+          command: ['sh', '-c', 'until nc -z -v -w5 {{ .Values.config.db.host }} {{ .Values.config.db.port }}; do echo waiting for db; sleep 2; done']
+      containers:
+        - name: backend
+          image: "{{ .Values.image.backend.repository }}:{{ .Values.image.backend.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.backend.pullPolicy }}
+          ports:
+            - name: http-backend
+              containerPort: 3000
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ include "homelab-onboarding.fullname" . }}-config
+            - secretRef:
+                name: {{ include "homelab-onboarding.fullname" . }}-secrets
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        - name: frontend
+          image: "{{ .Values.image.frontend.repository }}:{{ .Values.image.frontend.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.frontend.pullPolicy }}
+          ports:
+            - name: http-frontend
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

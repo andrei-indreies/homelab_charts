@@ -1,0 +1,73 @@
+replicaCount: 1
+
+image:
+  backend:
+    repository: ghcr.io/andrei-indreies/homelab-onboarding-backend
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  frontend:
+    repository: ghcr.io/andrei-indreies/homelab-onboarding-frontend
+    pullPolicy: IfNotPresent
+    tag: "latest"
+
+host: drewspace.ro
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: "" # Defaults to global host if empty
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+traefik:
+  enabled: false
+  entryPoints:
+    - websecure
+  routes:
+    - match: "" # Defaults to global host if empty
+      kind: Rule
+      middlewares: []
+  tls:
+    certResolver: letsencrypt
+
+config:
+  ldap:
+    url: "ldap://ldap-service:389"
+    bindDn: "cn=admin,dc=example,dc=com"
+    bindPassword: "admin"
+    userBaseDn: "ou=users,dc=example,dc=com"
+    groupBaseDn: "ou=groups,dc=example,dc=com"
+    defaultUserGroup: "users"
+    adminGroup: "admins"
+  db:
+    host: "mariadb-service"
+    port: 3306
+    username: "drewspace"
+    password: "password"
+    database: "drewspace"
+  jwt:
+    secret: "change-me-to-a-random-secret"
+  admin:
+    usernames: "admin"
+  smtp:
+    host: ""
+    port: 465
+    secure: true
+    user: ""
+    pass: ""
+    from: ""
+  uptimeKuma:
+    url: ""
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}

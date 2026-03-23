@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "homelab-onboarding.fullname" . }}
+  labels:
+    {{- include "homelab-onboarding.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: http-frontend
+      port: 80
+      targetPort: 80
+      protocol: TCP
+    - name: http-backend
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
+  selector:
+    {{- include "homelab-onboarding.selectorLabels" . | nindent 4 }}

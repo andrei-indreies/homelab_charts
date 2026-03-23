@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "homelab-onboarding.fullname" . }}-config
+  labels:
+    {{- include "homelab-onboarding.labels" . | nindent 4 }}
+data:
+  LDAP_URL: {{ .Values.config.ldap.url | quote }}
+  LDAP_BIND_DN: {{ .Values.config.ldap.bindDn | quote }}
+  LDAP_USER_BASE_DN: {{ .Values.config.ldap.userBaseDn | quote }}
+  LDAP_GROUP_BASE_DN: {{ .Values.config.ldap.groupBaseDn | quote }}
+  LDAP_DEFAULT_USER_GROUP: {{ .Values.config.ldap.defaultUserGroup | quote }}
+  LDAP_ADMIN_GROUP: {{ .Values.config.ldap.adminGroup | quote }}
+  DB_HOST: {{ .Values.config.db.host | quote }}
+  DB_PORT: {{ .Values.config.db.port | quote }}
+  DB_USERNAME: {{ .Values.config.db.username | quote }}
+  DB_DATABASE: {{ .Values.config.db.database | quote }}
+  ADMIN_USERNAMES: {{ .Values.config.admin.usernames | quote }}
+  SMTP_HOST: {{ .Values.config.smtp.host | quote }}
+  SMTP_PORT: {{ .Values.config.smtp.port | quote }}
+  SMTP_SECURE: {{ .Values.config.smtp.secure | quote }}
+  SMTP_USER: {{ .Values.config.smtp.user | quote }}
+  SMTP_FROM: {{ .Values.config.smtp.from | quote }}
+  UPTIME_KUMA_URL: {{ .Values.config.uptimeKuma.url | quote }}
+  FRONTEND_URL: {{ printf "https://%s" .Values.host | quote }}
+  PORT: "3000"

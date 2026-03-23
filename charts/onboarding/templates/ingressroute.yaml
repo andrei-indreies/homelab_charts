@@ -1,0 +1,28 @@
+{{- if .Values.traefik.enabled -}}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ include "homelab-onboarding.fullname" . }}
+  labels:
+    {{- include "homelab-onboarding.labels" . | nindent 4 }}
+spec:
+  entryPoints:
+    {{- toYaml .Values.traefik.entryPoints | nindent 4 }}
+  routes:
+    {{- range .Values.traefik.routes }}
+    - match: {{ .match | default (printf "Host(`%s`)" $.Values.host) | quote }}
+      kind: {{ .kind | default "Rule" }}
+      services:
+        - name: {{ include "homelab-onboarding.fullname" $ }}
+          port: 80
+          passHostHeader: true
+      {{- if .middlewares }}
+      middlewares:
+        {{- toYaml .middlewares | nindent 8 }}
+      {{- end }}
+    {{- end }}
+  {{- if .Values.traefik.tls }}
+  tls:
+    {{- toYaml .Values.traefik.tls | nindent 4 }}
+  {{- end }}
+{{- end }}
