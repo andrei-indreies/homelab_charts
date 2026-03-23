@@ -678,6 +678,16 @@ entries:
   homelab-onboarding:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-03-23T12:21:41.087238081Z"
+    description: A Helm chart for the HomeLAB Onboarding Portal
+    digest: f60b3a3dbc047b7d15251bac62d2dbcc041b6aedc9887a92f6414d65a014fa08
+    name: homelab-onboarding
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/homelab-onboarding-0.1.1/homelab-onboarding-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2026-03-23T10:51:40.124510804Z"
     description: A Helm chart for the HomeLAB Onboarding Portal
     digest: 5d751aef9dde5f3c3239d7247296b67d4fe7a8ef0a30ce5ab4b0a738e95973c2
@@ -2196,4 +2206,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-23T10:51:40.125086884Z"
+generated: "2026-03-23T12:21:41.088003619Z"
