@@ -709,6 +709,17 @@ entries:
   jellyfin:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-05-12T11:28:46.435863323Z"
+    description: A media stack with jellyfin and servarr applications Helm charts
+      for Kubernetes
+    digest: 474e5481d8a515ed232d476839477bd2e773d60f9b853441aa03ba51476b21c8
+    name: jellyfin
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/jellyfin-1.1.3/jellyfin-1.1.3.tgz
+    version: 1.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-10-06T21:46:18.436900183Z"
     description: A media stack with jellyfin and servarr applications Helm charts
       for Kubernetes
@@ -2216,4 +2227,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-23T14:25:38.255621681Z"
+generated: "2026-05-12T11:28:46.436294032Z"
