@@ -801,6 +801,23 @@ persistence:
       size: 8000Gi
       annotations: {}
       storageClass: nfs
+    externalMedia:
+      # -- Enable external media volume (manually created PV)
+      enabled: true
+      # -- Name of an existing PVC to use. Set this to bind to your manually-created PV.
+      existingClaim: ""
+      # -- Access mode for the PVC (only used when existingClaim is empty)
+      accessMode: ReadWriteMany
+      # -- Size of the PVC (only used when existingClaim is empty)
+      size: 1000Gi
+      # -- Custom annotations for the PVC
+      annotations: {}
+      # -- Storage class for the PVC (only used when existingClaim is empty)
+      storageClass: ""
+      # -- Mount path inside containers
+      mountPath: /external-media
+      # -- Mount as read-only
+      readOnly: false
 
 domain: drewspace.ro
 

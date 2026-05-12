@@ -53,6 +53,13 @@ spec:
               name: config
             - mountPath: /media
               name: media
+            {{- if .Values.persistence.externalMedia.enabled }}
+            - mountPath: {{ .Values.persistence.externalMedia.mountPath | default "/external-media" }}
+              name: external-media
+              {{- if .Values.persistence.externalMedia.readOnly }}
+              readOnly: true
+              {{- end }}
+            {{- end }}
             {{- with .Values.radarr.volumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -78,6 +85,11 @@ spec:
           {{- else }}
           emptyDir: {}
            {{- end }}
+        {{- if .Values.persistence.externalMedia.enabled }}
+        - name: external-media
+          persistentVolumeClaim:
+            claimName: {{ if .Values.persistence.externalMedia.existingClaim }}{{ .Values.persistence.externalMedia.existingClaim }}{{- else }}{{ template "jellyfin.fullname" . }}-external-media{{- end }}
+        {{- end }}
         {{- with .Values.radarr.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
