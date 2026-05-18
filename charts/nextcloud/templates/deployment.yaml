@@ -27,6 +27,24 @@ spec:
       serviceAccountName: {{ include "nextcloud-app.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: nextcloud-init-html
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - '-c'
+            - >
+              echo "Updating Nextcloud source files...";
+              rsync -rlptD --no-owner --no-group --delete
+              --exclude='/config'
+              --exclude='/data'
+              --exclude='/custom_apps'
+              /usr/src/nextcloud/ /var/www/html/;
+              echo "Done!"
+          volumeMounts:
+            - name: html-volume
+              mountPath: /var/www/html
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -40,6 +58,8 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
+            - name: html-volume
+              mountPath: /var/www/html
             - name: custom-apps-volume
               mountPath: /var/www/html/custom_apps
             - name: config-volume
@@ -79,6 +99,9 @@ spec:
               echo "extension=inotify.so" > /usr/local/etc/php/conf.d/docker-php-ext-inotify.ini && \
               exec apache2-foreground
       volumes:
+        - name: html-volume
+          persistentVolumeClaim:
+            claimName: nextcloud-html-pvc
         - name: custom-apps-volume
           persistentVolumeClaim:
             claimName: nextcloud-custom-apps-pvc

@@ -76,3 +76,7 @@ data:
   storageClass: truenas
 config:
   storageClass: rook-ceph-block
+customApps:
+  storageClass: rook-ceph-block
+html:
+  storageClass: rook-ceph-block
