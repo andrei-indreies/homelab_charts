@@ -1,0 +1,68 @@
+===============================================================
+ 🎉  Headscale + Headplane deployed!
+===============================================================
+
+{{- $serverUrl := .Values.headscale.config.serverUrl | default (printf "https://headscale.%s" .Values.domain) }}
+
+Headscale server URL:
+  {{ $serverUrl }}
+
+Headplane admin UI:
+  https://headscale.{{ .Values.domain }}/admin
+  (Internal access only via "{{ .Values.headplane.ingress.entryPoint }}" entrypoint)
+
+---------------------------------------------------------------
+ POST-INSTALL STEPS
+---------------------------------------------------------------
+
+1. Generate a Headscale API key (required for Headplane):
+
+   kubectl exec -it deploy/{{ include "headscale.fullname" . }} \
+     -n {{ .Release.Namespace }} -- \
+     headscale apikeys create --expiration 999d
+
+2. Set the API key in your values and upgrade:
+
+   helm upgrade {{ .Release.Name }} ./charts/headscale \
+     --set headplane.config.apiKey="YOUR_API_KEY_HERE" \
+     -n {{ .Release.Namespace }}
+
+3. Create your first user:
+
+   kubectl exec -it deploy/{{ include "headscale.fullname" . }} \
+     -n {{ .Release.Namespace }} -- \
+     headscale users create myuser
+
+4. Register a Tailscale client:
+
+   tailscale up --login-server {{ $serverUrl }}
+
+---------------------------------------------------------------
+ NOISE KEY
+---------------------------------------------------------------
+The Noise private key is auto-generated on first boot and stored
+at /var/lib/headscale/noise_private.key inside the PVC.
+Do NOT delete the PVC or this key will be lost.
+
+{{- if .Values.headscale.config.oidc.enabled }}
+
+---------------------------------------------------------------
+ OIDC
+---------------------------------------------------------------
+OIDC is enabled with issuer: {{ .Values.headscale.config.oidc.issuer }}
+Ensure the redirect URI is registered in your OIDC provider:
+  {{ $serverUrl }}/oidc/callback
+{{- end }}
+
+{{- if not .Values.headscale.tls.enabled }}
+
+---------------------------------------------------------------
+ TLS (Not Yet Configured)
+---------------------------------------------------------------
+Headscale TLS is currently DISABLED. TLS is terminated at Traefik.
+To enable TLS passthrough (required for some Tailscale features):
+  1. Create a TLS Secret with your cert and key
+  2. Set headscale.tls.enabled=true and headscale.tls.existingSecret
+  3. Set headscale.ingress.tls.passthrough=true
+  4. Update headscale.config.serverUrl to use https://
+{{- end }}

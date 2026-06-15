@@ -1,0 +1,426 @@
+# =============================================================================
+# Global settings shared across all components
+# =============================================================================
+global:
+  # -- (string) Default StorageClass for all PVCs. Overridden per-component.
+  storageClass: ""
+  # -- (list) Global imagePullSecrets applied to all deployments.
+  imagePullSecrets: []
+
+# -- (string) Override the chart name.
+nameOverride: ""
+# -- (string) Override the full release name.
+fullnameOverride: ""
+
+# -- (string) Base domain for IngressRoute host rules (e.g., headscale.<domain>).
+domain: drewspace.ro
+
+# =============================================================================
+# Headscale — VPN control plane server
+# =============================================================================
+headscale:
+  # -- (int) Number of replicas. Must remain 1 for SQLite. Default: 1.
+  replicaCount: 1
+
+  image:
+    # -- (string) Container image repository for Headscale.
+    repository: headscale/headscale
+    # -- (string) Image tag. Defaults to Chart.appVersion if empty.
+    tag: ""
+    # -- (string) Image pull policy (Always, IfNotPresent, Never). Default: IfNotPresent.
+    pullPolicy: IfNotPresent
+
+  # -- (list) imagePullSecrets for Headscale. Merged with global.imagePullSecrets.
+  imagePullSecrets: []
+
+  # ---------------------------------------------------------------------------
+  # Headscale config.yaml fields (non-sensitive)
+  # ---------------------------------------------------------------------------
+  config:
+    # -- (string) The external URL clients connect to. Auto-derived as https://headscale.<domain> if empty.
+    serverUrl: ""
+    # -- (string) Address Headscale binds to for HTTP API. Default: "0.0.0.0:8080".
+    listenAddr: "0.0.0.0:8080"
+    # -- (string) Address for /metrics and /debug endpoints. Default: "0.0.0.0:9090".
+    metricsListenAddr: "0.0.0.0:9090"
+    # -- (string) Address for gRPC API. Default: "0.0.0.0:50443".
+    grpcListenAddr: "0.0.0.0:50443"
+    # -- (bool) Allow insecure (unencrypted) gRPC. Required when TLS is not on Headscale. Default: true.
+    grpcAllowInsecure: true
+    # -- (string) Log level: trace, debug, info, warn, error. Default: "info".
+    logLevel: "info"
+    # -- (string) Log format: text or json. Default: "text".
+    logFormat: "text"
+    # -- (bool) Disable automatic update check on startup. Default: true.
+    disableCheckUpdates: true
+
+    # -- (list) CIDR(s) of trusted reverse proxies. Default: [].
+    trustedProxies: []
+
+    # -- DNS configuration for MagicDNS and upstream resolvers.
+    dns:
+      # -- (string) Base domain for MagicDNS. Default: "headscale.drewspace.ro".
+      baseDomain: "headscale.drewspace.ro"
+      # -- (list) Upstream DNS nameservers. Default: ["1.1.1.1", "1.0.0.1"].
+      nameservers:
+        - "1.1.1.1"
+        - "1.0.0.1"
+
+    # -- IP prefix allocation for Tailscale clients.
+    prefixes:
+      # -- (string) IPv4 CGNAT prefix. Default: "100.64.0.0/10".
+      v4: "100.64.0.0/10"
+      # -- (string) IPv6 ULA prefix. Default: "fd7a:115c:a1e0::/48".
+      v6: "fd7a:115c:a1e0::/48"
+      # -- (string) IP allocation strategy: sequential or random. Default: "sequential".
+      allocation: "sequential"
+
+    # -- DERP relay configuration.
+    derp:
+      server:
+        # -- (bool) Enable embedded DERP server. Requires TLS on server_url. Default: false.
+        enabled: false
+        # -- (int) Region ID for embedded DERP. Default: 999.
+        regionId: 999
+        # -- (string) Region code shown in Tailscale UI. Default: "headscale".
+        regionCode: "headscale"
+        # -- (string) Region name shown in Tailscale UI. Default: "Headscale Embedded DERP".
+        regionName: "Headscale Embedded DERP"
+        # -- (string) STUN listen address (UDP). Default: "0.0.0.0:3478".
+        stunListenAddr: "0.0.0.0:3478"
+      # -- (list) URLs to external DERP maps (JSON). Default: Tailscale's public map.
+      urls:
+        - "https://controlplane.tailscale.com/derpmap/default"
+      # -- (list) Paths to local DERP map YAML files. Default: [].
+      paths: []
+      # -- (bool) Periodically refresh DERP maps. Default: true.
+      autoUpdateEnabled: true
+      # -- (string) How often to refresh DERP maps. Default: "3h".
+      updateFrequency: "3h"
+
+    # -- Node lifecycle settings.
+    node:
+      # -- (string) Default key expiry. "0" = never. Default: "0".
+      expiry: "0"
+      ephemeral:
+        # -- (string) Time before inactive ephemeral node deletion. Default: "30m".
+        inactivityTimeout: "30m"
+
+    # -- OIDC authentication (e.g., Keycloak).
+    oidc:
+      # -- (bool) Enable OIDC authentication. Default: false.
+      enabled: false
+      # -- (string) OIDC issuer URL (e.g., https://keycloak.drewspace.ro/realms/homelab).
+      issuer: ""
+      # -- (string) OIDC client ID registered with the provider.
+      clientId: ""
+      # -- (string) OIDC client secret. Stored in Kubernetes Secret, injected via file mount.
+      clientSecret: ""
+      # -- (list) OIDC scopes to request. Default: ["openid", "profile", "email"].
+      scope:
+        - "openid"
+        - "profile"
+        - "email"
+      # -- (bool) Refuse to start if OIDC provider is unreachable. Default: true.
+      onlyStartIfAvailable: true
+      # -- (list) Restrict login to these email domains. Default: [] (no restriction).
+      allowedDomains: []
+      # -- (list) Restrict login to these specific users. Default: [] (no restriction).
+      allowedUsers: []
+
+    # -- ACL policy configuration.
+    policy:
+      # -- (string) Policy mode: "file" or "database". Default: "file".
+      mode: "file"
+      # -- (string) Path to ACL policy file (HuJSON/YAML). Default: "" (disabled).
+      path: ""
+
+  # -- TLS settings for Headscale itself (not Traefik termination).
+  #    Enable when you want Headscale to handle TLS directly (required for IngressRouteTCP passthrough).
+  tls:
+    # -- (bool) Enable TLS on Headscale. Default: false.
+    enabled: false
+    # -- (string) Name of an existing Kubernetes TLS Secret to mount. Must contain tls.crt and tls.key.
+    existingSecret: ""
+
+  # ---------------------------------------------------------------------------
+  # Database
+  # ---------------------------------------------------------------------------
+  database:
+    # -- (string) Database backend: "sqlite" or "postgres". Default: "sqlite".
+    type: "sqlite"
+    sqlite:
+      # -- (string) Path to SQLite database file. Default: "/var/lib/headscale/db.sqlite".
+      path: "/var/lib/headscale/db.sqlite"
+      # -- (bool) Enable WAL mode for better performance. Default: true.
+      writeAheadLog: true
+    postgres:
+      # -- (string) PostgreSQL connection DSN. Stored in Kubernetes Secret. Only used when type=postgres.
+      connectionString: ""
+
+  # ---------------------------------------------------------------------------
+  # Persistence (PVC for SQLite data + noise keys)
+  # ---------------------------------------------------------------------------
+  persistence:
+    # -- (bool) Enable persistent storage. Gated: only created when database.type=sqlite. Default: true.
+    enabled: true
+    # -- (string) StorageClass override. Falls back to global.storageClass, then cluster default.
+    storageClass: "nfs"
+    # -- (string) PVC access mode. Default: "ReadWriteOnce".
+    accessMode: "ReadWriteOnce"
+    # -- (string) PVC size. Default: "2Gi".
+    size: "2Gi"
+    # -- (map) Annotations for the PVC. Default: {}.
+    annotations: {}
+    # -- (string) Use an existing PVC instead of creating one. Default: "" (create new).
+    existingClaim: ""
+
+  # ---------------------------------------------------------------------------
+  # Service
+  # ---------------------------------------------------------------------------
+  service:
+    # -- (string) Service type. Default: "ClusterIP".
+    type: ClusterIP
+    # -- (int) HTTP API port. Default: 8080.
+    port: 8080
+    # -- (int) gRPC API port. Default: 50443.
+    grpcPort: 50443
+    # -- (map) Additional labels for the Service. Default: {}.
+    labels: {}
+
+  # ---------------------------------------------------------------------------
+  # Ingress (Traefik IngressRouteTCP for headscale)
+  # ---------------------------------------------------------------------------
+  ingress:
+    # -- (bool) Create IngressRouteTCP for Headscale. Default: true.
+    enabled: true
+    # -- (string) Traefik entrypoint name. Default: "websecure".
+    entryPoint: "websecure"
+    # -- (string) HostSNI match expression. Use "*" for wildcard. Default: "*".
+    hostSNI: "*"
+    tls:
+      # -- (bool) Enable TLS on the IngressRouteTCP. Default: true.
+      enabled: true
+      # -- (bool) TLS passthrough to Headscale (requires headscale.tls.enabled). Default: false.
+      passthrough: false
+      # -- (string) Traefik certResolver name. Ignored when passthrough=true. Default: "letsencrypt".
+      certResolver: "letsencrypt"
+
+  # ---------------------------------------------------------------------------
+  # Resources
+  # ---------------------------------------------------------------------------
+  resources:
+    requests:
+      # -- (string) CPU request. Default: "100m".
+      cpu: "100m"
+      # -- (string) Memory request. Default: "128Mi".
+      memory: "128Mi"
+    limits:
+      # -- (string) CPU limit. Default: "500m".
+      cpu: "500m"
+      # -- (string) Memory limit. Default: "256Mi".
+      memory: "256Mi"
+
+  # ---------------------------------------------------------------------------
+  # Security
+  # ---------------------------------------------------------------------------
+  # -- (map) Pod-level security context for Headscale.
+  podSecurityContext:
+    fsGroup: 10001
+
+  # -- (map) Container-level security context for Headscale.
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 10001
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+
+  # ---------------------------------------------------------------------------
+  # Scheduling
+  # ---------------------------------------------------------------------------
+  # -- (map) Pod annotations. Default: {}.
+  podAnnotations: {}
+  # -- (map) Node selector constraints. Default: {}.
+  nodeSelector: {}
+  # -- (list) Tolerations. Default: [].
+  tolerations: []
+  # -- (map) Affinity rules. Default: {}.
+  affinity: {}
+
+  # ---------------------------------------------------------------------------
+  # Probes
+  # ---------------------------------------------------------------------------
+  startupProbe:
+    httpGet:
+      path: /health
+      port: http
+    failureThreshold: 30
+    periodSeconds: 5
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: http
+    periodSeconds: 15
+    timeoutSeconds: 5
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /health
+      port: http
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 3
+
+# =============================================================================
+# Headplane — Web UI for Headscale
+# =============================================================================
+headplane:
+  # -- (int) Number of replicas. Headplane is stateless and freely scalable. Default: 1.
+  replicaCount: 1
+
+  image:
+    # -- (string) Container image repository for Headplane.
+    repository: ghcr.io/tale/headplane
+    # -- (string) Image tag. Default: "0.7.0".
+    tag: "0.7.0"
+    # -- (string) Image pull policy. Default: IfNotPresent.
+    pullPolicy: IfNotPresent
+
+  # -- (list) imagePullSecrets for Headplane. Merged with global.imagePullSecrets.
+  imagePullSecrets: []
+
+  # ---------------------------------------------------------------------------
+  # Headplane config.yaml fields
+  # ---------------------------------------------------------------------------
+  config:
+    # -- (string) 32-character cookie encryption secret. Auto-generated if empty. Stored in Secret.
+    cookieSecret: ""
+    # -- (bool) Mark cookies as Secure (requires HTTPS). Default: true.
+    cookieSecure: true
+    # -- (int) Session cookie max age in seconds. Default: 86400 (1 day).
+    cookieMaxAge: 86400
+    # -- (string) Directory for Headplane's internal data/cache. Default: "/var/lib/headplane".
+    dataPath: "/var/lib/headplane"
+    # -- (bool) Strictly validate Headscale config on read. Default: true.
+    configStrict: true
+    # -- (string) Headscale API key for server-side ops. Generated post-install, set via values on upgrade.
+    apiKey: ""
+    # -- (string) Override the base URL for Headplane (without /admin). Auto-derived if empty.
+    baseUrl: ""
+    # -- (string) Override the Headscale public URL shown in the UI. Auto-derived if empty.
+    headscalePublicUrl: ""
+
+  # ---------------------------------------------------------------------------
+  # Service
+  # ---------------------------------------------------------------------------
+  service:
+    # -- (string) Service type. Default: "ClusterIP".
+    type: ClusterIP
+    # -- (int) HTTP port. Default: 3000.
+    port: 3000
+    # -- (map) Additional labels for the Service. Default: {}.
+    labels: {}
+
+  # ---------------------------------------------------------------------------
+  # Ingress (Traefik IngressRoute for Headplane admin UI)
+  # ---------------------------------------------------------------------------
+  ingress:
+    # -- (bool) Create IngressRoute for Headplane. Default: true.
+    enabled: true
+    # -- (string) Traefik entrypoint name. Default: "wss-int" (internal traffic only).
+    entryPoint: "wss-int"
+    # -- (string) Host match for the IngressRoute. Default: "headscale.<domain>".
+    host: ""
+    # -- (string) Path prefix for Headplane UI. Default: "/admin".
+    pathPrefix: "/admin"
+    tls:
+      # -- (bool) Enable TLS on the IngressRoute. Default: false (internal entrypoint).
+      enabled: false
+      # -- (string) Traefik certResolver. Default: "letsencrypt".
+      certResolver: "letsencrypt"
+    # -- (list) Traefik middleware references. Default: [].
+    middlewares: []
+
+  # ---------------------------------------------------------------------------
+  # Resources
+  # ---------------------------------------------------------------------------
+  resources:
+    requests:
+      # -- (string) CPU request. Default: "50m".
+      cpu: "50m"
+      # -- (string) Memory request. Default: "64Mi".
+      memory: "64Mi"
+    limits:
+      # -- (string) CPU limit. Default: "200m".
+      cpu: "200m"
+      # -- (string) Memory limit. Default: "128Mi".
+      memory: "128Mi"
+
+  # ---------------------------------------------------------------------------
+  # Security
+  # ---------------------------------------------------------------------------
+  # -- (map) Pod-level security context for Headplane.
+  podSecurityContext:
+    fsGroup: 10001
+
+  # -- (map) Container-level security context for Headplane.
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 10001
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+
+  # ---------------------------------------------------------------------------
+  # Scheduling
+  # ---------------------------------------------------------------------------
+  # -- (map) Pod annotations. Default: {}.
+  podAnnotations: {}
+  # -- (map) Node selector constraints. Default: {}.
+  nodeSelector: {}
+  # -- (list) Tolerations. Default: [].
+  tolerations: []
+  # -- (map) Affinity rules. Default: {}.
+  affinity: {}
+
+  # ---------------------------------------------------------------------------
+  # Probes
+  # ---------------------------------------------------------------------------
+  startupProbe:
+    httpGet:
+      path: /admin
+      port: http
+    failureThreshold: 30
+    periodSeconds: 5
+  livenessProbe:
+    httpGet:
+      path: /admin
+      port: http
+    periodSeconds: 15
+    timeoutSeconds: 5
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /admin
+      port: http
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 3
+
+# =============================================================================
+# ServiceAccount
+# =============================================================================
+serviceAccount:
+  # -- (bool) Create a ServiceAccount. Default: true.
+  create: true
+  # -- (bool) Automount API credentials. Default: false (security hardening).
+  automount: false
+  # -- (string) Custom name. Auto-generated if empty.
+  name: ""
+  # -- (map) Annotations for the ServiceAccount. Default: {}.
+  annotations: {}

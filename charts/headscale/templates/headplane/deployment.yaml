@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "headplane.fullname" . }}
+  labels:
+    {{- include "headplane.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.headplane.replicaCount }}
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      {{- include "headplane.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{- with .Values.headplane.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "headplane.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "headscale.serviceAccountName" . }}
+      {{- with .Values.headplane.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.headplane.podSecurityContext | nindent 8 }}
+      containers:
+        - name: headplane
+          securityContext:
+            {{- toYaml .Values.headplane.securityContext | nindent 12 }}
+          image: "{{ .Values.headplane.image.repository }}:{{ .Values.headplane.image.tag }}"
+          imagePullPolicy: {{ .Values.headplane.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.headplane.service.port }}
+              protocol: TCP
+          startupProbe:
+            {{- toYaml .Values.headplane.startupProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.headplane.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.headplane.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.headplane.resources | nindent 12 }}
+          volumeMounts:
+            - name: headplane-config
+              mountPath: /etc/headplane/config.yaml
+              subPath: headplane-config.yaml
+              readOnly: true
+            - name: headscale-config
+              mountPath: /etc/headscale/config.yaml
+              subPath: headscale-config.yaml
+              readOnly: true
+            - name: data
+              mountPath: {{ .Values.headplane.config.dataPath }}
+            - name: tmp
+              mountPath: /tmp
+            - name: cookie-secret
+              mountPath: /etc/headplane/secrets/cookie-secret
+              subPath: headplane-cookie-secret
+              readOnly: true
+            {{- if .Values.headplane.config.apiKey }}
+            - name: api-key
+              mountPath: /etc/headplane/secrets/api-key
+              subPath: headplane-api-key
+              readOnly: true
+            {{- end }}
+      volumes:
+        - name: headplane-config
+          configMap:
+            name: {{ include "headscale.fullname" . }}-config
+            items:
+              - key: headplane-config.yaml
+                path: headplane-config.yaml
+        - name: headscale-config
+          configMap:
+            name: {{ include "headscale.fullname" . }}-config
+            items:
+              - key: headscale-config.yaml
+                path: headscale-config.yaml
+        - name: data
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}
+        - name: cookie-secret
+          secret:
+            secretName: {{ include "headscale.fullname" . }}-secrets
+            items:
+              - key: headplane-cookie-secret
+                path: headplane-cookie-secret
+        {{- if .Values.headplane.config.apiKey }}
+        - name: api-key
+          secret:
+            secretName: {{ include "headscale.fullname" . }}-secrets
+            items:
+              - key: headplane-api-key
+                path: headplane-api-key
+        {{- end }}
+      {{- with .Values.headplane.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.headplane.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.headplane.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

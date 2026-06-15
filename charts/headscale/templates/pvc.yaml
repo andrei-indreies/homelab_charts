@@ -1,0 +1,22 @@
+{{- if and (eq .Values.headscale.database.type "sqlite") .Values.headscale.persistence.enabled (not .Values.headscale.persistence.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "headscale.fullname" . }}-data
+  labels:
+    {{- include "headscale.labels" . | nindent 4 }}
+  {{- with .Values.headscale.persistence.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    - {{ .Values.headscale.persistence.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.headscale.persistence.size | quote }}
+  {{- $storageClass := include "headscale.storageClass" . }}
+  {{- if $storageClass }}
+  storageClassName: {{ $storageClass | quote }}
+  {{- end }}
+{{- end }}

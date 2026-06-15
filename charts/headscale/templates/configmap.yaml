@@ -1,0 +1,125 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "headscale.fullname" . }}-config
+  labels:
+    {{- include "headscale.labels" . | nindent 4 }}
+data:
+  headscale-config.yaml: |
+    server_url: {{ .Values.headscale.config.serverUrl | default (printf "https://headscale.%s" .Values.domain) }}
+    listen_addr: {{ .Values.headscale.config.listenAddr }}
+    metrics_listen_addr: {{ .Values.headscale.config.metricsListenAddr }}
+    grpc_listen_addr: {{ .Values.headscale.config.grpcListenAddr }}
+    grpc_allow_insecure: {{ .Values.headscale.config.grpcAllowInsecure }}
+    {{- if .Values.headscale.config.trustedProxies }}
+    trusted_proxies:
+      {{- toYaml .Values.headscale.config.trustedProxies | nindent 6 }}
+    {{- end }}
+
+    noise:
+      private_key_path: /var/lib/headscale/noise_private.key
+
+    prefixes:
+      v4: {{ .Values.headscale.config.prefixes.v4 }}
+      v6: {{ .Values.headscale.config.prefixes.v6 }}
+      allocation: {{ .Values.headscale.config.prefixes.allocation }}
+
+    derp:
+      server:
+        enabled: {{ .Values.headscale.config.derp.server.enabled }}
+        {{- if .Values.headscale.config.derp.server.enabled }}
+        region_id: {{ .Values.headscale.config.derp.server.regionId }}
+        region_code: {{ .Values.headscale.config.derp.server.regionCode | quote }}
+        region_name: {{ .Values.headscale.config.derp.server.regionName | quote }}
+        stun_listen_addr: {{ .Values.headscale.config.derp.server.stunListenAddr | quote }}
+        private_key_path: /var/lib/headscale/derp_server_private.key
+        automatically_add_embedded_derp_region: true
+        verify_clients: true
+        {{- end }}
+      urls:
+        {{- toYaml .Values.headscale.config.derp.urls | nindent 8 }}
+      paths:
+        {{- toYaml .Values.headscale.config.derp.paths | nindent 8 }}
+      auto_update_enabled: {{ .Values.headscale.config.derp.autoUpdateEnabled }}
+      update_frequency: {{ .Values.headscale.config.derp.updateFrequency }}
+
+    database:
+      type: {{ .Values.headscale.database.type }}
+      {{- if eq .Values.headscale.database.type "sqlite" }}
+      sqlite:
+        path: {{ .Values.headscale.database.sqlite.path }}
+        write_ahead_log: {{ .Values.headscale.database.sqlite.writeAheadLog }}
+      {{- end }}
+      {{- if eq .Values.headscale.database.type "postgres" }}
+      postgres:
+        # Connection string injected from Secret via environment variable
+        connection_string: "${HEADSCALE_DB_POSTGRES_CONN}"
+      {{- end }}
+
+    log:
+      level: {{ .Values.headscale.config.logLevel }}
+      format: {{ .Values.headscale.config.logFormat }}
+
+    disable_check_updates: {{ .Values.headscale.config.disableCheckUpdates }}
+
+    dns:
+      base_domain: {{ .Values.headscale.config.dns.baseDomain }}
+      nameservers:
+        {{- toYaml .Values.headscale.config.dns.nameservers | nindent 8 }}
+
+    node:
+      expiry: {{ .Values.headscale.config.node.expiry }}
+      ephemeral:
+        inactivity_timeout: {{ .Values.headscale.config.node.ephemeral.inactivityTimeout }}
+
+    {{- if and .Values.headscale.config.policy.path (eq .Values.headscale.config.policy.mode "file") }}
+    policy:
+      mode: {{ .Values.headscale.config.policy.mode }}
+      path: {{ .Values.headscale.config.policy.path }}
+    {{- end }}
+
+    {{- if .Values.headscale.config.oidc.enabled }}
+    oidc:
+      only_start_if_oidc_is_available: {{ .Values.headscale.config.oidc.onlyStartIfAvailable }}
+      issuer: {{ .Values.headscale.config.oidc.issuer | quote }}
+      client_id: {{ .Values.headscale.config.oidc.clientId | quote }}
+      {{- if .Values.headscale.config.oidc.clientSecret }}
+      client_secret_path: /etc/headscale/secrets/oidc-client-secret
+      {{- end }}
+      scope:
+        {{- toYaml .Values.headscale.config.oidc.scope | nindent 8 }}
+      {{- if .Values.headscale.config.oidc.allowedDomains }}
+      allowed_domains:
+        {{- toYaml .Values.headscale.config.oidc.allowedDomains | nindent 8 }}
+      {{- end }}
+      {{- if .Values.headscale.config.oidc.allowedUsers }}
+      allowed_users:
+        {{- toYaml .Values.headscale.config.oidc.allowedUsers | nindent 8 }}
+      {{- end }}
+    {{- end }}
+
+    {{- if .Values.headscale.tls.enabled }}
+    tls_cert_path: /etc/headscale/tls/tls.crt
+    tls_key_path: /etc/headscale/tls/tls.key
+    {{- end }}
+
+  headplane-config.yaml: |
+    server:
+      host: "0.0.0.0"
+      port: {{ .Values.headplane.service.port }}
+      base_url: {{ .Values.headplane.config.baseUrl | default (printf "https://headscale.%s" .Values.domain) | quote }}
+      cookie_secret_path: /etc/headplane/secrets/cookie-secret
+      cookie_secure: {{ .Values.headplane.config.cookieSecure }}
+      cookie_max_age: {{ .Values.headplane.config.cookieMaxAge }}
+      data_path: {{ .Values.headplane.config.dataPath }}
+
+    headscale:
+      url: http://{{ include "headscale.fullname" . }}:{{ .Values.headscale.service.port }}
+      {{- if .Values.headplane.config.headscalePublicUrl }}
+      public_url: {{ .Values.headplane.config.headscalePublicUrl | quote }}
+      {{- end }}
+      config_path: /etc/headscale/config.yaml
+      config_strict: {{ .Values.headplane.config.configStrict }}
+      {{- if .Values.headplane.config.apiKey }}
+      api_key_path: /etc/headplane/secrets/api-key
+      {{- end }}

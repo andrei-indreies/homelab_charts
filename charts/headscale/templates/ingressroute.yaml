@@ -1,0 +1,67 @@
+{{/*
+  IngressRouteTCP for Headscale (Tailscale clients connect here)
+  Uses HostSNI matching — wildcard by default for TCP passthrough compatibility.
+*/}}
+{{- if .Values.headscale.ingress.enabled }}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: {{ include "headscale.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "headscale.labels" . | nindent 4 }}
+spec:
+  entryPoints:
+    - {{ .Values.headscale.ingress.entryPoint }}
+  routes:
+    - match: HostSNI(`{{ .Values.headscale.ingress.hostSNI }}`)
+      services:
+        - name: {{ include "headscale.fullname" . }}
+          port: {{ .Values.headscale.service.port }}
+  {{- if .Values.headscale.ingress.tls.enabled }}
+  tls:
+    {{- if .Values.headscale.ingress.tls.passthrough }}
+    passthrough: true
+    {{- else }}
+    certResolver: {{ .Values.headscale.ingress.tls.certResolver }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+---
+{{/*
+  IngressRoute for Headplane admin UI (internal traffic via wss-int)
+*/}}
+{{- if .Values.headplane.ingress.enabled }}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ include "headplane.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "headplane.labels" . | nindent 4 }}
+spec:
+  entryPoints:
+    - {{ .Values.headplane.ingress.entryPoint }}
+  routes:
+    - match: Host(`{{ .Values.headplane.ingress.host | default (printf "headscale.%s" .Values.domain) }}`) && PathPrefix(`{{ .Values.headplane.ingress.pathPrefix }}`)
+      kind: Rule
+      services:
+        - kind: Service
+          name: {{ include "headplane.fullname" . }}
+          namespace: {{ .Release.Namespace }}
+          port: {{ .Values.headplane.service.port }}
+          passHostHeader: true
+      {{- if .Values.headplane.ingress.middlewares }}
+      middlewares:
+        {{- range .Values.headplane.ingress.middlewares }}
+        - name: {{ .name }}
+          {{- if .namespace }}
+          namespace: {{ .namespace }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+  {{- if .Values.headplane.ingress.tls.enabled }}
+  tls:
+    certResolver: {{ .Values.headplane.ingress.tls.certResolver }}
+  {{- end }}
+{{- end }}
