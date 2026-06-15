@@ -593,6 +593,25 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/ha-z2m-mosquitto-0.1.0/ha-z2m-mosquitto-0.1.0.tgz
     version: 0.1.0
+  headscale:
+  - apiVersion: v2
+    appVersion: 0.29.0
+    created: "2026-06-15T14:04:30.401315187Z"
+    description: Headscale VPN control plane with Headplane web UI
+    digest: 38bab013a0d3e5dc5cd3d30cb325719cdaddc40637eca61c897b9275e3e15965
+    keywords:
+    - headscale
+    - tailscale
+    - vpn
+    - wireguard
+    - headplane
+    maintainers:
+    - name: Andrei Indreies
+    name: headscale
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/headscale-0.1.0/headscale-0.1.0.tgz
+    version: 0.1.0
   homarr:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -2248,4 +2267,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2026-06-15T13:33:10.727889991Z"
+generated: "2026-06-15T14:04:30.402179584Z"
