@@ -1,53 +1,53 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: lidarr
+  name: readarr
   labels:
     {{- include "jellyfin.labels" . | nindent 4 }}
 spec:
-  {{- with .Values.lidarr.deploymentStrategy }}
+  {{- with .Values.readarr.deploymentStrategy }}
   strategy:
     {{- toYaml . | trim | nindent 4 }}
   {{- end }}
-  replicas: {{ .Values.lidarr.replicaCount }}
+  replicas: {{ .Values.readarr.replicaCount }}
   selector:
     matchLabels:
-      app: lidarr
+      app: readarr
   template:
     metadata:
-      {{- with .Values.lidarr.podAnnotations }}
+      {{- with .Values.readarr.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        app: lidarr
+        app: readarr
     spec:
-      {{- with .Values.lidarr.imagePullSecrets }}
+      {{- with .Values.readarr.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       securityContext:
-        {{- toYaml .Values.lidarr.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.readarr.podSecurityContext | nindent 8 }}
       containers:
-        - name: lidarr
+        - name: readarr
           securityContext:
-            {{- toYaml .Values.lidarr.securityContext | nindent 12 }}
-          image: "{{ .Values.lidarr.image.repository }}:{{ .Values.lidarr.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.lidarr.image.pullPolicy }}
-          {{- with .Values.lidarr.lidarr.env }}
+            {{- toYaml .Values.readarr.securityContext | nindent 12 }}
+          image: "{{ .Values.readarr.image.repository }}:{{ .Values.readarr.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.readarr.image.pullPolicy }}
+          {{- with .Values.readarr.readarr.env }}
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           ports:
             - name: http
-              containerPort: {{ .Values.lidarr.service.port }}
+              containerPort: {{ .Values.readarr.service.port }}
               protocol: TCP
           livenessProbe:
-            {{- toYaml .Values.lidarr.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.readarr.livenessProbe | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.lidarr.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.readarr.readinessProbe | nindent 12 }}
           resources:
-            {{- toYaml .Values.lidarr.resources | nindent 12 }}
+            {{- toYaml .Values.readarr.resources | nindent 12 }}
           volumeMounts:
             - mountPath: /config
               name: config
@@ -60,21 +60,21 @@ spec:
               readOnly: true
               {{- end }}
             {{- end }}
-            {{- with .Values.lidarr.volumeMounts }}
+            {{- with .Values.readarr.volumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-        {{- with .Values.lidarr.extraContainers }}
+        {{- with .Values.readarr.extraContainers }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
-      {{- with .Values.lidarr.initContainers }}
+      {{- with .Values.readarr.initContainers }}
       initContainers:
         {{- toYaml . | nindent 6 }}
       {{- end }}
       volumes:
         - name: config
-          {{- if .Values.lidarr.persistence.config.enabled }}
+          {{- if .Values.readarr.persistence.config.enabled }}
           persistentVolumeClaim:
-            claimName: {{ if .Values.lidarr.persistence.config.existingClaim }}{{ .Values.lidarr.persistence.config.existingClaim }}{{- else }}lidarr-config{{- end }}
+            claimName: {{ if .Values.readarr.persistence.config.existingClaim }}{{ .Values.readarr.persistence.config.existingClaim }}{{- else }}readarr-config{{- end }}
           {{- else }}
           emptyDir: {}
           {{- end }}
@@ -84,27 +84,27 @@ spec:
             claimName: {{ if .Values.persistence.media.existingClaim }}{{ .Values.persistence.media.existingClaim }}{{- else }}{{ template "jellyfin.fullname" . }}-media{{- end }}
           {{- else }}
           emptyDir: {}
-          {{- end }}
+           {{- end }}
         {{- if .Values.persistence.externalMedia.enabled }}
         - name: external-media
           persistentVolumeClaim:
             claimName: {{ if .Values.persistence.externalMedia.existingClaim }}{{ .Values.persistence.externalMedia.existingClaim }}{{- else }}{{ template "jellyfin.fullname" . }}-external-media{{- end }}
         {{- end }}
-        {{- with .Values.lidarr.volumes }}
+        {{- with .Values.readarr.volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
-      {{- with .Values.lidarr.nodeSelector }}
+      {{- with .Values.readarr.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.lidarr.affinity }}
+      {{- with .Values.readarr.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.lidarr.tolerations }}
+      {{- with .Values.readarr.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.lidarr.runtimeClassName }}
+      {{- with .Values.readarr.runtimeClassName }}
       runtimeClassName: {{ . | quote }}
       {{- end }}

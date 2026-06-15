@@ -29,7 +29,7 @@ spec:
       securityContext:
         {{- toYaml .Values.sonarr.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: sonarr
           securityContext:
             {{- toYaml .Values.sonarr.securityContext | nindent 12 }}
           image: "{{ .Values.sonarr.image.repository }}:{{ .Values.sonarr.image.tag | default .Chart.AppVersion }}"

@@ -415,6 +415,76 @@ radarr:
       annotations: {}
       storageClass: nfs
 
+readarr:
+  replicaCount: 1
+  imagePullSecrets: []
+
+  image:
+    repository: docker.io/linuxserver/readarr
+    tag: "latest"
+    pullPolicy: IfNotPresent
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+  podAnnotations: {}
+  podLabels: {}
+
+  podSecurityContext: {}
+
+  securityContext: {}
+
+  runtimeClassName: ''
+
+  deploymentStrategy:
+    type: RollingUpdate
+
+  readarr:
+    env: 
+      - name: PUID
+        value: "1000"
+      - name: PGID
+        value: "1000"
+      - name: TZ
+        value: "Europe/Bucharest"
+
+  service:
+    type: ClusterIP
+    port: 8787
+    portName: service
+    labels: {}
+
+  resources: {}
+
+  livenessProbe:
+    initialDelaySeconds: 10
+    tcpSocket:
+      port: http
+
+  readinessProbe:
+    initialDelaySeconds: 10
+    tcpSocket:
+      port: http
+
+  volumes: []
+  
+  volumeMounts: []
+
+  nodeSelector:
+      media-role: media
+
+  tolerations: []
+
+  affinity: {}
+
+  persistence:
+    config:
+      enabled: true
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      annotations: {}
+      storageClass: nfs
+
 lidarr:
   replicaCount: 1
   imagePullSecrets: []

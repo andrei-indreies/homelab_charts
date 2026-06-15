@@ -29,7 +29,7 @@ spec:
       securityContext:
         {{- toYaml .Values.jellyseer.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: seerr
           securityContext:
             {{- toYaml .Values.jellyseer.securityContext | nindent 12 }}
           image: "{{ .Values.jellyseer.image.repository }}:{{ .Values.jellyseer.image.tag | default .Chart.AppVersion }}"

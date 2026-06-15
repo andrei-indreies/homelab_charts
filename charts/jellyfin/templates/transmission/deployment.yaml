@@ -30,7 +30,7 @@ spec:
       securityContext:
         {{- toYaml .Values.transmission.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: transmission
           securityContext:
             {{- toYaml .Values.transmission.securityContext | nindent 12 }}
           image: "{{ .Values.transmission.image.repository }}:{{ .Values.transmission.image.tag | default .Chart.AppVersion }}"

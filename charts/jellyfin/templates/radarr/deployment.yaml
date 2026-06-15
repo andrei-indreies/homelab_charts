@@ -29,7 +29,7 @@ spec:
       securityContext:
         {{- toYaml .Values.radarr.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: radarr
           securityContext:
             {{- toYaml .Values.radarr.securityContext | nindent 12 }}
           image: "{{ .Values.radarr.image.repository }}:{{ .Values.radarr.image.tag | default .Chart.AppVersion }}"

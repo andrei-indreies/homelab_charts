@@ -29,7 +29,7 @@ spec:
       securityContext:
         {{- toYaml .Values.tdarr.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: tdarr
           securityContext:
             {{- toYaml .Values.tdarr.securityContext | nindent 12 }}
           image: "{{ .Values.tdarr.image.repository }}:{{ .Values.tdarr.image.tag | default .Chart.AppVersion }}"

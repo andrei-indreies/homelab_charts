@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: readarr
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+    {{- with .Values.readarr.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  type: {{ .Values.readarr.service.type }}
+  ports:
+    - port: {{ .Values.readarr.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: readarr

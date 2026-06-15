@@ -29,7 +29,7 @@ spec:
       securityContext:
         {{- toYaml .Values.prowlarr.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: prowlarr
           securityContext:
             {{- toYaml .Values.prowlarr.securityContext | nindent 12 }}
           image: "{{ .Values.prowlarr.image.repository }}:{{ .Values.prowlarr.image.tag | default .Chart.AppVersion }}"
