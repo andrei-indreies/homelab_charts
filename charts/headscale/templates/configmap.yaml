@@ -63,6 +63,7 @@ data:
     disable_check_updates: {{ .Values.headscale.config.disableCheckUpdates }}
 
     dns:
+      magic_dns: {{ .Values.headscale.config.dns.magicDns }}
       base_domain: {{ .Values.headscale.config.dns.baseDomain }}
       nameservers:
         {{- toYaml .Values.headscale.config.dns.nameservers | nindent 8 }}

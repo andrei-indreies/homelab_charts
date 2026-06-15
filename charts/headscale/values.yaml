@@ -59,12 +59,15 @@ headscale:
 
     # -- DNS configuration for MagicDNS and upstream resolvers.
     dns:
+      # -- (bool) Enable MagicDNS. Default: true.
+      magicDns: true
       # -- (string) Base domain for MagicDNS. Default: "headscale.drewspace.ro".
       baseDomain: "headscale.drewspace.ro"
-      # -- (list) Upstream DNS nameservers. Default: ["1.1.1.1", "1.0.0.1"].
+      # -- (list) Upstream DNS nameservers (global scope).
       nameservers:
-        - "1.1.1.1"
-        - "1.0.0.1"
+        global:
+          - "1.1.1.1"
+          - "1.0.0.1"
 
     # -- IP prefix allocation for Tailscale clients.
     prefixes:

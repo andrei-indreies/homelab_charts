@@ -4,7 +4,7 @@ description: Headscale VPN control plane with Headplane web UI
 type: application
 
 # Chart version — increment on every chart change
-version: 0.1.0
+version: 0.1.1
 
 # Application version — tracks the Headscale container image tag
 appVersion: "0.29.0"
