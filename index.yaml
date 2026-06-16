@@ -596,6 +596,24 @@ entries:
   headscale:
   - apiVersion: v2
     appVersion: 0.29.0
+    created: "2026-06-16T08:40:28.489130913Z"
+    description: Headscale VPN control plane with Headplane web UI
+    digest: 183281ea2d102014d299cff31b88bb991cf6cf5f1e1f70624e5428b4b6e42c2d
+    keywords:
+    - headscale
+    - tailscale
+    - vpn
+    - wireguard
+    - headplane
+    maintainers:
+    - name: Andrei Indreies
+    name: headscale
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/headscale-0.1.2/headscale-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 0.29.0
     created: "2026-06-15T14:28:58.675364041Z"
     description: Headscale VPN control plane with Headplane web UI
     digest: 5b651cb28407b24c0b34a8e489c754faa942878aad5336cb91a137bc851d271f
@@ -2285,4 +2303,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2026-06-15T14:28:58.675730388Z"
+generated: "2026-06-16T08:40:28.489482308Z"
