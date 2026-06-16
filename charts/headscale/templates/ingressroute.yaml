@@ -1,10 +1,9 @@
 {{/*
-  IngressRouteTCP for Headscale (Tailscale clients connect here)
-  Uses HostSNI matching — wildcard by default for TCP passthrough compatibility.
+  IngressRoute for Headscale (Tailscale clients connect here)
 */}}
 {{- if .Values.headscale.ingress.enabled }}
 apiVersion: traefik.io/v1alpha1
-kind: IngressRouteTCP
+kind: IngressRoute
 metadata:
   name: {{ include "headscale.fullname" . }}
   namespace: {{ .Release.Namespace }}
@@ -14,17 +13,17 @@ spec:
   entryPoints:
     - {{ .Values.headscale.ingress.entryPoint }}
   routes:
-    - match: HostSNI(`{{ .Values.headscale.ingress.hostSNI }}`)
+    - match: Host(`{{ .Values.headscale.ingress.host | default (printf "headscale.%s" .Values.domain) }}`)
+      kind: Rule
       services:
-        - name: {{ include "headscale.fullname" . }}
+        - kind: Service
+          name: {{ include "headscale.fullname" . }}
+          namespace: {{ .Release.Namespace }}
           port: {{ .Values.headscale.service.port }}
+          passHostHeader: true
   {{- if .Values.headscale.ingress.tls.enabled }}
   tls:
-    {{- if .Values.headscale.ingress.tls.passthrough }}
-    passthrough: true
-    {{- else }}
     certResolver: {{ .Values.headscale.ingress.tls.certResolver }}
-    {{- end }}
   {{- end }}
 {{- end }}
 ---

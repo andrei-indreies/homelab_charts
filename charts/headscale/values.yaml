@@ -139,7 +139,7 @@ headscale:
       path: ""
 
   # -- TLS settings for Headscale itself (not Traefik termination).
-  #    Enable when you want Headscale to handle TLS directly (required for IngressRouteTCP passthrough).
+  #    Enable when you want Headscale to handle TLS internally.
   tls:
     # -- (bool) Enable TLS on Headscale. Default: false.
     enabled: false
@@ -192,21 +192,19 @@ headscale:
     labels: {}
 
   # ---------------------------------------------------------------------------
-  # Ingress (Traefik IngressRouteTCP for headscale)
+  # Ingress (Traefik IngressRoute for Headscale)
   # ---------------------------------------------------------------------------
   ingress:
-    # -- (bool) Create IngressRouteTCP for Headscale. Default: true.
+    # -- (bool) Create IngressRoute for Headscale. Default: true.
     enabled: true
     # -- (string) Traefik entrypoint name. Default: "websecure".
     entryPoint: "websecure"
-    # -- (string) HostSNI match expression. Use "*" for wildcard. Default: "*".
-    hostSNI: "*"
+    # -- (string) Host match for the IngressRoute. Default: "headscale.<domain>".
+    host: ""
     tls:
-      # -- (bool) Enable TLS on the IngressRouteTCP. Default: true.
+      # -- (bool) Enable TLS on the IngressRoute. Default: true.
       enabled: true
-      # -- (bool) TLS passthrough to Headscale (requires headscale.tls.enabled). Default: false.
-      passthrough: false
-      # -- (string) Traefik certResolver name. Ignored when passthrough=true. Default: "letsencrypt".
+      # -- (string) Traefik certResolver name. Default: "letsencrypt".
       certResolver: "letsencrypt"
 
   # ---------------------------------------------------------------------------

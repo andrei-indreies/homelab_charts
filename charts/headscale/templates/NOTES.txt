@@ -54,15 +54,3 @@ Ensure the redirect URI is registered in your OIDC provider:
   {{ $serverUrl }}/oidc/callback
 {{- end }}
 
-{{- if not .Values.headscale.tls.enabled }}
-
----------------------------------------------------------------
- TLS (Not Yet Configured)
----------------------------------------------------------------
-Headscale TLS is currently DISABLED. TLS is terminated at Traefik.
-To enable TLS passthrough (required for some Tailscale features):
-  1. Create a TLS Secret with your cert and key
-  2. Set headscale.tls.enabled=true and headscale.tls.existingSecret
-  3. Set headscale.ingress.tls.passthrough=true
-  4. Update headscale.config.serverUrl to use https://
-{{- end }}
