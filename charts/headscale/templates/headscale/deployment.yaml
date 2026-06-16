@@ -95,6 +95,12 @@ spec:
               mountPath: /etc/headscale/config.yaml
               subPath: headscale-config.yaml
               readOnly: true
+            {{- if and (eq .Values.headscale.config.policy.mode "file") .Values.headscale.config.policy.content }}
+            - name: config
+              mountPath: {{ .Values.headscale.config.policy.path }}
+              subPath: acl.hujson
+              readOnly: true
+            {{- end }}
             - name: data
               mountPath: /var/lib/headscale
             - name: tmp

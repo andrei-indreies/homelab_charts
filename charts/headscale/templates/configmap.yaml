@@ -73,9 +73,9 @@ data:
       ephemeral:
         inactivity_timeout: {{ .Values.headscale.config.node.ephemeral.inactivityTimeout }}
 
-    {{- if and .Values.headscale.config.policy.path (eq .Values.headscale.config.policy.mode "file") }}
     policy:
       mode: {{ .Values.headscale.config.policy.mode }}
+    {{- if and (eq .Values.headscale.config.policy.mode "file") .Values.headscale.config.policy.path }}
       path: {{ .Values.headscale.config.policy.path }}
     {{- end }}
 
@@ -124,3 +124,18 @@ data:
       {{- if .Values.headplane.config.apiKey }}
       api_key_path: /etc/headplane/secrets/api-key
       {{- end }}
+
+    {{- if .Values.headplane.config.integration.kubernetes.enabled }}
+    integration:
+      kubernetes:
+        enabled: true
+        validate_manifest: {{ .Values.headplane.config.integration.kubernetes.validateManifest }}
+        {{- if .Values.headplane.config.integration.kubernetes.podName }}
+        pod_name: {{ .Values.headplane.config.integration.kubernetes.podName | quote }}
+        {{- end }}
+    {{- end }}
+
+  {{- if and (eq .Values.headscale.config.policy.mode "file") .Values.headscale.config.policy.content }}
+  acl.hujson: |
+    {{ .Values.headscale.config.policy.content | toJson }}
+  {{- end }}

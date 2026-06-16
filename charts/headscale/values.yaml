@@ -133,10 +133,16 @@ headscale:
 
     # -- ACL policy configuration.
     policy:
-      # -- (string) Policy mode: "file" or "database". Default: "file".
-      mode: "file"
-      # -- (string) Path to ACL policy file (HuJSON/YAML). Default: "" (disabled).
-      path: ""
+      # -- (string) Policy mode: "file" or "database".
+      #    "database" — ACLs stored in Headscale's DB, editable via Headplane UI (recommended).
+      #    "file"     — ACLs read from a static HuJSON file (GitOps-friendly, requires redeploy to change).
+      mode: "database"
+      # -- (string) Path to ACL policy file (only used when mode=file). Default: "/etc/headscale/acl.hujson".
+      path: "/etc/headscale/acl.hujson"
+      # -- (object) Inline ACL policy (only used when mode=file).
+      #    Rendered as JSON into acl.hujson and mounted into the container.
+      #    Leave empty ({}) when using database mode.
+      content: {}
 
   # -- TLS settings for Headscale itself (not Traefik termination).
   #    Enable when you want Headscale to handle TLS internally.
@@ -313,6 +319,16 @@ headplane:
     baseUrl: ""
     # -- (string) Override the Headscale public URL shown in the UI. Auto-derived if empty.
     headscalePublicUrl: ""
+
+    # -- Integration configuration for advanced UI features (Apps, Services tabs).
+    integration:
+      kubernetes:
+        # -- (bool) Enable Kubernetes integration. Default: true.
+        enabled: true
+        # -- (bool) Validate the Headscale pod manifest. Default: true.
+        validateManifest: true
+        # -- (string) Pod name of the Headscale deployment. Auto-derived if empty.
+        podName: ""
 
   # ---------------------------------------------------------------------------
   # Service

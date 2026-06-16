@@ -23,6 +23,11 @@ spec:
         {{- include "headplane.selectorLabels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "headscale.serviceAccountName" . }}
+      {{- if .Values.headplane.config.integration.kubernetes.enabled }}
+      automountServiceAccountToken: true
+      {{- else }}
+      automountServiceAccountToken: false
+      {{- end }}
       {{- with .Values.headplane.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}

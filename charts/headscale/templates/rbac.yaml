@@ -1,0 +1,37 @@
+{{/*
+  RBAC for Headplane Kubernetes integration.
+  Grants the shared ServiceAccount permissions to query pods/deployments
+  so Headplane can discover the Headscale pod and populate the UI.
+*/}}
+{{- if .Values.headplane.config.integration.kubernetes.enabled }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "headplane.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "headplane.labels" . | nindent 4 }}
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "headplane.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "headplane.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "headplane.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "headscale.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+{{- end }}
