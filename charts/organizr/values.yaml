@@ -1,0 +1,24 @@
+replicaCount: 1
+
+image:
+  repository: organizr/organizr
+  tag: latest
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+
+domain: organizr.drewspace.ro
+namespace: main
+
+ingress:
+  entryPoints:
+    - websecure
+
+env:
+  timezone: 'Europe/Bucharest'
+
+persistence:
+  storageClass: "truenas-csi"
+  volumes:
+    config:
+      size: "1Gi"
