@@ -1931,6 +1931,17 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/nut-upsd-0.1.0/nut-upsd-0.1.0.tgz
     version: 0.1.0
+  organizr:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2026-07-21T08:37:10.896686478Z"
+    description: A Helm chart for Organizr
+    digest: f7b844491e5851199c11a20ee95c2bb17e665381f241202c807b5f138f02918e
+    name: organizr
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/organizr-0.1.0/organizr-0.1.0.tgz
+    version: 0.1.0
   pihole:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -2321,4 +2332,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2026-06-16T11:50:53.155574396Z"
+generated: "2026-07-21T08:37:10.897028292Z"
