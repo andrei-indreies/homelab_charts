@@ -1,0 +1,92 @@
+replicaCount: 1
+namespace: main
+
+image:
+  repository: nextpvr/nextpvr_amd64
+  tag: stable
+  pullPolicy: IfNotPresent
+
+container:
+  name: nextpvr
+
+env:
+  PUID: "1000"
+  PGID: "1000"
+  TZ: "Etc/UTC"
+  RUN_OPTS: ""  # Optional run options
+
+service:
+  type: NodePort
+  port: 8866
+
+ingressRoute:
+  enabled: true
+  host: nextpvr.drewspace.ro
+  entryPoints:
+    - websecure
+  serviceName: nextpvr
+  servicePort: 8866
+  tls:
+    enabled: true
+    certResolver: letsencrypt
+  middleware:
+    enabled: false                # Whether to attach middleware(s)
+    names: []                     # List of middleware resource names to attach, e.g. ["nextpvr-auth"]
+
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+  automount: true
+
+persistence:
+  config:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 2Gi
+    mountPath: /config
+    storageClass: ""  # use default
+  recordings:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 200Gi
+    mountPath: /recordings
+    storageClass: ""
+  buffer:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 50Gi
+    mountPath: /buffer
+    storageClass: ""
+
+devices:
+  # - name: dri
+  #   hostPath: /dev/dri
+  #   mountPath: /dev/dri
+  - name: dvb
+    hostPath: /dev/dvb
+    mountPath: /dev/dvb
+
+securityContext:
+  privileged: true
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+
+podAnnotations: {}
+
+podLabels: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+restartPolicy: Always
