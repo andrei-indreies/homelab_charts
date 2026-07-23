@@ -1880,6 +1880,17 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/nextcloud-app-0.0.1/nextcloud-app-0.0.1.tgz
     version: 0.0.1
+  nextpvr:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-07-23T14:47:28.317293217Z"
+    description: A Helm chart for Kubernetes
+    digest: 85909a8812cc8d970dd3fa7e90908c0cb6d62afe757b307b5479ab789e2e7517
+    name: nextpvr
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/nextpvr-0.1.1/nextpvr-0.1.1.tgz
+    version: 0.1.1
   nut-upsd:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -2332,4 +2343,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2026-07-21T08:37:10.897028292Z"
+generated: "2026-07-23T14:47:28.317648233Z"
