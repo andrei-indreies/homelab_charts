@@ -2161,6 +2161,16 @@ entries:
   resume-app:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-10-30T20:33:27.202663388Z"
+    description: A Helm chart for Kubernetes
+    digest: aa9d946439a9e536a75bf61436cffbd39065f1fcf9ced49660ceb96df0cd1cbb
+    name: resume-app
+    type: application
+    urls:
+    - https://github.com/andrei-indreies/homelab_charts/releases/download/resume-app-0.1.1/resume-app-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-05-21T10:11:03.182862153Z"
     description: A Helm chart for Kubernetes
     digest: 5890c1ba7e2727301b5c5463140e6afb32b82ba1fe8f599b5af22e956dbaca24
@@ -2343,4 +2353,4 @@ entries:
     urls:
     - https://github.com/andrei-indreies/homelab_charts/releases/download/wedding-app-0.1.0/wedding-app-0.1.0.tgz
     version: 0.1.0
-generated: "2026-07-23T14:47:28.317648233Z"
+generated: "2026-10-30T20:33:27.202916624Z"
