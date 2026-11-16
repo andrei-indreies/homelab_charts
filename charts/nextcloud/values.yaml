@@ -54,7 +54,12 @@ service:
   port: 80
 
 ingress:
-  host: Host(`nextcloud.drewspace.ro`)
+  enabled: true
+  namespace: main
+  host: nextcloud.drewspace.ro
+  entryPoints:
+    - websecure
+  certResolver: letsencrypt
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

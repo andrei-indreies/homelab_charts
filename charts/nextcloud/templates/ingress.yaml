@@ -1,8 +1,9 @@
+{{- if .Values.ingress.enabled }}
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: insecure-requests
-  namespace: main
+  namespace: {{ .Values.ingress.namespace }}
 spec:
   headers:
     contentSecurityPolicy: "upgrade-insecure-requests"
@@ -11,21 +12,22 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: {{ include "nextcloud-app.fullname" . }}
-  namespace: main
+  namespace: {{ .Values.ingress.namespace }}
 spec:
   entryPoints:
-    - websecure
+    {{- toYaml .Values.ingress.entryPoints | nindent 4 }}
   routes:
-    - match: {{ .Values.ingress.host }}
+    - match: Host(`{{ .Values.ingress.host }}`)
       kind: Rule
       services:
-      - kind: Service
-        name: {{ include "nextcloud-app.fullname" . }}
-        namespace: main
-        port: 80
-        passHostHeader: true
+        - kind: Service
+          name: {{ include "nextcloud-app.fullname" . }}
+          namespace: {{ .Values.ingress.namespace }}
+          port: {{ .Values.service.port }}
+          passHostHeader: true
       middlewares:
-      - name: insecure-requests
-        namespace: main
+        - name: insecure-requests
+          namespace: {{ .Values.ingress.namespace }}
   tls:
-    certResolver: letsencrypt
+    certResolver: {{ .Values.ingress.certResolver }}
+{{- end }}
