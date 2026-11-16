@@ -16,7 +16,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`nextcloud.drewspace.ro`)
+    - match: {{ .Values.ingress.host }}
       kind: Rule
       services:
       - kind: Service
